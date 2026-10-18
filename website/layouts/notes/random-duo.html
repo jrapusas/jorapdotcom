@@ -1,0 +1,59 @@
+{{ define "main" }}
+  {{- $pool := partialCached "notes/random-pool.html" . "notes-random-pool-v1" -}}
+  {{- $graph := partialCached "notes/graph-data.html" site "graph-data-v4" -}}
+  {{ partial "page-header" . }}
+
+  <section class="section">
+    <div class="container">
+      <div class="row justify-center">
+        <div class="lg:col-12">
+          {{ partial "notes/toolbar.html" (dict "Context" . "active" "random-duo") }}
+
+          <p class="text-ink-muted mb-6">{{ T "random_duo_lede" }}</p>
+
+          {{ partial "notes/random-prompt-panel.html" (dict "Prefix" "random-duo" "Loading" (T "random_notes_prompt_loading") "Rows" 10) }}
+
+          <div class="notes-path-toolbar mb-6">
+            <div class="notes-path-result border-divider hidden" data-random-duo-path>
+              <h3 class="h6 mb-0 shrink-0">{{ T "random_duo_shortest_path" }}:</h3>
+              <div class="notes-path-chain notes-path-chain--row" data-random-duo-path-chain></div>
+            </div>
+            <button type="button" class="btn btn-outline-primary btn-sm shrink-0" data-random-duo-shuffle aria-label="{{ T "shuffle_all" }}">{{ T "shuffle" }}</button>
+          </div>
+
+          <div class="row notes-random-grid items-stretch" data-notes-random-duo>
+            <div class="md:col-6 mb-8 flex flex-col">
+              <div class="notes-random-controls">
+                {{ partial "notes/random-note-select.html" (dict "Prefix" "random-duo" "Pool" $pool "Label" (T "select_note_left") "Placeholder" (T "choose_note") "Slot" "0") }}
+                <button type="button" class="btn btn-outline-primary btn-sm shrink-0" data-random-duo-shuffle-left aria-label="{{ T "shuffle_left" }}">{{ T "shuffle" }}</button>
+              </div>
+              <div class="notes-random-slot flex flex-col" data-random-duo-slot="0">
+                <p class="notes-random-loading text-ink-muted text-sm">{{ T "loading" }}</p>
+              </div>
+            </div>
+            <div class="md:col-6 mb-8 flex flex-col">
+              <div class="notes-random-controls">
+                {{ partial "notes/random-note-select.html" (dict "Prefix" "random-duo" "Pool" $pool "Label" (T "select_note_right") "Placeholder" (T "choose_note") "Slot" "1") }}
+                <button type="button" class="btn btn-outline-primary btn-sm shrink-0" data-random-duo-shuffle-right aria-label="{{ T "shuffle_right" }}">{{ T "shuffle" }}</button>
+              </div>
+              <div class="notes-random-slot flex flex-col" data-random-duo-slot="1">
+                <p class="notes-random-loading text-ink-muted text-sm">{{ T "loading" }}</p>
+              </div>
+            </div>
+          </div>
+
+          <p class="notes-random-empty-page text-ink-muted hidden text-sm">{{ T "no_random_blog_note" }}</p>
+          <script type="application/json" class="notes-random-duo-data">{{ $pool | jsonify | safeJS }}</script>
+          <script type="application/json" class="notes-random-duo-graph-data">{{ $graph.edges | jsonify | safeJS }}</script>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  {{ partial "notes/preview-index.html" . }}
+
+  {{ partial "essentials/fingerprint-asset.html" (dict "src" "js/notes-random-core.js" "defer" true) }}
+  {{ partial "essentials/fingerprint-asset.html" (dict "src" "js/notes-random-select.js" "defer" true) }}
+  {{ partial "essentials/fingerprint-asset.html" (dict "src" "js/notes-random-duo.js" "defer" true) }}
+  {{ partial "essentials/fingerprint-asset.html" (dict "src" "js/wikilink-preview.js" "defer" true) }}
+{{ end }}

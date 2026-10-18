@@ -1,0 +1,11 @@
+{{- $active := .active | default "" -}}
+
+<a
+  class="btn btn-sm{{ if eq $active "random-duo" }} btn-primary{{ else }} btn-outline-primary{{ end }}"
+  href="{{ `/notes/random-duo/` | relLangURL }}"
+  aria-label="Random duo"
+  {{- if eq $active "random-duo" -}}
+    aria-current="page"
+  {{- end -}}>
+  <span class="xl:hidden">Duo</span><span class="hidden xl:inline">Random Duo</span>
+</a>

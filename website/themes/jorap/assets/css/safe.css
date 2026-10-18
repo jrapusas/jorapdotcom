@@ -1,0 +1,33 @@
+/*
+ * Structural overrides only.
+ *
+ * Color-leak workarounds that used `!important` on `.content` to fix dark-mode prose
+ * have been removed: components now use the semantic tokens (text-ink, bg-elevated,
+ * border-divider, accent) defined in tailwind-plugin/tw-theme.js, and the `prose-*`
+ * directives in components.css already cover dark mode via @custom-variant `dark`.
+ *
+ * If a dark-mode color regression appears, prefer fixing the upstream token or the
+ * prose-* class in components.css rather than reintroducing !important here.
+ */
+
+/* navbar toggler - checkbox hack drives the mobile menu visibility */
+input#nav-toggle:checked + label #show-button {
+  @apply hidden;
+}
+
+input#nav-toggle:checked + label #hide-button {
+  @apply block;
+}
+
+input#nav-toggle:checked ~ #nav-menu {
+  @apply block;
+}
+
+/* swiper pagination */
+.swiper-pagination-bullet {
+  @apply !h-2.5 !w-2.5 !bg-elevated !opacity-100;
+}
+
+.swiper-pagination-bullet-active {
+  @apply !h-4 !w-4 !bg-accent;
+}

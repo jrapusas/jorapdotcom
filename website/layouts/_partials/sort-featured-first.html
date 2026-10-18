@@ -1,0 +1,13 @@
+{{- /* Featured pages first, then the rest. Sort: "date" (newest) or "title". */ -}}
+{{- $pages := .Pages -}}
+{{- $sort := .Sort | default "date" -}}
+{{- $featured := where $pages "Params.featured" true -}}
+{{- $rest := complement $featured $pages -}}
+{{- if eq $sort "title" -}}
+  {{- $featured = $featured.ByTitle -}}
+  {{- $rest = $rest.ByTitle -}}
+{{- else -}}
+  {{- $featured = $featured.ByDate.Reverse -}}
+  {{- $rest = $rest.ByDate.Reverse -}}
+{{- end -}}
+{{- return ($featured | append $rest) -}}

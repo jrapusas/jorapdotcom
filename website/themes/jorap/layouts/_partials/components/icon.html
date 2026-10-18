@@ -1,0 +1,32 @@
+{{/*
+  components/icon - Render a registered inline SVG icon.
+
+  Replaces Font Awesome. Definitions live in data/icons.json (each entry
+  needs `viewBox` + `path`).
+
+  Accepts either a clean icon name ("github") or a legacy Font Awesome
+  class string ("fab fa-github", "fa-brands fa-github", "fa fa-arrow-right").
+  Any FA family prefix (fab/fas/far/fal/fad/fa-brands/fa-solid/fa-regular/
+  fa-light/fa-duotone) and the leading "fa-" are stripped so data-driven
+  callers (footer, author-card, social.json) can keep their existing
+  strings while the actual icon is served as a same-origin inline SVG.
+
+  Usage:
+    {{ partial "components/icon" (dict "Name" "facebook") }}
+    {{ partial "components/icon" (dict "Name" "fab fa-github" "Class" "h-5 w-5") }}
+*/}}
+{{- $raw := .Name | default "" -}}
+{{- $name := $raw -}}
+{{- $name = replaceRE `^(?:fab|fas|far|fal|fad|fa-brands|fa-solid|fa-regular|fa-light|fa-duotone)\s+` "" $name -}}
+{{- $name = replaceRE `^fa\s+fa-` "" $name -}}
+{{- $name = replaceRE `^fa-` "" $name -}}
+{{- $name = trim $name " " -}}
+{{- $class := .Class | default "" -}}
+{{- $icon := index hugo.Data.icons $name -}}
+{{- with $icon -}}
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="{{ .viewBox }}" class="{{ $class }}" fill="currentColor" aria-hidden="true">
+  <path d="{{ .path }}" />
+</svg>
+{{- else -}}
+  {{ warnf "components/icon: unknown icon name %q (raw: %q)" $name $raw }}
+{{- end -}}

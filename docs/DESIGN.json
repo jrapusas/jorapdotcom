@@ -1,0 +1,184 @@
+{
+  "schemaVersion": 2,
+  "generatedAt": "2026-09-04T00:00:00.000Z",
+  "title": "Design System: JoRap Notes",
+  "extensions": {
+    "colorMeta": {
+      "surface": {
+        "role": "neutral",
+        "displayName": "Warm Paper",
+        "canonical": "oklch(96.5% 0.006 80)",
+        "tonalRamp": ["oklch(15% 0.008 80)", "oklch(22% 0.008 80)", "oklch(30% 0.008 80)", "oklch(40% 0.008 80)", "oklch(52% 0.008 80)", "oklch(65% 0.007 80)", "oklch(78% 0.007 80)", "oklch(96.5% 0.006 80)"]
+      },
+      "elevated": {
+        "role": "neutral",
+        "displayName": "Shell",
+        "canonical": "oklch(94% 0.007 80)",
+        "tonalRamp": ["oklch(14% 0.008 80)", "oklch(21% 0.008 80)", "oklch(29% 0.008 80)", "oklch(38% 0.008 80)", "oklch(50% 0.008 80)", "oklch(63% 0.007 80)", "oklch(76% 0.007 80)", "oklch(94% 0.007 80)"]
+      },
+      "accent": {
+        "role": "primary",
+        "displayName": "Charcoal Fill",
+        "canonical": "oklch(18% 0.008 80)",
+        "tonalRamp": ["oklch(12% 0.008 80)", "oklch(15% 0.008 80)", "oklch(18% 0.008 80)", "oklch(25% 0.008 80)", "oklch(35% 0.008 80)", "oklch(50% 0.008 80)", "oklch(70% 0.008 80)", "oklch(94% 0.006 80)"]
+      },
+      "ink": {
+        "role": "neutral",
+        "displayName": "Strong Ink",
+        "canonical": "oklch(17% 0.008 80)",
+        "tonalRamp": ["oklch(12% 0.008 80)", "oklch(17% 0.008 80)", "oklch(25% 0.008 80)", "oklch(35% 0.008 80)", "oklch(48% 0.008 80)", "oklch(60% 0.007 80)", "oklch(75% 0.006 80)", "oklch(92% 0.005 80)"]
+      },
+      "ink-muted": {
+        "role": "neutral",
+        "displayName": "Body Ink",
+        "canonical": "oklch(32% 0.008 80)",
+        "tonalRamp": ["oklch(15% 0.008 80)", "oklch(22% 0.008 80)", "oklch(32% 0.008 80)", "oklch(42% 0.008 80)", "oklch(55% 0.008 80)", "oklch(68% 0.007 80)", "oklch(80% 0.006 80)", "oklch(94% 0.005 80)"]
+      },
+      "ink-faint": {
+        "role": "neutral",
+        "displayName": "Quiet Ink",
+        "canonical": "oklch(48% 0.008 80)",
+        "tonalRamp": ["oklch(18% 0.008 80)", "oklch(28% 0.008 80)", "oklch(38% 0.008 80)", "oklch(48% 0.008 80)", "oklch(58% 0.008 80)", "oklch(70% 0.007 80)", "oklch(82% 0.006 80)", "oklch(94% 0.005 80)"]
+      },
+      "divider": {
+        "role": "neutral",
+        "displayName": "Dust Border",
+        "canonical": "oklch(91% 0.007 80)",
+        "tonalRamp": ["oklch(20% 0.008 80)", "oklch(28% 0.008 80)", "oklch(38% 0.008 80)", "oklch(50% 0.008 80)", "oklch(62% 0.007 80)", "oklch(75% 0.007 80)", "oklch(85% 0.007 80)", "oklch(91% 0.007 80)"]
+      },
+      "deep": {
+        "role": "neutral",
+        "displayName": "Deep Ground",
+        "canonical": "oklch(14% 0.008 80)",
+        "tonalRamp": ["oklch(10% 0.008 80)", "oklch(14% 0.008 80)", "oklch(18% 0.008 80)", "oklch(25% 0.008 80)", "oklch(35% 0.008 80)", "oklch(48% 0.008 80)", "oklch(65% 0.007 80)", "oklch(85% 0.006 80)"]
+      }
+    },
+    "typographyMeta": {
+      "display": { "displayName": "Display", "purpose": "Top-level page titles; clamped responsive scale." },
+      "headline": { "displayName": "Headline", "purpose": "Section h2 and large list titles." },
+      "title": { "displayName": "Title", "purpose": "Subheads, card titles, h3–h6." },
+      "body": { "displayName": "Body", "purpose": "Article prose; max ~70ch line length." },
+      "label": { "displayName": "Label", "purpose": "Navigation, buttons, semibold UI chrome." },
+      "code": { "displayName": "Code", "purpose": "Inline code, pre blocks, and keyboard literals." }
+    },
+    "shadows": [
+      { "name": "card-rest", "value": "0 1px 2px 0 rgb(0 0 0 / 0.05)", "purpose": "Blog and note cards at rest." },
+      { "name": "card-hover", "value": "0 4px 6px -1px rgb(0 0 0 / 0.1)", "purpose": "Card lift on hover." },
+      { "name": "card-interactive", "value": "0 4px 16px color-mix(in srgb, var(--color-ink) 8%, transparent)", "purpose": "Notes card hover shadow." },
+      { "name": "overlay", "value": "0 10px 15px -3px rgb(0 0 0 / 0.1)", "purpose": "Dropdown panels and floating controls." },
+      { "name": "focus-ring", "value": "0 0 0 2px var(--color-surface), 0 0 0 4px var(--color-accent)", "purpose": "Keyboard focus on nav, filters, skip link." }
+    ],
+    "motion": [
+      { "name": "ease-out-short", "value": "150ms ease-out", "purpose": "Link color, border, skip link." },
+      { "name": "ease-out-standard", "value": "200ms ease-out", "purpose": "Card borders, note card hover." },
+      { "name": "ease-out-lift", "value": "300ms ease-out", "purpose": "Blog card shadow lift." },
+      { "name": "flip-card", "value": "350ms ease", "purpose": "Flashcard 3D flip; crossfade under reduced motion." }
+    ],
+    "breakpoints": [
+      { "name": "sm", "value": "640px" },
+      { "name": "md", "value": "768px" },
+      { "name": "lg", "value": "1024px" },
+      { "name": "xl", "value": "1280px" }
+    ]
+  },
+  "components": [
+    {
+      "name": "Primary Button",
+      "kind": "button",
+      "refersTo": "button-primary",
+      "description": "High-commitment actions: CTAs, active filter state.",
+      "html": "<button class=\"ds-btn-primary\">Get in touch</button>",
+      "css": ".ds-btn-primary { display: inline-flex; align-items: center; justify-content: center; padding: 0.5rem 1.25rem; border: 1px solid var(--color-accent, #181614); border-radius: 4px; background: var(--color-accent, #181614); color: var(--color-on-accent, #fff); font-family: Inter, sans-serif; font-size: 1rem; font-weight: 600; text-transform: capitalize; cursor: pointer; transition: background 0.2s ease-out, border-color 0.2s ease-out; touch-action: manipulation; } .ds-btn-primary:hover { opacity: 0.92; } .ds-btn-primary:focus-visible { outline: none; box-shadow: 0 0 0 2px var(--color-surface, #f5f3f0), 0 0 0 4px var(--color-accent, #181614); }"
+    },
+    {
+      "name": "Outline Button",
+      "kind": "button",
+      "refersTo": "button-outline-primary",
+      "description": "Secondary actions and inactive toolbar filters.",
+      "html": "<button class=\"ds-btn-outline\">All notes</button>",
+      "css": ".ds-btn-outline { display: inline-flex; align-items: center; justify-content: center; padding: 0.5rem 1.25rem; border: 1px solid var(--color-accent, #181614); border-radius: 4px; background: transparent; color: var(--color-ink, #161412); font-family: Inter, sans-serif; font-size: 1rem; font-weight: 600; text-transform: capitalize; cursor: pointer; transition: background 0.2s ease-out, color 0.2s ease-out; } .ds-btn-outline:hover { background: var(--color-accent, #181614); color: var(--color-on-accent, #fff); } .ds-btn-outline:focus-visible { outline: none; box-shadow: 0 0 0 2px var(--color-surface, #f5f3f0), 0 0 0 4px var(--color-accent, #181614); }"
+    },
+    {
+      "name": "Blog Card",
+      "kind": "card",
+      "refersTo": "blog-card",
+      "description": "Post previews on blog list and home.",
+      "html": "<article class=\"ds-blog-card\"><h3 class=\"ds-blog-card__title\">Ideas before optics</h3><p class=\"ds-blog-card__body\">The interface supports the message; it never competes with it.</p></article>",
+      "css": ".ds-blog-card { display: flex; flex-direction: column; overflow: hidden; padding: 1.25rem 1.5rem 1.5rem; border: 1px solid var(--color-divider, #e5e2dd); border-radius: 12px; background: var(--color-elevated, #eeebe6); box-shadow: 0 1px 2px 0 rgb(0 0 0 / 0.05); transition: box-shadow 0.3s ease-out, border-color 0.3s ease-out; } .ds-blog-card:hover { box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1); } .ds-blog-card__title { margin: 0 0 0.5rem; font-family: \"Source Serif 4\", serif; font-size: 1.5rem; font-weight: 600; line-height: 1.25; color: var(--color-ink, #161412); } .ds-blog-card__body { margin: 0; font-family: Inter, sans-serif; font-size: 1rem; line-height: 1.625; color: var(--color-ink-muted, #3d3a37); }"
+    },
+    {
+      "name": "Note Card",
+      "kind": "card",
+      "refersTo": "blog-card",
+      "description": "Notes garden grid card; accent title underline on hover.",
+      "html": "<article class=\"ds-note-card\"><h3 class=\"ds-note-card__title\">Strategic framing</h3><p class=\"ds-note-card__body\">A short excerpt from the note body.</p></article>",
+      "css": ".ds-note-card { position: relative; display: flex; flex-direction: column; padding: 1.25rem; border: 1px solid var(--color-divider, #e5e2dd); border-radius: 12px; background: var(--color-elevated, #eeebe6); box-shadow: 0 1px 2px 0 rgb(0 0 0 / 0.05); transition: border-color 0.2s ease, box-shadow 0.2s ease; min-height: 100%; } .ds-note-card:hover { border-color: var(--color-accent, #181614); box-shadow: 0 4px 16px color-mix(in srgb, var(--color-ink, #161412) 8%, transparent); } .ds-note-card__title { margin: 0 0 0.5rem; font-family: \"Source Serif 4\", serif; font-size: 1.125rem; font-weight: 600; color: var(--color-accent, #181614); text-decoration: underline; text-decoration-color: color-mix(in srgb, var(--color-accent, #181614) 35%, transparent); text-underline-offset: 0.15em; } .ds-note-card:hover .ds-note-card__title { text-decoration-color: var(--color-accent, #181614); } .ds-note-card__body { margin: 0; font-family: Inter, sans-serif; font-size: 0.875rem; line-height: 1.4; color: var(--color-ink-muted, #3d3a37); }"
+    },
+    {
+      "name": "Form Input",
+      "kind": "input",
+      "refersTo": "button-primary",
+      "description": "Search and form fields across site and notes graph.",
+      "html": "<input class=\"ds-input\" type=\"search\" placeholder=\"Search notes…\" />",
+      "css": ".ds-input { width: 100%; padding: 1rem 1.5rem; border: 1px solid var(--color-divider, #e5e2dd); border-radius: 4px; background: var(--color-elevated, #eeebe6); color: var(--color-ink, #161412); font-family: Inter, sans-serif; font-size: 1rem; line-height: 1.5; } .ds-input::placeholder { color: var(--color-ink-faint, #6b6762); } .ds-input:focus { outline: none; border-color: var(--color-accent, #181614); }"
+    },
+    {
+      "name": "Site Navigation",
+      "kind": "nav",
+      "refersTo": "button-primary",
+      "description": "Header nav links with semibold ink and accent hover.",
+      "html": "<nav class=\"ds-nav\"><a class=\"ds-nav__brand\" href=\"/\">JoRap</a><a class=\"ds-nav__link\" href=\"/blog/\">Blog</a><a class=\"ds-nav__link ds-nav__link--active\" href=\"/notes/\">Notes</a></nav>",
+      "css": ".ds-nav { display: flex; align-items: center; gap: 1.5rem; padding: 1.25rem 0; border-bottom: 1px solid var(--color-divider, #e5e2dd); background: var(--color-surface, #f5f3f0); font-family: Inter, sans-serif; } .ds-nav__brand { font-size: 1.5rem; font-weight: 700; color: var(--color-ink, #161412); text-decoration: none; letter-spacing: -0.02em; } .ds-nav__link { font-size: 1rem; font-weight: 600; color: var(--color-ink, #161412); text-decoration: none; transition: color 0.2s ease-out; } .ds-nav__link:hover, .ds-nav__link--active { color: var(--color-accent, #181614); } .ds-nav__link:focus-visible { outline: none; box-shadow: 0 0 0 2px var(--color-surface, #f5f3f0), 0 0 0 4px var(--color-accent, #181614); border-radius: 2px; }"
+    },
+    {
+      "name": "Tag Pill",
+      "kind": "chip",
+      "refersTo": "button-outline-primary",
+      "description": "Taxonomy tags on cards and widgets.",
+      "html": "<a class=\"ds-tag\" href=\"#\">strategy</a>",
+      "css": ".ds-tag { display: inline-block; padding: 0.25rem 0.75rem; border: 1px solid color-mix(in srgb, var(--color-accent, #181614) 30%, var(--color-divider, #e5e2dd)); border-radius: 4px; background: var(--color-surface, #f5f3f0); color: var(--color-accent, #181614); font-family: Inter, sans-serif; font-size: 0.875rem; font-weight: 500; text-decoration: none; transition: background 0.15s ease-out, color 0.15s ease-out, border-color 0.15s ease-out; } .ds-tag:hover { background: var(--color-accent, #181614); border-color: var(--color-accent, #181614); color: var(--color-on-accent, #fff); }"
+    },
+    {
+      "name": "Flashcard",
+      "kind": "custom",
+      "refersTo": "blog-card",
+      "description": "Notes flashcard review; 3D flip with reduced-motion crossfade.",
+      "html": "<button class=\"ds-flashcard\" type=\"button\"><span class=\"ds-flashcard__face ds-flashcard__face--front\">What is strategic framing?</span></button>",
+      "css": ".ds-flashcard { display: block; width: 100%; min-height: 10rem; padding: 0; border: 1px solid var(--color-divider, #e5e2dd); border-radius: 8px; background: var(--color-surface, #f5f3f0); cursor: pointer; text-align: left; transition: border-color 0.15s ease; } .ds-flashcard:hover { border-color: var(--color-accent, #181614); } .ds-flashcard__face { display: flex; align-items: center; justify-content: center; padding: 1.25rem; font-family: Inter, sans-serif; line-height: 1.5; text-align: center; text-wrap: balance; } .ds-flashcard__face--front { background: var(--color-surface, #f5f3f0); color: var(--color-ink, #161412); font-weight: 600; }"
+    }
+  ],
+  "narrative": {
+    "northStar": "The Quiet Study",
+    "overview": "This system behaves like daylight on good paper: warm off-white fields, charcoal ink for authority, and almost no chromatic noise. Density is editorial, not dashboard. The interface is there to make long reads and portfolio judgment feel calm and legible under real client skims (laptop, bright office, short attention). The experience rejects performative tech theater: no neon accents, no interchangeable SaaS hero metrics, no visual chaos that reads as creator energy instead of hireable clarity.",
+    "keyCharacteristics": [
+      "Style: restrained editorial (minimal in discipline, warm in look)",
+      "Restrained palette: tinted warm neutrals plus a single charcoal accent role",
+      "Three-role typography: Source Serif 4 headings, Inter body/UI, JetBrains Mono code; scale + weight + tracking within each role",
+      "Flat-first depth: tonal layering first, small rare shadows second",
+      "Motion is polite: 150–350ms ease-out; reduced motion respected",
+      "Layout rhythm: 1320px max container, generous section padding",
+      "Notes garden reuses blog tokens; graph, flashcards, filters on same system"
+    ],
+    "rules": [
+      { "name": "The One Accent Rule", "body": "The charcoal / cream accent is the only strong contrast pair for chrome and CTAs. Do not introduce a second saturated hue for decoration.", "section": "colors" },
+      { "name": "The Gray-on-Color Rule", "body": "Do not park cool gray text on tinted surfaces; use the semantic ink steps so text always shares the warmth of the background.", "section": "colors" },
+      { "name": "The Three-Role Rule", "body": "Headings use Source Serif 4 only; body and UI chrome use Inter only; code uses JetBrains Mono only. Do not add a fourth family or swap roles without a PRODUCT.md change.", "section": "typography" },
+      { "name": "The Article Title Rule", "body": "Blog post titles use a tighter responsive ramp so long titles stay dignified on small screens.", "section": "typography" },
+      { "name": "The Flat-by-Default Rule", "body": "Do not stack shadow + heavy border + gradient on the same block unless one role is clearly primary; default to flat elevated surface.", "section": "elevation" }
+    ],
+    "dos": [
+      "Do keep body copy inside ~65–70ch using existing .content patterns.",
+      "Do use semantic tokens (surface, elevated, ink, accent, divider) so light and dark stay paired.",
+      "Do use short ease-out motion (roughly 150–300ms) for hovers and shadows, and respect reduced motion.",
+      "Do treat charcoal / cream inversion as the single accent story for CTAs and key navigation emphasis."
+    ],
+    "donts": [
+      "Don't lean on performative nerd / dev-bro visuals: rainbow syntax themes in chrome, meme density, or gaming-stream layout tropes on the marketing shell.",
+      "Don't ship generic SaaS landing sameness: interchangeable hero big-number metrics, stock three-icon feature rows, or template thought-leader filler blocks.",
+      "Don't use chaotic personal brand layouts: ironic clutter, random type scales, or visual noise that reads as hard to work with.",
+      "Don't use gradient text for headings; emphasis is weight and size, not decorative fill.",
+      "Don't use thick side-stripe borders as the main callout pattern.",
+      "Don't hard-code pure #000 / #fff for large fields; stay on tinted neutrals from theme.json."
+    ]
+  }
+}

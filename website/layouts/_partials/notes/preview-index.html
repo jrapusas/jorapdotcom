@@ -1,0 +1,9 @@
+{{- /*
+  JSON index of note previews for hover cards (title, description, url).
+*/ -}}
+{{- $registry := partialCached "notes/link-registry.html" site "notes-registry-v3" -}}
+{{- $entries := slice -}}
+{{- range $registry.notes -}}
+  {{- $entries = $entries | append (dict "url" .RelPermalink "title" .Title "description" (.Description | default "")) -}}
+{{- end -}}
+<script type="application/json" id="notes-preview-index">{{ $entries | jsonify | safeJS }}</script>

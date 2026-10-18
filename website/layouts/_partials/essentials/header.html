@@ -1,0 +1,153 @@
+<header
+  class="header relative {{ if site.Params.navbar_fixed }}sticky top-0{{ end }} z-30">
+  <nav class="navbar container">
+    <!-- logo -->
+    <div class="order-0">
+      <!-- navbar brand/logo -->
+      <a class="navbar-brand block flex items-center" href="{{ site.Home.RelPermalink }}">
+        {{ partial "logo" }}
+        <span class="ml-3 text-2xl xl:text-3xl font-bold">{{ site.Title }}</span>
+      </a>
+    </div>
+    <input
+      id="nav-toggle"
+      type="checkbox"
+      class="sr-only"
+      aria-controls="nav-menu"
+      aria-label="Open and close site navigation" />
+    <label
+      for="nav-toggle"
+      class="header-utility-control header-nav-toggle order-3 flex cursor-pointer items-center justify-center text-ink lg:hidden">
+      <svg id="show-button" class="block h-6 w-6 fill-current" viewBox="0 0 20 20" aria-hidden="true">
+        <path d="M0 3h20v2H0zm0 6h20v2H0zm0 6h20v2H0z"></path>
+      </svg>
+      <svg id="hide-button" class="hidden h-6 w-6 fill-current" viewBox="0 0 20 20" aria-hidden="true">
+        <polygon
+          points="11 9 22 9 22 11 11 11 11 22 9 22 9 11 -2 11 -2 9 9 9 9 -2 11 -2"
+          transform="rotate(45 10 10)"></polygon>
+      </svg>
+    </label>
+
+    <!-- main navbar -->
+    <ul
+      id="nav-menu"
+      class="navbar-nav order-3 hidden lg:flex w-full pb-6 lg:order-1 lg:w-auto lg:space-x-2 lg:pb-0 xl:space-x-8">
+      {{ $currentPage := . }}
+      {{ range $i, $e := site.Menus.main }}
+        {{ $menuURL := $e.URL | absLangURL }}
+        {{ $pageURL:= $currentPage.Permalink | absLangURL }}
+        {{ $active := eq $menuURL $pageURL }}
+        {{ $submenuId := printf "nav-submenu-%d" $i }}
+        {{ if $e.HasChildren }}
+          <li class="nav-item nav-dropdown group relative">
+            <button
+              type="button"
+              id="{{ $submenuId }}-trigger"
+              class="nav-link nav-dropdown-trigger {{ range $e.Children }}
+                {{ $childURL := .URL | absLangURL }}
+                {{ $activeChild := eq $childURL $pageURL }}
+                {{ if $activeChild }}active{{ end }}
+              {{ end }} inline-flex items-center gap-0.5"
+              aria-haspopup="true"
+              aria-expanded="false"
+              aria-controls="{{ $submenuId }}">
+              {{ $e.Name }}
+              <svg class="h-4 w-4 fill-current" viewBox="0 0 20 20" aria-hidden="true">
+                <path
+                  d="M9.293 12.95l.707.707L15.657 8l-1.414-1.414L10 10.828 5.757 6.586 4.343 8z" />
+              </svg>
+            </button>
+            <ul
+              id="{{ $submenuId }}"
+              class="nav-dropdown-list lg:group-hover:visible lg:group-hover:opacity-100"
+              aria-labelledby="{{ $submenuId }}-trigger">
+              {{ range $e.Children }}
+                {{ $childURL := .URL | absLangURL }}
+                {{ $activeChild := eq $childURL $pageURL }}
+                <li class="nav-dropdown-item">
+                  <a
+                    class="nav-dropdown-link {{ if $activeChild }}
+                      active
+                    {{- end -}}"
+                    {{ if findRE `^http` .URL }}
+                      target="_blank" rel="noopener"
+                    {{ end }}
+                    href="{{- if findRE `^#` .URL -}}
+                      {{- if not $.IsHome -}}
+                        {{- site.Home.RelPermalink -}}
+                      {{- end }}
+                      {{- .URL -}}
+                    {{- else -}}
+                      {{- .URL | relLangURL -}}
+                    {{- end -}}">
+                    {{ .Name }}
+                  </a>
+                </li>
+              {{ end }}
+            </ul>
+          </li>
+        {{ else }}
+          <li class="nav-item">
+            <a
+              class="nav-link {{ if $active }}active{{- end -}}"
+              {{ if findRE `^http` $e.URL }}
+                target="_blank" rel="noopener"
+              {{ end }}
+              href="{{- if findRE `^#` $e.URL -}}
+                {{- if not $.IsHome -}}
+                  {{- site.Home.RelPermalink -}}
+                {{- end }}{{- $e.URL -}}
+              {{- else -}}
+                {{- $e.URL | relLangURL -}}
+              {{- end -}}"
+              >{{ $e.Name }}</a
+            >
+          </li>
+        {{ end }}
+      {{ end }}
+      {{ if hugo.IsServer }}
+        {{ $draftsURL := `/drafts/` | relLangURL | absLangURL }}
+        {{ $draftsActive := eq $draftsURL ($currentPage.Permalink | absLangURL) }}
+        <li class="nav-item">
+          <a
+            class="nav-link{{ if $draftsActive }} active{{ end }}"
+            href="{{ `/drafts/` | relLangURL }}"
+            >Drafts</a
+          >
+        </li>
+      {{ end }}
+      {{ if site.Params.navigation_button.enable }}
+        {{ $ctaURL := site.Params.navigation_button.link | relLangURL }}
+        {{ $ctaActive := eq ($ctaURL | absLangURL) ($currentPage.Permalink | absLangURL) }}
+        <li class="nav-item nav-item--cta">
+          <a
+            class="btn btn-outline-primary inline-flex w-full items-center justify-center lg:inline-flex lg:w-auto{{ if $ctaActive }}
+              active{{ end }}"
+            href="{{ $ctaURL }}">
+            {{ site.Params.navigation_button.label }}
+          </a>
+        </li>
+      {{ end }}
+    </ul>
+
+    <div class="header-utilities order-1 ml-auto flex shrink-0 items-center gap-0.5 sm:gap-1 md:order-2 lg:ml-0">
+      {{ with site.Params.search }}
+        {{ if .enable }}
+          <button
+            type="button"
+            class="header-utility-control header-search-btn text-ink hover:text-accent"
+            data-target="search-modal"
+            aria-label="Search">
+            <span class="sr-only">Search</span>
+            {{ partial "components/icon" (dict "Name" "search" "Class" "h-5 w-5 shrink-0") }}
+            <span class="hidden text-sm font-semibold md:inline" aria-hidden="true">Search</span>
+          </button>
+        {{ end }}
+      {{ end }}
+
+      {{ partial "components/language-switcher" (dict "Context" . "Class" "header-lang-select rounded border-0 bg-transparent px-2 lg:bg-transparent") }}
+      {{ partial "components/theme-switcher" (dict "Class" "") }}
+    </div>
+  </nav>
+  {{ partial "components/scroll-progress.html" . }}
+</header>

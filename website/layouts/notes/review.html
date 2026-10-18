@@ -1,0 +1,114 @@
+{{ define "main" }}
+  {{- $rawCards := partialCached "notes/collect-cards.html" . "notes-collect-cards-v1" -}}
+  {{- $cards := slice -}}
+  {{- range $rawCards -}}
+    {{- $sourceUrl := "" -}}
+    {{- $sourceTitle := "" -}}
+    {{- $sets := .sets | default slice -}}
+    {{- with .source -}}
+      {{- $sourceUrl = .RelPermalink -}}
+      {{- $sourceTitle = .Title -}}
+    {{- end -}}
+    {{- $id := printf "%s|%s|%s" .front .back $sourceUrl | hash.FNV32a -}}
+    {{- $cards = $cards | append (dict
+      "id" (printf "%d" $id)
+      "front" .front
+      "back" .back
+      "sourceUrl" $sourceUrl
+      "sourceTitle" $sourceTitle
+      "sets" $sets
+    ) -}}
+  {{- end -}}
+  {{- $setNames := slice -}}
+  {{- range $cards -}}
+    {{- range .sets -}}
+      {{- if not (in $setNames .) -}}
+        {{- $setNames = $setNames | append . -}}
+      {{- end -}}
+    {{- end -}}
+  {{- end -}}
+  {{- $setNames = sort $setNames -}}
+
+  {{ partial "page-header" . }}
+
+  <section class="section">
+    <div class="container">
+      <div class="row justify-center">
+        <div class="lg:col-12">
+          {{ partial "notes/toolbar.html" (dict "Context" . "active" "review") }}
+
+          <div class="content notes-content mb-6">
+            {{ partial "notes/render-content.html" . }}
+          </div>
+
+          {{- if gt (len $cards) 0 -}}
+            <div class="notes-review" data-notes-review>
+              <div class="notes-review__start border-divider rounded border p-5" data-notes-review-start>
+                <p class="notes-review__stats text-ink-muted mb-4 text-sm" data-notes-review-stats>Loading…</p>
+
+                {{- if gt (len $setNames) 0 -}}
+                  <div class="notes-filters mb-4" role="group" aria-label="Filter review by set">
+                    {{ partial "notes/card-set-filter-buttons.html" (dict "cards" $cards "dataAttr" "data-notes-review-set") }}
+                  </div>
+                {{- end -}}
+
+                <div class="flex flex-wrap gap-2">
+                  <button type="button" class="btn btn-primary btn-sm" data-notes-review-begin>Start review</button>
+                  <button type="button" class="btn btn-outline-primary btn-sm" data-notes-review-cram>Cram all (ignore schedule)</button>
+                  <button type="button" class="btn btn-outline-primary btn-sm" data-notes-review-reset>Reset progress</button>
+                </div>
+                <p class="text-ink-muted mt-4 mb-0 text-xs">
+                  Keyboard: <kbd>Space</kbd> reveal · <kbd>1</kbd> Again · <kbd>2</kbd> Hard · <kbd>3</kbd> Good · <kbd>4</kbd> Easy
+                </p>
+              </div>
+
+              <div class="notes-review__session hidden" data-notes-review-session>
+                <div class="notes-review__progress text-ink-muted mb-4 flex flex-wrap items-center justify-between gap-2 text-sm">
+                  <span data-notes-review-progress>0 / 0</span>
+                  <button type="button" class="text-accent text-sm no-underline hover:underline" data-notes-review-exit>End session</button>
+                </div>
+
+                <div class="notes-review__card border-divider rounded border p-6">
+                  <p class="notes-review__label text-ink-muted mb-2 text-sm font-medium">Question</p>
+                  <p class="notes-review__front mb-6 text-lg font-semibold leading-snug" data-notes-review-front></p>
+
+                  <div class="notes-review__answer hidden" data-notes-review-answer>
+                    <p class="notes-review__label text-ink-muted mb-2 text-sm font-medium">Answer</p>
+                    <p class="notes-review__back mb-4 leading-relaxed" data-notes-review-back></p>
+                    <p class="notes-review__source text-ink-muted mb-4 text-xs hidden" data-notes-review-source></p>
+                  </div>
+
+                  <div class="notes-review__actions flex flex-wrap gap-2" data-notes-review-actions>
+                    <button type="button" class="btn btn-primary btn-sm" data-notes-review-reveal>Show answer</button>
+                  </div>
+
+                  <div class="notes-review__ratings hidden flex flex-wrap gap-2" data-notes-review-ratings>
+                    <button type="button" class="btn btn-outline-primary btn-sm" data-notes-review-rate="again">Again</button>
+                    <button type="button" class="btn btn-outline-primary btn-sm" data-notes-review-rate="hard">Hard</button>
+                    <button type="button" class="btn btn-primary btn-sm" data-notes-review-rate="good">Good</button>
+                    <button type="button" class="btn btn-outline-primary btn-sm" data-notes-review-rate="easy">Easy</button>
+                  </div>
+                </div>
+              </div>
+
+              <div class="notes-review__done border-divider mt-6 hidden rounded border p-5" data-notes-review-done>
+                <h2 class="h6 mb-2">Session complete</h2>
+                <p class="text-ink-muted mb-4 text-sm" data-notes-review-summary></p>
+                <button type="button" class="btn btn-outline-primary btn-sm" data-notes-review-restart>Back to start</button>
+              </div>
+
+              <script type="application/json" class="notes-review__data">{{ $cards | jsonify | safeJS }}</script>
+            </div>
+          {{- else -}}
+            <p class="text-ink-muted text-sm">
+              No cards yet. Mark notes with <code>review: true</code> or browse
+              <a class="text-accent no-underline hover:underline" href="{{ `/notes/flashcards/` | relLangURL }}">Flashcards</a>.
+            </p>
+          {{- end -}}
+        </div>
+      </div>
+    </div>
+  </section>
+
+  {{ partial "essentials/fingerprint-asset.html" (dict "src" "js/notes-review.js" "defer" true) }}
+{{ end }}

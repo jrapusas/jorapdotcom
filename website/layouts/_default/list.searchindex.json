@@ -1,0 +1,60 @@
+{{- $allSections := slice -}}
+{{- range site.Home.Sections -}}
+  {{- $allSections = $allSections | append .Section -}}
+{{- end -}}
+
+{{- $include_all_sections := site.Params.search.include_all_sections -}}
+
+{{- $search_sections := $allSections -}}
+{{- if not $include_all_sections -}}
+{{- $search_sections = site.Params.search.include_sections | default site.Params.mainSections -}}
+{{- end -}}
+
+{{- $searchablePages := (where site.RegularPages "Section" "in" $search_sections) -}}
+{{- if site.Params.search.include_list_pages -}}
+{{- $searchablePages = (where site.Pages "Section" "in" $search_sections) -}}
+{{- end -}}
+{{- $searchablePages = where $searchablePages "Draft" false -}}
+{{- $searchablePages = where $searchablePages "Params.ignoreSearch" "ne" true -}}
+
+{{- $totalPagesLength := len $searchablePages -}}
+
+[{{- range $i, $e := $searchablePages -}}
+
+{{- $date:= time.Format ":date_long" .PublishDate -}}
+
+{{- $.Scratch.Delete "image" -}}
+{{- /* Reuse blog card/single 850x webp variants — skip extra 420x + 100x100 search-only resizes. imageSM kept for index shape; UI reads image only. */ -}}
+{{- $searchImgSize := "850x" -}}
+{{- $searchImgKey := "search-850x" -}}
+
+{{- if .Params.image -}}
+  {{- $.Scratch.Set "image" (partialCached "searchImage" (dict "Src" .Params.image "Size" $searchImgSize "Command" "Resize") .Params.image $searchImgKey) -}}
+{{- else if .Params.images -}}
+  {{- range first 1 .Params.images -}}
+  {{- $.Scratch.Set "image" (partialCached "searchImage" (dict "Src" . "Size" $searchImgSize "Command" "Resize") . $searchImgKey) -}}
+  {{- end -}}
+{{- end -}}
+
+{{- $image:= $.Scratch.Get "image" | default "" -}}
+{{- $imageSM := "" -}}
+{{- $searchFields := partial "notes/search-index-fields.html" $e -}}
+
+{
+  "section": {{ .Section | humanize | jsonify }},
+  "slug": {{ .RelPermalink | jsonify }},
+  "title": {{ .Title | jsonify }},
+  "description": {{ .Description | jsonify }},
+  "date": {{ $date | jsonify }},
+  "image": {{ $image | jsonify }},
+  "imageSM": {{ $imageSM | jsonify }},
+  "searchKeyword": {{ .Params.search_keyword | default "" | jsonify }},
+  "categories": {{ with .Params.categories }}{{ delimit . ", " | jsonify }}{{ else }}""{{ end }},
+  "tags": {{ with .Params.tags }}{{ delimit . ", " | jsonify }}{{ else }}""{{ end }},
+  "keyConcept": {{ index $searchFields "keyConcept" | jsonify }},
+  "shareableThought": {{ index $searchFields "shareableThought" | jsonify }},
+  "relationships": {{ index $searchFields "relationships" | jsonify }},
+  "content": {{- $e.Plain | jsonify -}}
+}{{- if ne $i (sub $totalPagesLength 1) -}},{{- end -}}
+
+{{- end -}}]

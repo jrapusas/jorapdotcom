@@ -1,0 +1,102 @@
+{{ define "main" }}
+  {{- $data := hugo.Data.randomizer -}}
+  <div class="randomizer-page" data-randomizer-page>
+    {{ partial "page-header" . }}
+
+    <section class="section randomizer-page__body">
+      <div class="container">
+        <div class="row justify-center">
+          <div class="lg:col-10">
+            {{ with .Content }}
+              <div class="content text-center mb-8 randomizer-page__intro">{{ . }}</div>
+            {{ end }}
+
+            <div data-randomizer>
+              <div data-randomizer-view="home" hidden>
+                <p class="text-ink-muted text-center mb-6" data-randomizer-lede></p>
+                <div class="randomizer-grid" data-randomizer-collections></div>
+              </div>
+
+              <div data-randomizer-view="categories" hidden>
+                <p class="mb-4">
+                  <button type="button" class="btn btn-outline-primary btn-sm" data-randomizer-back-collections>
+                    ← All collections
+                  </button>
+                </p>
+                <h2 class="h4 mb-2" data-randomizer-collection-title></h2>
+                <p class="text-ink-muted mb-6" data-randomizer-collection-tagline></p>
+                <div class="randomizer-grid" data-randomizer-categories></div>
+              </div>
+
+              <div class="randomizer-play" data-randomizer-view="play" hidden>
+                <div class="randomizer-play__chrome">
+                  <button
+                    type="button"
+                    class="randomizer-play__back"
+                    data-randomizer-back
+                    aria-label="Back to collections">
+                    <svg
+                      class="randomizer-play__back-icon"
+                      xmlns="http://www.w3.org/2000/svg"
+                      width="24"
+                      height="24"
+                      viewBox="0 0 24 24"
+                      fill="none"
+                      stroke="currentColor"
+                      stroke-width="2"
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                      aria-hidden="true">
+                      <path d="m15 18-6-6 6-6" />
+                    </svg>
+                  </button>
+                  <button
+                    type="button"
+                    class="btn btn-outline-primary btn-sm randomizer-play__offline"
+                    data-randomizer-save-offline>
+                    Save offline HTML
+                  </button>
+                </div>
+
+                <p class="randomizer-play__meta" data-randomizer-play-meta></p>
+                <p class="randomizer-play__hint" data-randomizer-hint></p>
+
+                <div class="randomizer-play__stage">
+                  <div class="randomizer-card" data-randomizer-card>
+                    <p class="randomizer-card__scale" data-randomizer-scale hidden></p>
+                    <div class="randomizer-card__poles" data-randomizer-poles hidden>
+                      <span class="randomizer-card__pole" data-randomizer-pole-left></span>
+                      <span class="randomizer-card__bridge" aria-hidden="true">↔</span>
+                      <span class="randomizer-card__pole" data-randomizer-pole-right></span>
+                    </div>
+                    <p class="randomizer-card__prompt" data-randomizer-prompt hidden></p>
+                    <p class="randomizer-card__answer-hint" data-randomizer-answer-hint hidden></p>
+                    <p class="randomizer-card__answer" data-randomizer-answer hidden></p>
+                  </div>
+                </div>
+
+                <div class="randomizer-play-actions">
+                  <button
+                    type="button"
+                    class="btn btn-outline-primary randomizer-play__reveal"
+                    data-randomizer-reveal
+                    hidden>
+                    Show answer
+                  </button>
+                  <button type="button" class="btn btn-primary randomizer-play__shuffle" data-randomizer-shuffle>
+                    Shuffle
+                  </button>
+                  <p class="randomizer-play__counter" data-randomizer-counter></p>
+                </div>
+              </div>
+            </div>
+
+            <script type="application/json" id="randomizer-data">{{ $data | jsonify | safeJS }}</script>
+          </div>
+        </div>
+      </div>
+    </section>
+  </div>
+
+  {{ partial "essentials/fingerprint-asset.html" (dict "src" "js/randomizer.js" "defer" true) }}
+{{ end }}

@@ -1,0 +1,115 @@
+/*
+ * Header offset: approximate sticky-header height.
+ * - CSS uses it for scroll-padding-top so anchor jumps clear the header.
+ * - assets/js/toc.js measures the rendered .header and only falls back to this,
+ *   since the real height moves with the logo, brand wrapping, and open nav menu.
+ * Update here only; do not hardcode a pixel height in JS.
+ */
+html {
+  --header-offset: 80px;
+  --touch-target-min: 2.75rem;
+  --btn-py: 0.5rem;
+  --nav-link-py: 0.75rem;
+  --filter-py: 0.5rem;
+  @apply text-base-sm md:text-base font-primary;
+  color-scheme: light;
+  scroll-padding-top: var(--header-offset);
+  scroll-behavior: smooth;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+}
+
+html.dark {
+  color-scheme: dark;
+}
+
+@media (min-width: 1024px) {
+  html {
+    --header-offset: 100px;
+  }
+}
+
+@media (min-width: 1280px) {
+  html {
+    --header-offset: 110px;
+  }
+}
+
+body {
+  @apply bg-surface text-base font-primary font-normal leading-relaxed text-ink-muted subpixel-antialiased;
+}
+
+html.dark body {
+  @apply antialiased;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  @apply font-secondary text-ink;
+  text-wrap: balance;
+}
+
+/* Heading hierarchy: Source Sans 3 scale + weight + tracking ladder */
+h1:not(.article-title),
+.h1 {
+  @apply text-h1-sm md:text-h1 font-bold leading-[1.12] tracking-[-0.03em];
+}
+
+h2,
+.h2 {
+  @apply text-h2-sm md:text-h2 font-bold leading-tight tracking-[-0.025em];
+}
+
+h3,
+.h3 {
+  @apply text-h3-sm md:text-h3 font-bold leading-snug tracking-[-0.02em];
+}
+
+h4,
+.h4 {
+  @apply text-h4 font-semibold leading-snug tracking-tight;
+}
+
+h5,
+.h5 {
+  @apply text-h5 font-semibold leading-snug tracking-tight;
+}
+
+h6,
+.h6 {
+  @apply text-h6 font-semibold leading-normal tracking-normal;
+}
+
+/* Post titles: real h1, restrained on small screens, scales up with viewport */
+.article-title {
+  @apply font-secondary font-bold leading-[1.15] tracking-[-0.035em] text-balance text-ink;
+  @apply text-h2-sm md:text-h2 lg:text-h1-sm xl:text-h1;
+}
+
+b,
+strong {
+  @apply font-bold;
+}
+
+code,
+kbd,
+samp,
+pre {
+  @apply font-mono;
+}
+
+code {
+  @apply after:border-none;
+}
+
+blockquote>p {
+    @apply !my-0;
+}

@@ -1,0 +1,40 @@
+{{ range $i, $e:= .Params.features }}
+<section class="section {{ if (modBool $i 2) }}bg-gradient{{ end }} section--features">
+  <div class="container">
+    <div class="row items-center justify-between">
+      <div class="mb-6 md:mb-0 {{ if not (modBool $i 2) }}
+            md:order-2
+          {{ end }} md:col-5 mb-6">
+        {{ partial "image" (dict "Src" .image "Alt" "feature image" "DisplayXL" "520x" "DisplayLG" "425x" "DisplayMD"
+        "360x") }}
+      </div>
+      <div class="{{ if not (modBool $i 2) }}
+            md:order-1
+          {{ end }} md:col-7 lg:col-6">
+        <h2 class="mb-4">
+          {{ .title | title | markdownify }}
+        </h2>
+        <p class="mb-8 text-lg">
+          {{ .content | markdownify }}
+        </p>
+        <ul>
+          {{ range .bulletpoints }}
+          <li class="relative mb-4 pl-6">
+            {{ partial "components/icon" (dict "Name" "check" "Class" "absolute left-0 top-2 h-4 w-4") }}
+            {{ . | markdownify }}
+          </li>
+          {{ end }}
+        </ul>
+        {{ with .button }}
+        {{ if .enable }}
+        <a class="btn btn-primary mt-6" href="{{ .link | absURL }}">
+          {{ .label }}
+          {{ partial "components/icon" (dict "Name" "arrow-right" "Class" "inline-block h-4 w-4 ml-2 align-[-2px]") }}
+        </a>
+        {{ end }}
+        {{ end }}
+      </div>
+    </div>
+  </div>
+</section>
+{{ end }}

@@ -1,0 +1,70 @@
+{{- /*
+  Random garden note - blog posts (scope blog) or note pages (scope notes).
+  Pass dict with Context and Scope ("blog" | "notes"); Scope defaults to notes.
+  One random note + connection AI prompt (post↔note or current note↔note).
+*/ -}}
+{{- $scope := "notes" -}}
+{{- $ctx := . -}}
+{{- if reflect.IsMap . -}}
+  {{- with .Context -}}{{- $ctx = . -}}{{- end -}}
+  {{- with .Scope -}}{{- $scope = . -}}{{- end -}}
+{{- end -}}
+{{- $isBlog := eq $scope "blog" -}}
+{{- $prefix := cond $isBlog "blog-random" "notes-single-random" -}}
+{{- $dataClass := cond $isBlog "blog-random-notes-data" "notes-single-random-data" -}}
+{{- $pool := partialCached "notes/random-pool.html" $ctx "notes-random-pool-v1" -}}
+{{- if not $isBlog -}}
+  {{- $pool = where $pool "url" "ne" $ctx.RelPermalink -}}
+{{- end -}}
+{{- $graph := dict -}}
+{{- if not $isBlog -}}
+  {{- $graph = partialCached "notes/graph-data.html" site "graph-data-v4" -}}
+{{- end -}}
+{{- $minPool := 1 -}}
+{{- if ge (len $pool) $minPool -}}
+  <div class="section pb-0">
+    <div class="notes-toolbar mb-4 flex flex-wrap items-center gap-3">
+      <h2 id="random-note" class="h3 mb-0">{{ T "random_blog_note" | title }}</h2>
+    </div>
+
+    <p class="text-ink-muted mb-6">
+      {{- if $isBlog -}}{{ T "random_blog_note_lede" }}{{- else -}}{{ T "random_note_lede" }}{{- end -}}
+    </p>
+
+    {{ partial "notes/random-prompt-panel.html" (dict "Prefix" $prefix) }}
+
+    {{- if not $isBlog -}}
+      <div class="notes-path-result border-divider mb-6 hidden flex flex-wrap items-center gap-x-3 gap-y-2 rounded border p-5 text-sm" data-notes-single-random-path>
+        <h3 class="h6 mb-0 shrink-0">{{ T "random_duo_shortest_path" }}:</h3>
+        <div class="notes-path-chain notes-path-chain--row flex min-w-0 flex-wrap items-center gap-y-1" data-notes-single-random-path-chain></div>
+      </div>
+      <p class="text-ink-muted mb-6 hidden text-sm" data-notes-single-random-path-empty>{{ T "random_duo_no_path" }}</p>
+    {{- end -}}
+
+    <div class="row notes-random-grid items-stretch" {{ printf "data-%s-notes" $prefix | safeHTMLAttr }}>
+      <div class="mb-8 flex flex-col">
+        <div class="notes-random-controls">
+          {{ partial "notes/random-note-select.html" (dict "Prefix" $prefix "Pool" $pool "Label" (T "select_note") "Placeholder" (T "choose_note")) }}
+          <button type="button" class="btn btn-outline-primary btn-sm shrink-0" {{ printf "data-%s-shuffle" $prefix | safeHTMLAttr }}>{{ T "shuffle" }}</button>
+        </div>
+        <div class="notes-random-slot flex flex-col" {{ printf "data-%s-slot=\"0\"" $prefix | safeHTMLAttr }}>
+          <p class="notes-random-loading text-ink-muted text-sm">{{ T "loading" }}</p>
+        </div>
+      </div>
+    </div>
+
+    <p class="notes-random-empty-page text-ink-muted hidden text-sm" {{ printf "data-%s-empty" $prefix | safeHTMLAttr }}>{{ T "no_random_blog_note" }}</p>
+    {{- $payload := dict "notes" $pool "aiChatOpenedLabel" (T "prompt_opened_in_ai") "aiChatCopiedLabel" (T "prompt_copied_for_ai") -}}
+    {{- if not $isBlog -}}
+      {{- $payload = merge $payload (dict "currentUrl" $ctx.RelPermalink "currentTitle" $ctx.Title "graphEdges" $graph.edges) -}}
+    {{- end -}}
+    <script type="application/json" class="{{ $dataClass }}">{{ $payload | jsonify | safeJS }}</script>
+  </div>
+
+  {{ partial "essentials/fingerprint-asset.html" (dict "src" "js/notes-random-core.js" "defer" true) }}
+  {{ partial "essentials/fingerprint-asset.html" (dict "src" "js/notes-random-select.js" "defer" true) }}
+  {{ partial "essentials/fingerprint-asset.html" (dict "src" "js/notes-random-single.js" "defer" true) }}
+      {{- if $isBlog -}}
+    {{ partial "essentials/fingerprint-asset.html" (dict "src" "js/wikilink-preview.js" "defer" true) }}
+  {{- end -}}
+{{- end -}}

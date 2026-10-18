@@ -1,0 +1,130 @@
+{{ define "main" }}
+{{ $blogToc := partial "blog/toc.html" . }}
+{{ $hasToc := $blogToc.has }}
+<div class="site-canvas site-canvas--article" data-site-motion>
+<section class="section site-article pt-7">
+  <div class="container">
+    <div class="row justify-center">
+      <div class="{{ if $hasToc }}lg:col-8{{ else }}lg:col-12 xl:col-9{{ end }}">
+        <article>
+          {{ $image:= .Params.image }}
+          {{ if $image }}
+          <figure class="site-article__media mb-10">
+            <div class="site-article__media-frame">
+              {{ partial "image" (dict "Src" $image "Context" .Page "Alt" .Title "Class" "site-article__image" "Size" "850x" "Loading" "eager" "FetchPriority" "high") }}
+            </div>
+          </figure>
+          {{ end }}
+          <div class="site-article__header mb-4 flex flex-wrap items-start justify-between gap-x-4 gap-y-3">
+            <h1 class="article-title site-article__title mb-0 min-w-0 flex-1" data-site-split>
+              {{ partial "func/title-case" .Title }}
+            </h1>
+            {{ partial "blog/copy-markdown.html" (dict "Context" .) }}
+          </div>
+          <ul class="site-article__meta mb-4" data-site-intro-item>
+            <li class="mr-4 block">
+              {{ partial "components/icon" (dict "Name" "clock" "Class" "inline-block h-4 w-4 mr-1 align-[-2px]") }}
+              {{ time.Format ":date_long" .PublishDate }}
+            </li>
+            {{ with .Params.level_depth }}
+            {{ $depthLabels := slice "Recognize" "Explain" "Use" "Connect" "Create" }}
+            <li class="mr-4 inline-block text-ink/70">
+              Depth {{ . }} · {{ index $depthLabels (sub . 1) }}
+            </li>
+            {{ end }}
+            {{ $categories:= .Params.categories }}
+            {{ if $categories }}
+            <li class="mr-4 inline-block">
+              {{ partial "components/icon" (dict "Name" "folder" "Class" "inline-block h-4 w-4 mr-1 align-[-2px]") }}
+              {{ range $i,$p:= $categories }}
+              <a href="{{ `categories/` | relLangURL }}{{ . | urlize | lower }}/" class="">
+                {{ . | title }}{{ if ne $i (sub (len $categories) 1) }}{{ "," }}{{ end }}
+              </a>
+              {{ end }}
+            </li>
+            {{ end }}
+          </ul>
+
+          {{ if $hasToc }}
+          <div class="toc-wrapper border rounded p-4 relative z-10 mb-6 lg:hidden" data-site-intro-item>
+            <button
+              type="button"
+              id="mobile-toc-toggle"
+              class="flex min-h-11 w-full items-center justify-between gap-3 rounded text-left text-ink focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent focus-visible:ring-offset-2 focus-visible:ring-offset-surface"
+              aria-expanded="false"
+              aria-controls="mobile-toc-panel">
+              <span class="text-base font-semibold">{{ T "table_of_contents" | default "Table of Contents" }}</span>
+              <span
+                id="toc-chevron"
+                class="shrink-0 transition-transform duration-300 ease-out motion-reduce:transition-none"
+                aria-hidden="true">
+                {{ partial "components/icon" (dict "Name" "chevron-down" "Class" "h-5 w-5") }}
+              </span>
+            </button>
+            <div id="mobile-toc-panel" class="mobile-toc-content mt-4 hidden">
+              <div class="table-of-content toc-links">
+                {{ $blogToc.html | safeHTML }}
+              </div>
+            </div>
+          </div>
+          {{ end }}
+
+          <div class="site-article__body content mb-10" data-site-reveal>
+            <div data-site-reveal-body>{{ .Content }}</div>
+
+            {{ $tags:= .Params.tags }}
+            {{ if $tags }}
+            <div class="not-prose mb-2 tags_section" data-site-reveal-body>
+              <p class="mb-2 font-semibold text-ink">{{ T "tags" }}</p>
+              <ul class="flex flex-wrap gap-2">
+                {{ range $i,$p:= $tags }}
+                <li>
+                  <a class="bg-elevated text-ink hover:bg-accent hover:text-surface no-underline transition-colors motion-reduce:transition-none inline-flex min-h-11 items-center rounded px-3 py-2"
+                    href="{{ `tags/` | relLangURL }}{{ . | urlize | lower }}/">
+                    {{ . | title }}
+                  </a>
+                </li>
+                {{ end }}
+              </ul>
+            </div>
+            {{ end }}
+
+            <div class="mb-2 share_section" data-site-reveal-body>
+              <p class="not-prose mb-2 font-semibold text-ink">{{ T "share" }}</p>
+              {{ partial "components/social-share" (dict "Context" . "Class" "share-icons" "Title" .Title "Telegram"
+              false "Pinterest" false "Tumblr" false "Vk" false "Reddit" false) }}
+            </div>
+
+          </div>
+          {{ if site.Config.Services.Disqus.Shortname }}
+          <div class="mt-20" data-site-reveal-body>
+            {{ template "_internal/disqus.html" . }}
+          </div>
+          {{ end }}
+        </article>
+      </div>
+      {{ if $hasToc }}
+      <div class="lg:col-4">
+        <div class="sidebar-wrapper flex flex-col h-full">
+          <div class="toc-wrapper hidden lg:block sticky top-[100px] z-10 bg-surface">
+            <div class="table-of-content toc-links">
+              <p class="mb-3 text-h5 font-semibold leading-snug tracking-tight text-ink">{{ T "table_of_contents" | default "Table of Contents" }}</p>
+              <div class="toc-scroll">{{ $blogToc.html | safeHTML }}</div>
+            </div>
+          </div>
+        </div>
+      </div>
+      {{ end }}
+    </div>
+
+    <div data-site-reveal>
+      {{ partial "blog/related-posts.html" . }}
+      {{ partial "blog/related-notes.html" . }}
+      {{ partial "notes/random-unrelated-notes.html" (dict "Context" . "Scope" "blog") }}
+    </div>
+  </div>
+</section>
+</div>
+{{ partial "essentials/site-motion-assets.html" . }}
+{{ partial "essentials/fingerprint-asset.html" (dict "src" "js/notes-copy-md.js" "defer" true) }}
+{{ end }}

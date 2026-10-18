@@ -1,0 +1,12 @@
+@utility bg-gradient {
+  @apply bg-linear-to-b from-surface from-[0.53%] to-elevated to-[83.28%];
+}
+
+/* form style */
+@utility form-input {
+  @apply w-full rounded border-divider bg-elevated px-6 py-4 text-ink placeholder:text-ink-faint focus:border-accent focus:ring-transparent;
+}
+
+@utility form-label {
+  @apply mb-4 block font-primary text-xl font-normal text-ink;
+}

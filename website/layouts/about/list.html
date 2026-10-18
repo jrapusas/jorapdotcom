@@ -1,0 +1,21 @@
+{{ define "main" }}
+  <div data-site-motion>
+    <section class="section">
+      <div class="container">
+        <div class="row justify-center">
+          <div class="md:col-10 lg:col-7 text-center">
+            <figure class="mx-auto mb-6 inline-block">
+              {{ partial "image" (dict "Src" .Params.image "Context" .Page "Alt" .Title "Class" "mx-auto" "Size" "200x200") }}
+            </figure>
+            <h1 class="h3 mb-6" data-site-split>{{ .Title | title }}</h1>
+          </div>
+          <div class="md:col-10 lg:col-7" data-site-reveal>
+            <div class="content" data-site-reveal-body>{{ .Content }}</div>
+          </div>
+        </div>
+      </div>
+    </section>
+  </div>
+
+  {{ partial "essentials/site-motion-assets.html" . }}
+{{ end }}

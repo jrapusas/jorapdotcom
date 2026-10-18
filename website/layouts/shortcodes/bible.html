@@ -1,0 +1,8 @@
+{{- partial "shortcodes/bible.html" (dict
+  "page" .Page
+  "ref" (.Get "ref" | default (.Get 0))
+  "label" (.Get "label")
+  "cite" (.Get "cite" | default "true")
+  "emphasize" (.Get "emphasize")
+  "translation" (.Get "translation" | default "nasb1995")
+) -}}

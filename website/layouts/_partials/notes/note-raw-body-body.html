@@ -1,0 +1,14 @@
+{{- /*
+  Markdown body only (no frontmatter).
+  ponytail: Hugo 0.163 .RawContent panics (slice bounds out of range) when the
+  frontmatter byte offset overshoots EOF - common on empty-body notes near ~2.8KB.
+  Strip via readFile + regex instead.
+  Call through notes/note-raw-body.html (partialCached wrapper).
+*/ -}}
+{{- $page := . -}}
+{{- $body := "" -}}
+{{- with $page.File -}}
+  {{- $full := readFile .Path -}}
+  {{- $body = replaceRE `(?s)^---\r?\n.*?\r?\n---\r?\n?` "" $full | strings.TrimSpace -}}
+{{- end -}}
+{{- return $body -}}

@@ -1,0 +1,136 @@
+{{ define "main" }}
+  {{ $notesToc := partial "notes/toc.html" . }}
+  {{ $hasToc := $notesToc.has }}
+  {{ $page := . }}
+  {{ $backlinks := partial "notes/backlinks.html" . }}
+  {{ $outgoing := partialCached "notes/outgoing-links.html" . .RelPermalink }}
+  {{ $relNeighbors := partialCached "notes/relationship-neighbors.html" . .RelPermalink }}
+  {{ $hideOutgoingCards := partial "notes/index-has-body-wikilinks.html" . }}
+
+  <div data-site-motion>
+  <section class="section pt-7">
+    <div class="container">
+      <div class="row justify-center">
+        <div class="lg:col-8">
+          <article>
+            {{ partial "notes/local-graph.html" . }}
+
+            {{ partial "notes/toolbar.html" (dict "Context" . "active" (cond (eq .Params.slug "okf-export") "okf" "note")) }}
+
+            <div class="notes-article-header mb-4 flex flex-wrap items-start justify-between gap-x-4 gap-y-3">
+              <h1 class="article-title mb-0 min-w-0 flex-1" data-site-split>{{ partial "func/title-case" .Title }}</h1>
+              {{ partial "notes/copy-markdown.html" (dict "Context" .) }}
+            </div>
+
+            {{- $meta := partial "notes/note-meta.html" . -}}
+            {{- if ne (.Params.note_kind | default "note") "meta" -}}
+              <div class="notes-single-meta text-ink-muted mb-4 flex flex-wrap items-center gap-3 text-sm" data-site-intro-item>
+                <span>Created {{ $meta.CreatedDisplay }} · Updated {{ $meta.UpdatedDisplay }}</span>
+              </div>
+            {{- end -}}
+
+            {{ with .Params.tags }}
+              <div data-site-intro-item>
+                {{ partial "notes/tag-chips.html" (dict "Tags" . "ListClass" "mb-4 flex flex-wrap gap-2") }}
+              </div>
+            {{ end }}
+
+            {{ if $hasToc }}
+              <div class="toc-wrapper border-divider mb-6 rounded border p-4 lg:hidden">
+                <p class="mb-3 font-semibold">{{ T "table_of_contents" | default "Table of Contents" }}</p>
+                <div class="table-of-content toc-links">{{ $notesToc.html | safeHTML }}</div>
+              </div>
+            {{ end }}
+
+            <div class="content notes-content mb-10" data-site-reveal>
+              <div data-site-reveal-body>
+                {{ partial "notes/render-content.html" (dict "Page" . "Scope" "intro") }}
+                {{ partial "notes/note-shareable-thought.html" . }}
+                {{ partial "notes/render-content.html" (dict "Page" . "Scope" "tail") }}
+              </div>
+            </div>
+
+            <div data-site-reveal>
+            {{ partial "notes/note-flashcards.html" . }}
+
+            {{ with $relNeighbors.groups }}
+              <aside class="notes-rel-neighbors border-divider mb-6 rounded border p-5" data-site-reveal-card>
+                <h2 id="relationship-neighbors" class="h6 mb-4">{{ partial "func/title-case" "Relationship neighbors" }}</h2>
+                <div class="notes-rel-neighbors__groups space-y-5">
+                  {{ range . }}
+                    <section class="notes-rel-neighbors__group" aria-labelledby="{{ .id }}">
+                      <h3 id="{{ .id }}" class="notes-rel-neighbors__label text-ink-muted mb-3 text-xs font-medium tracking-wide uppercase">{{ .label }}</h3>
+                      <ul class="notes-rel-neighbors-list mb-0 grid list-none gap-3 p-0 sm:grid-cols-2">
+                        {{ range .rows }}
+                          {{ partial "notes/note-link-card.html" (dict
+                            "Page" .Page
+                            "Body" .Reason
+                          ) }}
+                        {{ end }}
+                      </ul>
+                    </section>
+                  {{ end }}
+                </div>
+              </aside>
+            {{ end }}
+
+            {{ with $outgoing }}
+              {{- if not $hideOutgoingCards -}}
+              <aside class="notes-outgoing border-divider mb-6 rounded border p-5" data-site-reveal-card>
+                <h2 id="links-from-this-note" class="h6 mb-3">{{ partial "func/title-case" "Links from this Note" }}</h2>
+                <ul class="notes-outgoing-list grid gap-3 sm:grid-cols-2">
+                  {{ range . }}
+                    {{ partial "notes/note-link-card.html" (dict "Page" .Page "Href" .Href "Title" .Label) }}
+                  {{ end }}
+                </ul>
+              </aside>
+              {{- end -}}
+            {{ end }}
+
+            <div data-site-reveal-card>{{ partial "notes/see-also.html" . }}</div>
+
+            {{ with $backlinks }}
+              <aside class="notes-backlinks border-divider mt-6 rounded border p-5" data-site-reveal-card>
+                <h2 id="backlinks" class="h6 mb-3">{{ partial "func/title-case" "Backlinks" }}</h2>
+                <ul class="notes-backlinks-list grid gap-3 sm:grid-cols-2">
+                  {{ range . }}
+                    {{ partial "notes/backlink-item.html" . }}
+                  {{ end }}
+                </ul>
+              </aside>
+            {{ end }}
+
+            </div>
+          </article>
+        </div>
+
+        <div class="hidden lg:col-4 lg:block">
+          {{ if $hasToc }}
+            <div class="toc-wrapper sticky top-[100px]">
+              <div class="table-of-content toc-links">
+                <p class="mb-3 text-h5 font-semibold">{{ T "table_of_contents" | default "Table of Contents" }}</p>
+                <div class="toc-scroll">{{ $notesToc.html | safeHTML }}</div>
+              </div>
+            </div>
+          {{ end }}
+        </div>
+      </div>
+
+      <div data-site-reveal>
+        {{ partial "blog/related-posts.html" . }}
+        {{ partial "notes/random-unrelated-notes.html" (dict "Context" . "Scope" "notes") }}
+      </div>
+    </div>
+  </section>
+  </div>
+
+  {{ partial "notes/preview-index.html" . }}
+
+  {{ if site.Params.notes.enable_graph }}
+    {{ partial "essentials/fingerprint-asset.html" (dict "src" "js/notes-graph.js" "defer" true "bundle" true) }}
+  {{ end }}
+  {{ partial "essentials/fingerprint-asset.html" (dict "src" "js/wikilink-preview.js" "defer" true) }}
+  {{ partial "essentials/fingerprint-asset.html" (dict "src" "js/notes-flashcard.js" "defer" true) }}
+  {{ partial "essentials/fingerprint-asset.html" (dict "src" "js/notes-copy-md.js" "defer" true) }}
+  {{ partial "essentials/site-motion-assets.html" . }}
+{{ end }}

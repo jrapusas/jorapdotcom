@@ -1,0 +1,43 @@
+{{/*
+  Publish a Hugo asset with content-hash cache busting (dev + production).
+  ponytail: fingerprint + SRI only in production - dev hot reload otherwise
+  leaves stale integrity hashes and blocks notes-graph / random-note JS.
+  Matches the main script/style bundles in layouts/_partials/essentials/.
+
+  Params:
+    - src (required): asset path, e.g. "js/notes-graph.js"
+    - as: "script" (default) or "style"
+    - defer: include defer on scripts
+    - async: include async on scripts
+    - bundle: run js.Build (esbuild) for npm imports
+*/}}
+{{- $params := . -}}
+{{- $src := $params.src -}}
+{{- $as := $params.as | default "script" -}}
+{{- with resources.Get $src -}}
+  {{- $asset := . -}}
+  {{- if $params.bundle -}}
+    {{- $buildOpts := dict "minify" hugo.IsProduction "targetPath" $src "format" "iife" -}}
+    {{- if not hugo.IsProduction -}}
+      {{- $buildOpts = merge $buildOpts (dict "sourceMap" "external") -}}
+    {{- end -}}
+    {{- $asset = $asset | js.Build $buildOpts -}}
+  {{- end -}}
+  {{- $asset = partial "essentials/publish-asset.html" (dict "resource" $asset) -}}
+  {{- if eq $as "script" -}}
+    <script
+      src="{{ $asset.RelPermalink }}"
+      crossorigin="anonymous"
+      {{ with $asset.Data.Integrity }}integrity="{{ . }}"{{ end -}}
+      {{- if $params.defer }} defer{{ end -}}
+      {{- if $params.async }} async{{ end -}}></script>
+  {{- else if eq $as "style" -}}
+    <link
+      rel="stylesheet"
+      href="{{ $asset.RelPermalink }}"
+      crossorigin="anonymous"
+      {{ with $asset.Data.Integrity }}integrity="{{ . }}"{{ end }} />
+  {{- end -}}
+{{- else -}}
+  {{- warnf "fingerprint-asset: missing resource %q" $src -}}
+{{- end -}}

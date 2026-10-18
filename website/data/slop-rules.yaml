@@ -1,0 +1,89 @@
+# Structural AI-slop rules for blog + notes garden.
+# Run: pnpm slop:scan (review) or pnpm lint:slop (CI gate on publish blockers).
+#
+# fail: lint:slop exits 1 (published blog + all live notes)
+# warn: shown in slop:scan; fix before publish when possible
+
+blog:
+  publish_fail:
+    - id: wiki-export
+      detail: remove footer or rewrite before publish
+      pattern: "Expanded from|Idea captured from"
+    - id: placeholder-image
+      detail: replace image-template.jpg before publish
+      frontmatter: image
+      equals: "/images/image-template.jpg"
+    - id: body-too-short
+      detail: body under 80 words - outline or empty post
+      min_body_words: 80
+
+  warn:
+    - id: bottom-line
+      detail: vary closers or end on a concrete take
+      pattern: "^## Bottom line\\s*$"
+    - id: link-farm
+      detail: cut link farm or keep max 2 Further-reading links
+      section: "^## Further (reading|reference)"
+      min_http_links: 3
+    - id: third-person-advice
+      detail: use I / I'd / Skip instead of users should
+      pattern: "\\b(users|one) (should|might|may)\\b"
+    - id: passive-advice
+      detail: cut committee voice
+      pattern: "it is recommended|it'?s important to note"
+    - id: parallel-bullets
+      detail: rewrite parallel Ensures/Provides bullets as plain speech
+      kind: parallel_bullets
+    - id: empty-section
+      detail: heading with no body before next heading
+      kind: empty_section
+    - id: no-first-person-opener
+      detail: open with experience, not a definition (first 400 chars)
+      kind: blog_no_first_person_opener
+      categories: ["Opinion", "Faith", "Family", "Games", "Sports"]
+    - id: nominalization
+      detail: verb pile — analyze the log, not perform an analysis of
+      kind: mechanical_nominalization
+    - id: passive-voice
+      detail: name the actor when you know who did it
+      kind: mechanical_passive
+      min_count: 2
+    - id: phrasal-verb
+      detail: plain verb — dive into → read, spin up → start
+      kind: mechanical_phrasal
+    - id: long-sentences
+      detail: over 30% of sentences exceed 25 words — vary length or split
+      kind: mechanical_long_sentences
+
+notes:
+  fail:
+    - id: third-person-advice
+      detail: use plain claims, not users should
+      pattern: "\\b(users|one) (should|might|may)\\b"
+    - id: passive-advice
+      detail: cut committee voice
+      pattern: "it is recommended|it'?s important to note"
+
+  warn:
+    - id: dictionary-opener
+      detail: key_concept line 1 should be a claim you'd argue
+      kind: dictionary_opener
+    - id: parallel-bullets
+      detail: rewrite parallel bullet drones
+      kind: parallel_bullets
+    - id: bottom-line
+      detail: notes don't use essay closers
+      pattern: "^## Bottom line\\s*$"
+    - id: nominalization
+      detail: verb pile — analyze the log, not perform an analysis of
+      kind: mechanical_nominalization
+    - id: passive-voice
+      detail: name the actor when you know who did it
+      kind: mechanical_passive
+      min_count: 2
+    - id: phrasal-verb
+      detail: plain verb — dive into → read, spin up → start
+      kind: mechanical_phrasal
+    - id: long-sentences
+      detail: over 30% of sentences exceed 25 words — vary length or split
+      kind: mechanical_long_sentences

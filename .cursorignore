@@ -1,0 +1,36 @@
+# Block Cursor Agent, Tab, Inline Edit, and @ mentions from these paths.
+# Syntax: .gitignore — https://cursor.com/docs/reference/ignore-file
+# Overlaps .gitignore on purpose: documents AI-access intent, not just git.
+
+# Secrets and local credentials
+.dev.vars
+.env
+.env.*
+!.dev.vars.example
+.wrangler/
+
+# Session and local AI artifacts (prompts, drafts, council output)
+.specstory/
+council/
+.aislop/history.jsonl
+.aislop/agent/
+
+# Build output and caches (generated; not edit targets)
+public/
+resources/
+builds/
+.cache/
+.tmp/
+.hugo_build.lock
+hugo_stats.json
+
+# Dependencies and vendored upstream (third-party, not site source)
+node_modules/
+_vendor/
+.pnpm-store/
+
+# Generated exports (rebuilt from content/ and scripts/)
+static/exports/okf/
+
+# Linked local skill checkout (sync-upstreams; outside repo)
+.cursor/skills/impeccable/

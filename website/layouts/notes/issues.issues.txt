@@ -1,0 +1,2 @@
+{{- $data := partialCached "notes/collect-note-issues.html" site "note-issues-v12" -}}
+{{- partial "notes/build-issues-report.html" $data -}}

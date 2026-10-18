@@ -1,0 +1,14 @@
+packages:
+  - "."
+
+# pnpm 11+ reads linker settings here, not .npmrc — flat node_modules for Hugo js.Build on Windows.
+nodeLinker: hoisted
+
+allowBuilds:
+  '@parcel/watcher': true
+
+# concurrently@9.2.1 pins shell-quote@1.8.3 (CVE); force patched release.
+# pixi.js@8.19.0 bundles @xmldom/xmldom@0.8.13 (GHSA-2qmx-g2p4-3g8m).
+overrides:
+  shell-quote: "1.9.0"
+  "@xmldom/xmldom": "0.8.15"

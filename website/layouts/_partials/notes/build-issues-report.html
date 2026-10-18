@@ -1,0 +1,64 @@
+{{- /*
+  Plain-text garden issues report for agent copy.
+  Pass collect-note-issues dict, or omit to load cached data.
+*/ -}}
+{{- $data := . -}}
+{{- if not $data.byPath -}}
+  {{- $data = partialCached "notes/collect-note-issues.html" site "note-issues-v12" -}}
+{{- end -}}
+{{- $lines := slice "GARDEN LINK ISSUES" "Source: JoRap notes garden" "" "SUMMARY" -}}
+{{- $lines = $lines | append (printf "- %d broken wikilinks (target note does not exist)" $data.brokenCount) -}}
+{{- $lines = $lines | append (printf "- %d pipe wikilinks (deprecated [[note|label]] syntax)" $data.pipeCount) -}}
+{{- $lines = $lines | append (printf "- %d unlinked mentions (note title in prose without [[wikilink]])" $data.unlinkedCount) -}}
+{{- $lines = $lines | append (printf "- %d structure issues (missing typed links or extra sections)" $data.structureCount) -}}
+{{- $lines = $lines | append (printf "- %d orphans (no inbound wikilinks)" $data.orphanCount) -}}
+{{- $lines = $lines | append (printf "- %d dead ends (no body wikilinks)" $data.deadEndCount) -}}
+{{- $lines = $lines | append (printf "- %d utility wikilinks (tool page via [[wikilink]])" $data.utilityCount) -}}
+{{- $lines = $lines | append (printf "- %d broken relationship targets" $data.relBrokenCount) -}}
+{{- $lines = $lines | append (printf "- %d body sections (frontmatter headings still in body)" $data.bodySectionCount) -}}
+{{- $lines = $lines | append (printf "- %d notes affected" $data.notesWithIssues) "" -}}
+{{- if gt $data.notesWithIssues 0 -}}
+  {{- $notes := sort $data.notes "total" "desc" -}}
+  {{- range $notes -}}
+    {{- $lines = $lines | append (printf "## %s (%d issues)" .Page.Title .total) -}}
+    {{- range .broken -}}
+      {{- $lines = $lines | append (printf "- Missing note: [[%s]]" .target) -}}
+    {{- end -}}
+    {{- range .pipe -}}
+      {{- $lines = $lines | append (printf "- Pipe wikilink: [[%s]] → use [[%s]] only" .raw .target) -}}
+    {{- end -}}
+    {{- range .unlinked -}}
+      {{- $lines = $lines | append (printf "- Unlinked mention: %q → link [[%s]]" .mention .suggestTitle) -}}
+    {{- end -}}
+    {{- range .structure -}}
+      {{- if eq .type "missingTable" -}}
+        {{- $lines = $lines | append "- Missing ## Note Relationships table (needs extends + contradicts rows)" -}}
+      {{- else if eq .type "missingExtends" -}}
+        {{- $lines = $lines | append "- Missing extends row in Note Relationships table" -}}
+      {{- else if eq .type "missingContradicts" -}}
+        {{- $lines = $lines | append "- Missing contradicts row in Note Relationships table" -}}
+      {{- else if eq .type "extraSection" -}}
+        {{- $lines = $lines | append (printf "- Extra section: ## %s (split note or move to prose)" .heading) -}}
+      {{- end -}}
+    {{- end -}}
+    {{- range .orphan -}}
+      {{- $lines = $lines | append "- Orphan: no inbound wikilinks" -}}
+    {{- end -}}
+    {{- range .deadEnd -}}
+      {{- $lines = $lines | append "- Dead end: no wikilinks in note body" -}}
+    {{- end -}}
+    {{- range .utility -}}
+      {{- $lines = $lines | append (printf "- Utility wikilink: [[%s]] → use /notes/%s/" .target .slug) -}}
+    {{- end -}}
+    {{- range .relBroken -}}
+      {{- $lines = $lines | append (printf "- Broken relationship (%s): [[%s]]" .relType .target) -}}
+    {{- end -}}
+    {{- range .bodySection -}}
+      {{- $lines = $lines | append (printf "- Body section: ## %s still in markdown body" .heading) -}}
+    {{- end -}}
+    {{- $lines = $lines | append "" -}}
+  {{- end -}}
+{{- else -}}
+  {{- $lines = $lines | append "No garden issues found." -}}
+{{- end -}}
+{{- return (delimit $lines "\n") -}}

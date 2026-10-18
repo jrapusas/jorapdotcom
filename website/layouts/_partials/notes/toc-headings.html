@@ -1,0 +1,17 @@
+{{- /* Renders nested <li> items for a heading tree. */ -}}
+{{- $start := .start -}}
+{{- $end := .end -}}
+{{- $skipIds := .skipIds -}}
+{{- range .headings -}}
+  {{- if and (ge .Level $start) (le .Level $end) (not (in $skipIds .ID)) -}}
+    <li><a href="#{{ .ID }}">{{ .Title | safeHTML }}</a>
+    {{- with .Headings -}}
+      <ol>
+        {{- partial "notes/toc-headings.html" (dict "headings" . "start" $start "end" $end "skipIds" $skipIds) -}}
+      </ol>
+    {{- end -}}
+    </li>
+  {{- else if .Headings -}}
+    {{- partial "notes/toc-headings.html" (dict "headings" .Headings "start" $start "end" $end "skipIds" $skipIds) -}}
+  {{- end -}}
+{{- end -}}

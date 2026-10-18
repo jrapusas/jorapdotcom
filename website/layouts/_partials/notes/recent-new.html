@@ -1,0 +1,38 @@
+{{- /*
+  Recent new notes. Dict: Context (page), Limit (optional, default site param).
+*/ -}}
+{{- $ctx := . -}}
+{{- $limit := site.Params.notes.recent_new_limit | default 12 | int -}}
+{{- if reflect.IsMap . -}}
+  {{- $ctx = .Context -}}
+  {{- with .Limit -}}
+    {{- $limit = . | int -}}
+  {{- end -}}
+{{- end -}}
+{{- $notes := partialCached "notes/pages.html" $ctx "notes-pages-v1" -}}
+{{- $entries := slice -}}
+{{- range $notes -}}
+  {{- $dates := partial "notes/file-dates.html" . -}}
+  {{- $entries = $entries | append (dict "Page" . "Dates" $dates) -}}
+{{- end -}}
+{{- $recent := first $limit (sort $entries "Dates.Created" "desc") -}}
+
+{{- with $recent -}}
+  <section class="notes-recent">
+    <h2 class="h5 mb-1">New notes</h2>
+    <p class="text-ink-muted mb-3 text-sm">Latest additions to the garden.</p>
+    <ul class="notes-recent-list grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
+      {{- range . -}}
+        {{- $page := .Page -}}
+        <li class="notes-recent-item flex">
+          {{ partial "notes/note-card.html" (dict
+            "Page" $page
+            "Body" (partial "notes/note-blurb.html" (dict "Page" $page "DescriptionOnly" true))
+            "HeadingLevel" 3
+            "HeadingClass" "h6"
+          ) }}
+        </li>
+      {{- end -}}
+    </ul>
+  </section>
+{{- end -}}

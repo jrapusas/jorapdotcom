@@ -1,0 +1,80 @@
+<!-- Preconnect/dns-prefetch budget: keep this list short. Each preconnect
+     opens a TCP+TLS socket that's held idle until the browser uses it,
+     which costs CPU + memory and competes with the LCP request. Only
+     warm origins we KNOW the browser will hit in the first ~500ms of
+     the load. Fonts are now self-hosted (same origin) and Font Awesome
+     was removed entirely, so those four lines are gone. Social-network
+     prefetches (LinkedIn / Twitter / Facebook) never paid off and are
+     dropped too. -->
+<meta http-equiv="x-dns-prefetch-control" content="on" />
+{{- if site.Config.Services.GoogleAnalytics.ID }}
+<link rel="preconnect" href="https://www.googletagmanager.com" crossorigin />
+<link rel="dns-prefetch" href="https://www.google-analytics.com" />
+{{- end }}
+
+<!-- Self-hosted fonts (build-time mirror of Google Fonts, fingerprinted). -->
+{{ partial "essentials/self-hosted-fonts.html" . }}
+
+<!-- main styles -->
+{{ $styles := slice }}
+{{ $stylesLazy := slice }}
+
+{{ range site.Params.plugins.css }}
+  {{ if findRE "^http" .link }}
+    <link
+      crossorigin="anonymous"
+      media="all"
+      rel="stylesheet"
+      href="{{ .link | relURL }}"
+      {{ .attributes | safeHTMLAttr }} />
+  {{ else }}
+    {{ if not .lazy }}
+      {{ with resources.Get .link }}
+        {{ $styles = $styles | append . }}
+      {{ end }}
+    {{ else }}
+      {{ with resources.Get .link }}
+        {{ $stylesLazy = $stylesLazy | append . }}
+      {{ end }}
+    {{ end }}
+  {{ end }}
+{{ end }}
+
+{{ $mainCSS := resources.Get "css/main.css" }}
+{{ $tailwindOpts := dict "inlineImports" true }}
+{{ $tailwindCSS := $mainCSS | css.TailwindCSS $tailwindOpts }}
+
+{{ $styles = $styles | append $tailwindCSS }}
+
+<!-- Only concat if styles is not empty -->
+{{ if ne (len $styles) 0 }}
+  {{ $styles = $styles | resources.Concat "css/style.css" }}
+  {{ $styles = partial "essentials/publish-asset.html" (dict "resource" $styles) }}
+
+  <!-- link main style -->
+  <link
+    href="{{ $styles.RelPermalink }}"
+    rel="stylesheet"
+    crossorigin="anonymous"
+    {{ with $styles.Data.Integrity }}integrity="{{ . }}"{{ end }} />
+{{ end }}
+
+<!-- Only concat if stylesLazy is not empty -->
+{{ if ne (len $stylesLazy) 0 }}
+  {{ $stylesLazy = $stylesLazy | resources.Concat "css/style-lazy.css" }}
+  {{ $stylesLazy = partial "essentials/publish-asset.html" (dict "resource" $stylesLazy) }}
+
+  <!-- link lazy style -->
+  <link
+    defer
+    async
+    rel="stylesheet"
+    href="{{ $stylesLazy.RelPermalink }}"
+    crossorigin="anonymous"
+    {{ with $stylesLazy.Data.Integrity }}integrity="{{ . }}"{{ end }}
+    media="print"
+    data-swap-media="all" />
+{{ end }}
+
+{{/* Non-blocking lazy CSS + img fallback - external so CSP stays hash-free. */}}
+{{ partial "essentials/fingerprint-asset.html" (dict "src" "js/deferred-media.js") }}

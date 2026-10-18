@@ -1,0 +1,122 @@
+{{- $ref := .ref | strings.TrimSpace -}}
+{{- $label := .label | default $ref | strings.TrimSpace -}}
+{{- $page := .page -}}
+{{- $showCite := ne (.cite | default "true") "false" -}}
+{{- $translation := .translation | default "nasb1995" | lower -}}
+{{- $citeTag := cond (eq $translation "nasb1995") "NASB1995" (upper $translation) -}}
+{{- $emphasize := .emphasize | default "" | strings.TrimSpace -}}
+{{- $jesusDb := index hugo.Data "jesus-words" -}}
+{{- $scriptureDb := index hugo.Data "scripture-nasb1995" -}}
+{{- $redLetterDb := index hugo.Data "bible-red-letter-nasb1995" -}}
+{{- if not $ref -}}
+  {{- warnf "bible shortcode on %q needs a ref (e.g. Matthew 7:7)" $page.RelPermalink -}}
+{{- else if and (not $jesusDb) (not $scriptureDb) -}}
+  {{- warnf "bible shortcode on %q: scripture data not loaded" $page.RelPermalink -}}
+{{- else -}}
+  {{- $book := "" -}}
+  {{- $chapter := "" -}}
+  {{- $refs := slice -}}
+  {{- $segments := slice $ref -}}
+  {{- if strings.Contains $ref "," -}}
+    {{- $segments = apply (split $ref ",") "strings.TrimSpace" "." -}}
+  {{- end -}}
+  {{- range $seg := $segments -}}
+    {{- $parts := split $seg " " -}}
+    {{- $loc := index $parts (sub (len $parts) 1) -}}
+    {{- $segBook := "" -}}
+    {{- range $i, $p := $parts -}}
+      {{- if lt $i (sub (len $parts) 1) -}}
+        {{- $segBook = cond (eq $segBook "") $p (printf "%s %s" $segBook $p) -}}
+      {{- end -}}
+    {{- end -}}
+    {{- if ne $segBook "" -}}
+      {{- $book = $segBook -}}
+    {{- end -}}
+    {{- if and (not (strings.Contains $loc ":")) $chapter -}}
+      {{- $loc = printf "%s:%s" $chapter $loc -}}
+    {{- end -}}
+    {{- if and $book $loc -}}
+      {{- if strings.Contains $loc "-" -}}
+        {{- $se := split $loc "-" -}}
+        {{- $left := index $se 0 -}}
+        {{- $right := index $se 1 -}}
+        {{- if strings.Contains $left ":" -}}
+          {{- $chapter = index (split $left ":") 0 -}}
+          {{- $vStart := int (index (split $left ":") 1) -}}
+          {{- $vEnd := int $right -}}
+          {{- if strings.Contains $right ":" -}}
+            {{- $vEnd = int (index (split $right ":") 1) -}}
+          {{- end -}}
+          {{- range $v := seq $vStart $vEnd -}}
+            {{- $refs = $refs | append (printf "%s %s:%d" $book $chapter $v) -}}
+          {{- end -}}
+        {{- end -}}
+      {{- else -}}
+        {{- $refs = $refs | append (printf "%s %s" $book $loc) -}}
+        {{- if strings.Contains $loc ":" -}}
+          {{- $chapter = index (split $loc ":") 0 -}}
+        {{- end -}}
+      {{- end -}}
+    {{- end -}}
+  {{- end -}}
+  {{- $gospel := in (slice "Matthew" "Mark" "Luke" "John") $book -}}
+  {{- $emphRefs := slice -}}
+  {{- if and $emphasize $book $chapter -}}
+    {{- range $e := split $emphasize "," -}}
+      {{- $e = $e | strings.TrimSpace -}}
+      {{- if not $e -}}
+        {{- continue -}}
+      {{- end -}}
+      {{- if strings.Contains $e " " -}}
+        {{- $emphRefs = $emphRefs | append $e -}}
+      {{- else if strings.Contains $e ":" -}}
+        {{- $emphRefs = $emphRefs | append (printf "%s %s" $book $e) -}}
+      {{- else -}}
+        {{- $emphRefs = $emphRefs | append (printf "%s %s:%s" $book $chapter $e) -}}
+      {{- end -}}
+    {{- end -}}
+  {{- end -}}
+  {{- $textParts := slice -}}
+  {{- range $r := $refs -}}
+    {{- $chunk := "" -}}
+    {{- $entry := dict -}}
+    {{- with index $jesusDb.verses $r -}}
+      {{- with index . $translation -}}
+        {{- $entry = . -}}
+      {{- end -}}
+    {{- end -}}
+    {{- if and (not $entry) (eq $translation "nasb1995") -}}
+      {{- with index $scriptureDb.verses $r -}}
+        {{- with index . "nasb1995" -}}
+          {{- $entry = . -}}
+        {{- end -}}
+      {{- end -}}
+    {{- end -}}
+    {{- if $entry -}}
+      {{- $verse := index $entry "verse" | default "" -}}
+      {{- $words := index $entry "words" | default "" -}}
+      {{- if and $gospel (eq $translation "nasb1995") $redLetterDb -}}
+        {{- $chunk = index $redLetterDb.verses $r | default $verse -}}
+      {{- else if and $gospel $words (strings.Contains $verse $words) -}}
+        {{- $i := strings.Index $verse $words -}}
+        {{- $before := substr $verse 0 $i -}}
+        {{- $after := substr $verse (add $i (len $words)) -}}
+        {{- $chunk = printf `%s<span class="jesus-words">%s</span>%s` $before $words $after -}}
+      {{- else -}}
+        {{- $chunk = $verse -}}
+      {{- end -}}
+      {{- if and $chunk (gt (len $emphRefs) 0) (in $emphRefs $r) -}}
+        {{- $chunk = printf `<span class="scripture-emphasis">%s</span>` $chunk -}}
+      {{- end -}}
+    {{- end -}}
+    {{- if $chunk -}}
+      {{- $textParts = $textParts | append $chunk -}}
+    {{- end -}}
+  {{- end -}}
+  {{- if gt (len $textParts) 0 -}}
+    {{- $text := delimit $textParts " " -}}
+    <p class="scripture-verse"><span class="scripture-text">{{ $text | safeHTML }}</span>{{ if $showCite }}<span class="scripture-ref">{{ $label }} {{ $citeTag }}</span>{{ end }}</p>
+  {{- else -}}
+    {{- warnf "bible shortcode on %q: no %s entry for %q" $page.RelPermalink $translation $ref -}}
+  {{- end -}}
+{{- end -}}

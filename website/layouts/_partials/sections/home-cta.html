@@ -1,0 +1,20 @@
+{{ $cta := site.Params.home_intro.cta }}
+{{ if and $cta $cta.enable }}
+  <section class="home-cta" data-site-reveal aria-labelledby="home-cta-title">
+    <div class="container">
+      <div class="home-cta__panel">
+        <div class="home-cta__copy">
+          <h2 id="home-cta-title" class="home-cta__title" data-site-split-section>
+            Need a steady hand on the site?
+          </h2>
+          <p class="home-cta__lede" data-site-reveal-body>
+            WordPress, static sites, hosting, and the support work that follows launch. Remote only, Metro Manila based.
+          </p>
+        </div>
+        <div data-site-reveal-body>
+          <a class="btn btn-primary" href="{{ $cta.link | relLangURL }}">{{ $cta.label }}</a>
+        </div>
+      </div>
+    </div>
+  </section>
+{{ end }}

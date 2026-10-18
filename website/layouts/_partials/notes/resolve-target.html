@@ -1,0 +1,18 @@
+{{- /*
+  Resolve a wikilink target string to a note page.
+  Input: Target (may include #heading; label is stripped by caller).
+  Returns dict: Page, Anchor (string, may be empty).
+
+  Pure function of Target - always call through partialCached keyed on the raw
+  target string. Uncached it runs ~20k times per build for ~2k unique targets.
+*/ -}}
+{{- $raw := strings.TrimSpace .Target -}}
+{{- $anchor := "" -}}
+{{- if strings.Contains $raw "#" -}}
+  {{- $hashParts := split $raw "#" -}}
+  {{- $raw = index $hashParts 0 | strings.TrimSpace -}}
+  {{- $anchor = index $hashParts 1 | strings.TrimSpace -}}
+{{- end -}}
+{{- $registry := partialCached "notes/link-registry.html" site "notes-registry-v3" -}}
+{{- $page := index $registry.byKey (lower $raw) -}}
+{{- return (dict "Page" $page "Anchor" $anchor "Target" $raw) -}}

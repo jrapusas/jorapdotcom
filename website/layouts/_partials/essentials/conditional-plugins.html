@@ -1,0 +1,35 @@
+{{/*
+  Shortcode-only CSS/JS: load only when this page's markdown uses them.
+  ponytail: RawContent scan beats forking every vendor shortcode; misses
+  shortcodes injected only via partials (none today). Upgrade: Page.Store
+  flags set inside each shortcode if that shows up.
+*/}}
+{{- $raw := .RawContent -}}
+{{- $needLightbox := or
+  (findRE `(?i)zoomable\s*=\s*["']?true` $raw)
+  (findRE `(?i)\{\{<\s*gallery\b` $raw)
+  (findRE `(?i)\{\{<\s*slider\b` $raw)
+-}}
+{{- $needSlider := findRE `(?i)\{\{<\s*slider\b` $raw -}}
+
+{{- if $needSlider -}}
+  {{ partial "essentials/fingerprint-asset.html" (dict "src" "plugins/swiper/swiper-bundle.css" "as" "style") }}
+  {{ partial "essentials/fingerprint-asset.html" (dict "src" "plugins/swiper/swiper-bundle.js" "defer" true) }}
+{{- end -}}
+{{- if $needLightbox -}}
+  {{ partial "essentials/fingerprint-asset.html" (dict "src" "plugins/glightbox/glightbox.css" "as" "style") }}
+  {{ partial "essentials/fingerprint-asset.html" (dict "src" "plugins/glightbox/glightbox.js" "defer" true) }}
+  {{ partial "essentials/fingerprint-asset.html" (dict "src" "js/gallery-slider.js" "defer" true) }}
+{{- end -}}
+{{- if findRE `(?i)\{\{<\s*accordion\b` $raw -}}
+  {{ partial "essentials/fingerprint-asset.html" (dict "src" "js/accordion.js" "defer" true) }}
+{{- end -}}
+{{- if findRE `(?i)\{\{<\s*tabs\b` $raw -}}
+  {{ partial "essentials/fingerprint-asset.html" (dict "src" "js/tab.js" "defer" true) }}
+{{- end -}}
+{{- if findRE `(?i)\{\{<\s*modal\b` $raw -}}
+  {{ partial "essentials/fingerprint-asset.html" (dict "src" "js/modal.js" "defer" true) }}
+{{- end -}}
+{{- if findRE `(?i)\{\{<\s*youtube-lite\b` $raw -}}
+  {{ partial "essentials/fingerprint-asset.html" (dict "src" "plugins/youtube-lite.js" "defer" true) }}
+{{- end -}}

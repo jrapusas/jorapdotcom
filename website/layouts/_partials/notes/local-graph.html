@@ -1,0 +1,41 @@
+{{- if site.Params.notes.enable_graph -}}
+  {{- $graph := partial "notes/graph-data-local.html" . -}}
+  {{- if $graph.nodes -}}
+    <div class="graph-view-outer notes-graph-panel notes-graph-panel--local mb-5" data-notes-graph>
+      <script type="application/json" class="notes-graph-data">{{ $graph | jsonify | safeJS }}</script>
+
+      <div class="list-item published-section-header">
+        <span class="published-section-header-icon" aria-hidden="true">
+          <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="svg-icon lucide-git-fork">
+            <circle cx="12" cy="18" r="3"></circle>
+            <circle cx="6" cy="6" r="3"></circle>
+            <circle cx="18" cy="6" r="3"></circle>
+            <path d="M18 9v2c0 .6-.4 1-1 1H7c-.6 0-1-.4-1-1V9"></path>
+            <path d="M12 12v3"></path>
+          </svg>
+        </span>
+        <span>Interactive graph</span>
+      </div>
+
+      <div class="graph-view-container graph-icons-top">
+        <div class="graph-view notes-graph" role="img" aria-label="Local graph for {{ .Title }}"></div>
+        {{ partial "notes/graph-layout-controls.html" . }}
+        <button type="button" class="graph-icon graph-expand notes-graph-expand" aria-label="Present graph" title="Present graph" aria-pressed="false">
+          <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="svg-icon lucide-arrow-up-right" aria-hidden="true">
+            <path d="M7 7h10v10"></path>
+            <path d="M7 17 17 7"></path>
+          </svg>
+        </button>
+        <a class="graph-icon graph-global" href="/notes/graph/" aria-label="Global graph" title="Global graph">
+          <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="svg-icon lucide-git-fork" aria-hidden="true">
+            <circle cx="12" cy="18" r="3"></circle>
+            <circle cx="6" cy="6" r="3"></circle>
+            <circle cx="18" cy="6" r="3"></circle>
+            <path d="M18 9v2c0 .6-.4 1-1 1H7c-.6 0-1-.4-1-1V9"></path>
+            <path d="M12 12v3"></path>
+          </svg>
+        </a>
+      </div>
+    </div>
+  {{- end -}}
+{{- end -}}

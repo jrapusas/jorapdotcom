@@ -1,0 +1,27 @@
+{{ $proof := site.Params.home_proof }}
+{{ if and $proof $proof.enable }}
+  <div class="mt-10 border-t border-divider pt-10 lg:mt-0 lg:border-t-0 lg:border-l lg:pt-0 lg:pl-12 xl:pl-16">
+    {{ with $proof.title }}
+      <h2 class="text-balance text-h3-sm font-bold tracking-tight text-ink md:text-h3">
+        {{ . | title }}
+      </h2>
+    {{ end }}
+    {{ with $proof.lede }}
+      <p class="mt-4 text-pretty text-base leading-relaxed text-ink-muted md:text-lg">
+        {{ . }}
+      </p>
+    {{ end }}
+    {{ with $proof.items }}
+      <dl class="mt-6 space-y-6">
+        {{ range . }}
+          <div>
+            <dt class="text-lg font-semibold text-ink">{{ .title }}</dt>
+            <dd class="mt-2 text-pretty leading-relaxed text-ink-muted">
+              {{ .description }}
+            </dd>
+          </div>
+        {{ end }}
+      </dl>
+    {{ end }}
+  </div>
+{{ end }}

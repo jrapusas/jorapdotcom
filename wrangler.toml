@@ -1,0 +1,16 @@
+# Cloudflare Pages - output dir for the V2 build system.
+# Dashboard build command: pnpm run deploy (output: website/public)
+#   (CF runs pnpm install automatically; avoid npm run build - extra hop.)
+#
+# BUILD env var NODE_VERSION must be set in the Pages dashboard (Settings → Build → Variables).
+#   Do not set GO_VERSION — deploy does not use Go; it only adds ~13s to every build.
+#   [vars] below are RUNTIME Function vars, not build vars.
+#   Hugo version is handled in-repo by scripts/ensureHugo.mjs (reads deploy-versions.json).
+# One-time build cache: Dashboard → Settings → Build → Build cache → Enable.
+#   Hugo writes to .cache via --cacheDir in deployBuild.mjs; CF restores it next build.
+name = "jorap-com"
+pages_build_output_dir = "./website/public"
+compatibility_date = "2026-06-15"
+
+[vars]
+# HUGO_SERVICES_GOOGLEANALYTICS_ID - optional override for Hugo GA4 at build time (see hugo.toml).

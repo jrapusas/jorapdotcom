@@ -1,0 +1,45 @@
+{{- /*
+  Typed relationship flags from frontmatter relationships or body table.
+  Returns dict: extends, contradicts, implements, alternative.
+*/ -}}
+{{- $page := . -}}
+{{- $extends := false -}}
+{{- $contradicts := false -}}
+{{- $implements := false -}}
+{{- $alternative := false -}}
+
+{{- with $page.Params.relationships -}}
+  {{- range . -}}
+    {{- $typ := lower (.type | default "") -}}
+    {{- if eq $typ "extends" -}}{{- $extends = true -}}{{- end -}}
+    {{- if eq $typ "contradicts" -}}{{- $contradicts = true -}}{{- end -}}
+    {{- if eq $typ "implements" -}}{{- $implements = true -}}{{- end -}}
+    {{- if eq $typ "alternative" -}}{{- $alternative = true -}}{{- end -}}
+  {{- end -}}
+{{- else -}}
+  {{- $raw := partial "notes/assembled-content.html" $page -}}
+  {{- if strings.Contains $raw "## See also" -}}
+    {{- $raw = index (split $raw "## See also") 0 -}}
+  {{- end -}}
+  {{- $wikilink := `\[\[[^\]]+\]\]` -}}
+  {{- $row := `(?im)^\|\s*%s\s*\|` -}}
+  {{- $extends = or
+    (gt (len (findRE (printf $row "extends") $raw)) 0)
+    (gt (len (findRE (printf `(?is)\bextends\b[^[\n]{0,120}%s` $wikilink) $raw)) 0) -}}
+  {{- $contradicts = or
+    (gt (len (findRE (printf $row "contradicts") $raw)) 0)
+    (gt (len (findRE (printf `(?is)\bcontradicts\b[^[\n]{0,120}%s` $wikilink) $raw)) 0) -}}
+  {{- $implements = or
+    (gt (len (findRE (printf $row "implements") $raw)) 0)
+    (gt (len (findRE (printf `(?is)\bimplements\b[^[\n]{0,120}%s` $wikilink) $raw)) 0) -}}
+  {{- $alternative = or
+    (gt (len (findRE (printf $row "alternative") $raw)) 0)
+    (gt (len (findRE (printf `(?is)\balternative\b[^[\n]{0,120}%s` $wikilink) $raw)) 0) -}}
+{{- end -}}
+
+{{- return (dict
+  "extends" $extends
+  "contradicts" $contradicts
+  "implements" $implements
+  "alternative" $alternative
+) -}}

@@ -1,0 +1,124 @@
+{{- /*
+  Site-wide backlink index: target RelPermalink → slice of {Page, SnippetHtml}.
+  One pass per note: extract wikilinks, resolve targets, append backlink rows.
+*/ -}}
+{{- $index := dict -}}
+{{- $notes := partialCached "notes/pages.html" (dict) "notes-pages-v1" -}}
+
+{{- range $source := $notes -}}
+  {{- $raw := partial "notes/assembled-content.html" $source -}}
+  {{- $matches := findRE `\[\[[^\]|#]+(?:#[^\]|]+)?\]\]` $raw -}}
+  {{- range $matches -}}
+    {{- $wikilink := . -}}
+    {{- $inner := replaceRE `^\[\[|\]\]$` "" . -}}
+    {{- $targetStr := $inner -}}
+    {{- if strings.Contains $inner "#" -}}
+      {{- $targetStr = index (split $inner "#") 0 | strings.TrimSpace -}}
+    {{- end -}}
+    {{- $resolved := partialCached "notes/resolve-target.html" (dict "Target" $targetStr) $targetStr -}}
+    {{- with $resolved.Page -}}
+      {{- if ne .RelPermalink $source.RelPermalink -}}
+        {{- $key := .RelPermalink -}}
+        {{- $existing := index $index $key | default slice -}}
+        {{- $seen := false -}}
+        {{- range $existing -}}
+          {{- if eq .Page.RelPermalink $source.RelPermalink -}}
+            {{- $seen = true -}}
+          {{- end -}}
+        {{- end -}}
+        {{- if not $seen -}}
+          {{- $linkText := .Title -}}
+          {{- $context := "" -}}
+          {{- $fromReason := false -}}
+
+          {{- $prose := slice -}}
+          {{- with $source.Params.key_concept -}}
+            {{- $prose = $prose | append . -}}
+          {{- end -}}
+          {{- range $source.Params.examples -}}
+            {{- $prose = $prose | append . -}}
+          {{- end -}}
+          {{- with $source.Params.description -}}
+            {{- $prose = $prose | append . -}}
+          {{- end -}}
+          {{- $sentPattern := printf `[^.!?\n]{0,500}\[\[%s(?:#[^\]|]+)?\]\][^.!?\n]{0,500}[.!?]?` $targetStr -}}
+          {{- range $prose -}}
+            {{- if not $context -}}
+              {{- with findRE $sentPattern . 1 -}}
+                {{- $context = strings.TrimSpace (index . 0) -}}
+              {{- end -}}
+            {{- end -}}
+          {{- end -}}
+
+          {{- if not $context -}}
+            {{- range $source.Params.relationships -}}
+              {{- if eq (strings.TrimSpace .wikilink) $wikilink -}}
+                {{- with .reason -}}
+                  {{- $context = strings.TrimSpace . -}}
+                  {{- $fromReason = true -}}
+                {{- end -}}
+              {{- end -}}
+            {{- end -}}
+          {{- end -}}
+
+          {{- if not $context -}}
+            {{- with findRE $sentPattern $raw 1 -}}
+              {{- $context = strings.TrimSpace (index . 0) -}}
+            {{- end -}}
+          {{- end -}}
+
+          {{- $snippetHtml := "" -}}
+          {{- $wikilinkPlain := `\[\[([^\]|#]+)(?:#[^\]|]+)?\]\]` -}}
+          {{- if $context -}}
+            {{- if $fromReason -}}
+              {{- $regex := printf `(?i)(%s)` ($linkText | replaceRE `([.*+?^${}()|\[\]\\])` `\\$1`) -}}
+              {{- $replaced := replaceRE $regex `⟦$1⟧` $context 1 -}}
+              {{- if ne $replaced $context -}}
+                {{- $replaced = $replaced | htmlEscape -}}
+                {{- $snippetHtml = replaceRE `⟦([^⟧]+)⟧` `<mark class="notes-backlink-hit">$1</mark>` $replaced 1 -}}
+              {{- else -}}
+                {{- $snippetHtml = $context | htmlEscape -}}
+              {{- end -}}
+            {{- else -}}
+              {{- $parts := split $context $wikilink -}}
+              {{- if eq (len $parts) 2 -}}
+                {{- $before := index $parts 0 -}}
+                {{- $before = replaceRE `\*\*([^*]+)\*\*` "$1" $before -}}
+                {{- $before = replaceRE `\*([^*]+)\*` "$1" $before -}}
+                {{- $before = replaceRE "`([^`]+)`" "$1" $before -}}
+                {{- $before = replaceRE $wikilinkPlain "$1" $before -}}
+                {{- $before = $before | strings.TrimSpace | htmlEscape -}}
+                {{- $after := index $parts 1 -}}
+                {{- $after = replaceRE `\*\*([^*]+)\*\*` "$1" $after -}}
+                {{- $after = replaceRE `\*([^*]+)\*` "$1" $after -}}
+                {{- $after = replaceRE "`([^`]+)`" "$1" $after -}}
+                {{- $after = replaceRE $wikilinkPlain "$1" $after -}}
+                {{- $after = $after | strings.TrimSpace | htmlEscape -}}
+                {{- if and $before $after -}}
+                  {{- $snippetHtml = printf "%s <mark class=\"notes-backlink-hit\">%s</mark> %s" $before ($linkText | htmlEscape) $after -}}
+                {{- else if $before -}}
+                  {{- $snippetHtml = printf "%s <mark class=\"notes-backlink-hit\">%s</mark>" $before ($linkText | htmlEscape) -}}
+                {{- else -}}
+                  {{- $snippetHtml = printf "<mark class=\"notes-backlink-hit\">%s</mark> %s" ($linkText | htmlEscape) $after -}}
+                {{- end -}}
+              {{- else -}}
+                {{- $plain := $context -}}
+                {{- $plain = replaceRE `\*\*([^*]+)\*\*` "$1" $plain -}}
+                {{- $plain = replaceRE `\*([^*]+)\*` "$1" $plain -}}
+                {{- $plain = replaceRE "`([^`]+)`" "$1" $plain -}}
+                {{- $plain = replaceRE $wikilinkPlain "$1" $plain -}}
+                {{- $snippetHtml = $plain | strings.TrimSpace | htmlEscape -}}
+              {{- end -}}
+            {{- end -}}
+            {{- $snippetHtml = replaceRE $wikilinkPlain "$1" $snippetHtml -}}
+          {{- end -}}
+
+          {{- $existing = $existing | append (dict "Page" $source "SnippetHtml" $snippetHtml) -}}
+          {{- $index = merge $index (dict $key $existing) -}}
+        {{- end -}}
+      {{- end -}}
+    {{- end -}}
+  {{- end -}}
+{{- end -}}
+
+{{- return $index -}}

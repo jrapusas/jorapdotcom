@@ -1,0 +1,29 @@
+{{- /*
+  Filesystem created (birth) and updated (mtime) timestamps for a note.
+  Populated at build time via scripts/noteFileDates.js → data/noteFileDates.json.
+  Returns dict: Created, Updated (time.Time).
+*/ -}}
+{{- $page := . -}}
+{{- $created := $page.Date -}}
+{{- $updated := $page.Lastmod -}}
+{{- with $page.File -}}
+  {{- $key := .Path -}}
+  {{- with index hugo.Data.noteFileDates $key -}}
+    {{- $created = time .created -}}
+    {{- $updated = time .updated -}}
+  {{- else -}}
+    {{- with os.Stat .Path -}}
+      {{- $updated = .ModTime -}}
+    {{- end -}}
+  {{- end -}}
+{{- end -}}
+{{- $fmt := "Jan 2, 2006, 3:04 PM" -}}
+{{- $shortFmt := "Jan 2, 2006" -}}
+{{- return (dict
+  "Created" $created
+  "Updated" $updated
+  "CreatedDisplay" ($created.Format $fmt)
+  "UpdatedDisplay" ($updated.Format $fmt)
+  "CreatedShort" ($created.Format $shortFmt)
+  "UpdatedShort" ($updated.Format $shortFmt)
+) -}}

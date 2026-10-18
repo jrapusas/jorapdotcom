@@ -1,0 +1,89 @@
+{{/*
+  components/social-share - Render share buttons for the current page.
+
+  All toggles default to true; pass false to disable an individual button.
+  Icon SVGs live in data/icons.json and are rendered via components/icon.html.
+
+  Required: Context (Page), Title, Class.
+  Optional: Facebook, X, Email, Reddit, Whatsapp, Telegram, Linkedin,
+            Pinterest, Tumblr, Vk, Native (Web Share API), Copy.
+*/}}
+{{ $context := .Context }}
+{{ $class   := .Class }}
+{{ $title   := .Title }}
+
+{{/* Use the absolute permalink so previews/staging share themselves, not production. */}}
+{{ $url := $context.Permalink }}
+
+{{ $services := slice
+  (dict "key" "facebook"  "icon" "facebook"  "enabled" (default true .Facebook)
+        "href" (printf "https://facebook.com/sharer/sharer.php?u=%s" ($url | urlquery))
+        "label" "Share on Facebook" "tip" "Facebook")
+  (dict "key" "x"         "icon" "x"         "enabled" (default true .X)
+        "href" (printf "https://x.com/intent/tweet/?text=%s&url=%s" ($title | urlquery) ($url | urlquery))
+        "label" "Share on X" "tip" "X")
+  (dict "key" "email"     "icon" "email"     "enabled" (default true .Email)
+        "href" (printf "mailto:?subject=%s&body=%s" ($title | urlquery) ($url | urlquery))
+        "label" "Share by email" "tip" "Email" "target" "_self")
+  (dict "key" "reddit"    "icon" "reddit"    "enabled" (default true .Reddit)
+        "href" (printf "https://reddit.com/submit/?url=%s&resubmit=true&title=%s" ($url | urlquery) ($title | urlquery))
+        "label" "Share on Reddit" "tip" "Reddit")
+  (dict "key" "whatsapp"  "icon" "whatsapp"  "enabled" (default true .Whatsapp)
+        "href" (printf "https://wa.me/?text=%s%%20%s" ($title | urlquery) ($url | urlquery))
+        "label" "Share on WhatsApp" "tip" "WhatsApp")
+  (dict "key" "telegram"  "icon" "telegram"  "enabled" (default true .Telegram)
+        "href" (printf "https://t.me/share/url?url=%s&text=%s" ($url | urlquery) ($title | urlquery))
+        "label" "Share on Telegram" "tip" "Telegram")
+  (dict "key" "linkedin"  "icon" "linkedin"  "enabled" (default true .Linkedin)
+        "href" (printf "https://www.linkedin.com/sharing/share-offsite/?url=%s" ($url | urlquery))
+        "label" "Share on LinkedIn" "tip" "LinkedIn")
+  (dict "key" "pinterest" "icon" "pinterest" "enabled" (default true .Pinterest)
+        "href" (printf "https://pinterest.com/pin/create/link/?url=%s" ($url | urlquery))
+        "label" "Share on Pinterest" "tip" "Pinterest")
+  (dict "key" "tumblr"    "icon" "tumblr"    "enabled" (default true .Tumblr)
+        "href" (printf "https://www.tumblr.com/widgets/share/tool?canonicalUrl=%s&title=%s" ($url | urlquery) ($title | urlquery))
+        "label" "Share on Tumblr" "tip" "Tumblr")
+  (dict "key" "vk"        "icon" "vk"        "enabled" (default true .Vk)
+        "href" (printf "https://vk.com/share.php?url=%s&title=%s" ($url | urlquery) ($title | urlquery))
+        "label" "Share on VK" "tip" "VK")
+}}
+
+<div class="{{ $class }}">
+  {{ if default true .Native }}
+    <button type="button" class="share-link share-native" hidden
+      data-share-native
+      data-share-title="{{ $title }}"
+      data-share-url="{{ $url }}"
+      data-share-tip="Share"
+      aria-label="Share">
+      <span class="share-icon" aria-hidden="true">
+        {{ partial "components/icon" (dict "Name" "share") }}
+      </span>
+    </button>
+  {{ end }}
+
+  {{ range $services }}
+    {{ if .enabled }}
+      <a class="share-link share-{{ .key }}"
+        href="{{ .href }}"
+        target="{{ .target | default `_blank` }}"
+        rel="noopener"
+        data-share-tip="{{ .tip }}"
+        aria-label="{{ .label }}">
+        <span class="share-icon" aria-hidden="true">
+          {{ partial "components/icon" (dict "Name" .icon) }}
+        </span>
+      </a>
+    {{ end }}
+  {{ end }}
+
+  {{ if default true .Copy }}
+    <button type="button" class="share-link share-copy" data-share-tip="Copy link" aria-label="Copy link" data-share-copy="{{ $url }}">
+      <span class="share-icon" aria-hidden="true">
+        {{ partial "components/icon" (dict "Name" "copy") }}
+      </span>
+    </button>
+  {{ end }}
+</div>
+
+{{ partial "essentials/fingerprint-asset.html" (dict "src" "js/share.js" "defer" true) }}

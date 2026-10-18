@@ -1,0 +1,217 @@
+{{ define "main" }}
+  <div class="cursor-usage-page" data-cursor-usage-page>
+    <header class="cursor-usage-hero">
+      <div class="container">
+        <h1 class="cursor-usage-hero__title">{{ .Title }}</h1>
+      </div>
+    </header>
+
+    <section class="cursor-usage-page__body">
+      <div class="container">
+        <div class="cursor-usage-dash" data-cursor-usage>
+          <details class="cursor-usage-details" id="cursor-usage-setup">
+            <summary class="cursor-usage-details__summary">
+              <span class="cursor-usage-details__summary-label">How it works</span>
+              <span class="cursor-usage-details__summary-hint"
+                >Fields · sync from Cursor spending page</span
+              >
+            </summary>
+
+            <div class="cursor-usage-details__panel">
+              {{ with .Content }}
+                <div class="cursor-usage-intro content">{{ . }}</div>
+              {{ end }}
+
+              <h2 class="cursor-usage-details__subhead">Sync from Cursor</h2>
+              <p class="cursor-usage-details__text">
+                One-time setup. On
+                <a href="https://cursor.com/dashboard/spending" target="_blank" rel="noopener noreferrer"
+                  >cursor.com/dashboard/spending</a
+                >, click the bookmark to read <strong>Current Plan</strong>, <strong>Included in Pro</strong>, and
+                <strong>Grok Bot</strong> into the fields below.
+              </p>
+
+              <ol class="cursor-usage-details__steps">
+                <li>Click <strong>Copy bookmarklet</strong>.</li>
+                <li>
+                  Add a bookmark (<kbd>⌘</kbd><kbd>D</kbd> / <kbd>Ctrl</kbd><kbd>D</kbd> →
+                  <strong>Edit</strong>, or right-click the bar → <strong>Add page</strong>).
+                </li>
+                <li>Name it <strong>JoRap: sync Cursor usage</strong>.</li>
+                <li>Paste into the bookmark <strong>URL</strong> field — not the address bar.</li>
+                <li>Save, then click it on the spending page.</li>
+              </ol>
+
+              <div class="cursor-usage-details__actions">
+                <button type="button" class="btn btn-outline-primary btn-sm" id="copyBookmarklet">
+                  Copy bookmarklet
+                </button>
+                <a
+                  class="cursor-usage-details__link btn btn-outline-primary btn-sm"
+                  id="bookmarkletDrag"
+                  href="#"
+                  draggable="true"
+                  title="Optional: drag to bookmarks bar if your browser allows it">
+                  Drag to bar
+                </a>
+              </div>
+
+              <p class="cursor-usage-details__note">
+                Desktop Chrome, Firefox, Edge, or Safari. Phones usually block bookmarklets — type fields
+                by hand there.
+              </p>
+            </div>
+          </details>
+
+          <p class="cursor-usage-template-note" id="templateNote" role="status" hidden></p>
+
+          <p class="cursor-usage-last-updated" id="lastUpdated" hidden>
+            Last updated <time id="lastUpdatedTime"></time>
+          </p>
+
+          <div class="cursor-usage-dashboard" id="dashboard">
+            <div class="cursor-usage-summary" id="summaryOut" hidden></div>
+
+            <div class="cursor-usage-results" id="results" hidden>
+              <section class="cursor-usage-bucket" aria-labelledby="cursor-heading">
+                <h2 class="cursor-usage-bucket__title" id="cursor-heading">Cursor Models</h2>
+                <div id="cursorOut"></div>
+              </section>
+              <section class="cursor-usage-bucket" aria-labelledby="other-heading">
+                <h2 class="cursor-usage-bucket__title" id="other-heading">Other Models</h2>
+                <div id="otherOut"></div>
+              </section>
+              <section class="cursor-usage-bucket" id="grokResults" aria-labelledby="grok-heading">
+                <h2 class="cursor-usage-bucket__title" id="grok-heading">Grok Bot</h2>
+                <div id="grokOut"></div>
+              </section>
+            </div>
+
+            <div class="cursor-usage-summary" id="grokSummaryOut" hidden></div>
+
+            <p class="cursor-usage-warn" id="warn" hidden></p>
+            <p class="cursor-usage-warn" id="grokWarn" hidden></p>
+          </div>
+
+          <details class="cursor-usage-panel" id="monthly-panel">
+            <summary class="cursor-usage-panel__summary">
+              <span class="cursor-usage-panel__label">Edit · Included in Pro</span>
+              <span class="cursor-usage-panel__peek" id="monthlyPeek"
+                >Reset date · Cursor Models · Other Models</span
+              >
+            </summary>
+
+            <div class="cursor-usage-panel__body">
+              <form class="cursor-usage-form" id="cursor-usage-form" autocomplete="off">
+                <div class="cursor-usage-form__fields">
+                  <label class="cursor-usage-form__field">
+                    <span class="cursor-usage-form__label">Reset date</span>
+                    <span class="cursor-usage-form__hint">Current Plan · usage limits reset on</span>
+                    <input
+                      class="form-input cursor-usage-form__input"
+                      id="resetDate"
+                      type="date"
+                      required />
+                    <span class="cursor-usage-form__meta" id="resetDaysLeft" hidden></span>
+                  </label>
+                  <label class="cursor-usage-form__field">
+                    <span class="cursor-usage-form__label">Cursor Models %</span>
+                    <span class="cursor-usage-form__hint">Included in Pro</span>
+                    <input
+                      class="form-input cursor-usage-form__input"
+                      id="cursorPct"
+                      type="number"
+                      min="0"
+                      max="100"
+                      step="1"
+                      inputmode="numeric"
+                      required />
+                  </label>
+                  <label class="cursor-usage-form__field">
+                    <span class="cursor-usage-form__label">Other Models %</span>
+                    <span class="cursor-usage-form__hint">Included in Pro</span>
+                    <input
+                      class="form-input cursor-usage-form__input"
+                      id="otherPct"
+                      type="number"
+                      min="0"
+                      max="100"
+                      step="1"
+                      inputmode="numeric"
+                      required />
+                  </label>
+                </div>
+
+                <div class="cursor-usage-actions">
+                  <button type="button" class="btn btn-outline-primary btn-sm" id="copySummary">
+                    Copy
+                  </button>
+                  <a
+                    class="btn btn-outline-primary btn-sm"
+                    href="https://cursor.com/dashboard/spending"
+                    target="_blank"
+                    rel="noopener noreferrer">
+                    Cursor spending
+                  </a>
+                  <span class="cursor-usage-saved" id="savedNote" hidden>Saved.</span>
+                </div>
+              </form>
+            </div>
+          </details>
+
+          <details class="cursor-usage-panel" id="grok-panel">
+            <summary class="cursor-usage-panel__summary">
+              <span class="cursor-usage-panel__label">Edit · Grok Bot</span>
+              <span class="cursor-usage-panel__peek" id="grokPeek"
+                >Weekly reset date · usage %</span
+              >
+            </summary>
+
+            <div class="cursor-usage-panel__body">
+              <form class="cursor-usage-form" id="grok-usage-form" autocomplete="off">
+                <div class="cursor-usage-form__fields cursor-usage-form__fields--grok">
+                  <label class="cursor-usage-form__field">
+                    <span class="cursor-usage-form__label">Reset date</span>
+                    <span class="cursor-usage-form__hint">Grok Bot · Resets …</span>
+                    <input
+                      class="form-input cursor-usage-form__input"
+                      id="grokResetDate"
+                      type="date"
+                      required />
+                    <span class="cursor-usage-form__meta" id="grokResetDaysLeft" hidden></span>
+                  </label>
+                  <label class="cursor-usage-form__field">
+                    <span class="cursor-usage-form__label">Weekly usage %</span>
+                    <span class="cursor-usage-form__hint">Grok Bot · weekly bar</span>
+                    <input
+                      class="form-input cursor-usage-form__input"
+                      id="grokPct"
+                      type="number"
+                      min="0"
+                      max="100"
+                      step="1"
+                      inputmode="numeric"
+                      required />
+                  </label>
+                </div>
+
+                <div class="cursor-usage-actions">
+                  <button type="button" class="btn btn-outline-primary btn-sm" id="copyGrokSummary">
+                    Copy
+                  </button>
+                  <span class="cursor-usage-saved" id="grokSavedNote" hidden>Saved.</span>
+                </div>
+              </form>
+            </div>
+          </details>
+
+          <p class="cursor-usage-copy-toast" id="copyToast" hidden>Copied.</p>
+        </div>
+      </div>
+    </section>
+  </div>
+
+  {{ partial "essentials/fingerprint-asset.html" (dict "src" "css/cursor-usage.css" "as" "style") }}
+  {{ partial "essentials/fingerprint-asset.html" (dict "src" "js/cursor-usage-bookmarklet-href.js") }}
+  {{ partial "essentials/fingerprint-asset.html" (dict "src" "js/cursor-usage.js" "defer" true) }}
+{{ end }}

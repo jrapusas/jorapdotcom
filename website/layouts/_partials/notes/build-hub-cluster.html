@@ -1,0 +1,37 @@
+{{- /*
+  Hub MOC + direct wikilink targets as concatenated Hugo source for ChatGPT.
+  Pass the hub page. ponytail: cap 60 linked notes; raise if a hub outgrows it.
+*/ -}}
+{{- $page := . -}}
+{{- $hubPath := $page.File.Path -}}
+{{- $hubSource := readFile $hubPath -}}
+{{- $outgoing := partialCached "notes/outgoing-links.html" $page $page.RelPermalink -}}
+{{- $cap := 60 -}}
+{{- $linked := slice -}}
+{{- range $outgoing -}}
+  {{- if .Page.File -}}
+    {{- $linked = $linked | append .Page -}}
+  {{- end -}}
+{{- end -}}
+{{- $linked = sort $linked "Title" -}}
+{{- $truncated := gt (len $linked) $cap -}}
+{{- if $truncated -}}
+  {{- $linked = first $cap $linked -}}
+{{- end -}}
+{{- $lines := slice
+  (printf "# CLUSTER: %s" $page.Title)
+  (printf "# Hub + %d linked notes (direct wikilinks only)" (len $linked))
+-}}
+{{- if $truncated -}}
+  {{- $lines = $lines | append (printf "# ponytail: truncated at %d links - copy individual notes or raise cap in build-hub-cluster.html" $cap) -}}
+{{- end -}}
+{{- $lines = $lines | append "" -}}
+{{- $lines = $lines | append (printf "<!-- file: %s -->" $hubPath) -}}
+{{- $lines = $lines | append $hubSource -}}
+{{- $lines = $lines | append "" -}}
+{{- range $linked -}}
+  {{- $lines = $lines | append (printf "<!-- file: %s -->" .File.Path) -}}
+  {{- $lines = $lines | append (readFile .File.Path) -}}
+  {{- $lines = $lines | append "" -}}
+{{- end -}}
+{{- return (delimit $lines "\n") -}}

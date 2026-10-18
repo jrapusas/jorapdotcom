@@ -1,0 +1,11 @@
+{{- if and hugo.IsServer (eq .Section "drafts") -}}
+  <section class="notes-dev-banner-wrap">
+    <div class="container">
+      <div class="notes-dev-banner" role="status">
+        <p>
+          <strong>Local only.</strong> Draft posts are visible on <code>localhost</code> and are excluded from production builds.
+        </p>
+      </div>
+    </div>
+  </section>
+{{- end -}}

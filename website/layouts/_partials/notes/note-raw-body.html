@@ -1,0 +1,4 @@
+{{- /* Cached readFile + frontmatter strip per note page. */ -}}
+{{- $page := . -}}
+{{- $cacheKey := printf "note-raw-body-v1|%s" $page.RelPermalink -}}
+{{- partialCached "notes/note-raw-body-body.html" $page $cacheKey -}}

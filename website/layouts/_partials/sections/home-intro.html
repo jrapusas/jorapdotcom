@@ -1,0 +1,72 @@
+{{ $h := site.Params.home_intro }}
+{{ if and $h $h.enable }}
+  {{ $introImage := $h.image | default "/images/jw.jpg" }}
+  <section class="home-hero section" aria-labelledby="home-hero-heading">
+    <div class="container">
+      <div class="home-hero__grid">
+        <div class="home-hero__copy">
+          <p class="home-hero__eyebrow" data-site-intro-item>Freelance since 2013</p>
+          <h1 id="home-hero-heading" class="home-hero__heading" data-site-split>
+            {{ if $h.heading }}
+              {{ $h.heading }}
+            {{ else }}
+              {{ site.Title }}
+            {{ end }}
+          </h1>
+          {{ with $h.role }}
+            <p class="home-hero__role" data-site-intro-item>{{ . }}</p>
+          {{ end }}
+          {{ with $h.subheading }}
+            <p class="home-hero__subheading" data-site-intro-item>{{ . }}</p>
+          {{ end }}
+          {{ with $h.lede }}
+            <p class="home-hero__lede" data-site-intro-item>{{ . }}</p>
+          {{ end }}
+          {{ with $h.availability }}
+            <p class="home-hero__availability" data-site-intro-item>{{ . }}</p>
+          {{ end }}
+          {{ with $h.cta }}
+            {{ if .enable }}
+              <div class="home-hero__ctas" data-site-hero-ctas>
+                {{ $primaryHref := .link }}
+                {{ if not (hasPrefix $primaryHref "http") }}
+                  {{ $primaryHref = $primaryHref | relLangURL }}
+                {{ end }}
+                <a class="btn btn-primary btn-sm" href="{{ $primaryHref }}">{{ .label }}</a>
+                {{ with .secondary }}
+                  {{ $secondaryHref := .link }}
+                  {{ if not (hasPrefix $secondaryHref "http") }}
+                    {{ $secondaryHref = $secondaryHref | relLangURL }}
+                  {{ end }}
+                  <a class="btn btn-outline-primary btn-sm" href="{{ $secondaryHref }}">{{ .label }}</a>
+                {{ end }}
+                {{ with .tertiary }}
+                  {{ $tertiaryHref := .link }}
+                  {{ if not (hasPrefix $tertiaryHref "http") }}
+                    {{ $tertiaryHref = $tertiaryHref | relLangURL }}
+                  {{ end }}
+                  <a class="btn btn-outline-primary btn-sm" href="{{ $tertiaryHref }}" rel="noopener noreferrer" target="_blank">{{ .label }}</a>
+                {{ end }}
+              </div>
+            {{ end }}
+          {{ end }}
+        </div>
+
+        <figure class="home-hero__media">
+          <div class="home-hero__media-frame">
+            {{ partial "image" (dict
+              "Src" $introImage
+              "Context" .Page
+              "Alt" (printf "%s - %s" ($h.heading | default site.Title) ($h.role | default "Front-end developer"))
+              "Class" "home-intro__photo"
+              "Size" "640x"
+              "Loading" "eager"
+              "FetchPriority" "high"
+              "Decoding" "async"
+            ) }}
+          </div>
+        </figure>
+      </div>
+    </div>
+  </section>
+{{ end }}

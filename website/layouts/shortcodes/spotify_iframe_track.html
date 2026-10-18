@@ -1,0 +1,8 @@
+{{- /*
+  Spotify Track iframe embed
+  Usage: {{< spotify_iframe_track TRACK_ID >}}
+         {{< spotify_iframe_track id="TRACK_ID" height="352" >}}
+*/ -}}
+{{- $id := .Get "id" | default (.Get 0) -}}
+{{- $height := .Get "height" | default "352" -}}
+<iframe style="border-radius:12px" src="https://open.spotify.com/embed/track/{{ $id }}?utm_source=generator" width="100%" height="{{ $height }}" frameBorder="0" allowfullscreen="" allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture" loading="lazy"></iframe>

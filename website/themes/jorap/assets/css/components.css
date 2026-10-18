@@ -1,0 +1,160 @@
+/* section style */
+.section {
+  @apply py-14 md:py-20;
+}
+
+/* container */
+.container {
+  @apply mx-auto xl:!max-w-[1320px] px-4;
+}
+
+/* social icons */
+.social-icons {
+  @apply space-x-4;
+}
+.social-icons li {
+  @apply inline-block;
+}
+.social-icons li a {
+  @apply inline-flex h-9 w-9 items-center justify-center rounded-sm bg-accent;
+}
+.social-icons li a svg {
+  @apply h-5 w-5 fill-surface;
+}
+
+/* Content / prose style.
+ * Uses semantic tokens (ink, ink-muted, elevated, divider, accent) so dark mode
+ * is handled automatically by tailwind-plugin/tw-theme.js - no `dark:` twins needed.
+ */
+.content {
+  @apply prose max-w-full font-primary;
+  @apply prose-headings:mb-[.3em] prose-headings:mt-[.6em] prose-headings:font-secondary prose-headings:text-ink prose-headings:text-balance prose-headings:leading-[1.25];
+  @apply prose-h1:text-h1-sm md:prose-h1:text-h1 prose-h1:font-bold;
+  @apply prose-h2:text-h2-sm md:prose-h2:text-h2 prose-h2:font-bold;
+  @apply prose-h3:text-h3-sm md:prose-h3:text-h3 prose-h3:font-bold;
+  @apply prose-h4:font-semibold prose-h5:font-semibold prose-h6:font-semibold;
+  @apply prose-img:max-w-full prose-img:rounded;
+  @apply prose-hr:border-divider;
+  @apply prose-p:text-base prose-p:text-ink-muted;
+  @apply prose-blockquote:rounded-lg prose-blockquote:border prose-blockquote:border-accent/25 prose-blockquote:bg-elevated prose-blockquote:px-8 prose-blockquote:py-10 prose-blockquote:font-primary prose-blockquote:text-2xl prose-blockquote:font-semibold prose-blockquote:not-italic prose-blockquote:text-ink;
+  @apply prose-pre:rounded-lg prose-pre:bg-elevated prose-pre:max-w-full prose-pre:overflow-x-auto prose-pre:font-mono;
+  @apply prose-code:px-1 prose-code:font-mono prose-code:text-accent;
+  @apply prose-strong:font-bold prose-strong:text-ink;
+  @apply prose-a:text-ink-muted prose-a:underline prose-a:hover:text-accent;
+  @apply prose-li:text-ink-muted;
+  @apply prose-table:relative prose-table:block prose-table:max-w-full prose-table:overflow-x-auto prose-table:rounded-lg prose-table:before:absolute prose-table:before:left-0 prose-table:before:top-0 prose-table:before:h-full prose-table:before:w-full prose-table:before:rounded-[inherit] prose-table:before:border prose-table:before:border-divider prose-table:before:content-[""] prose-table:before:pointer-events-none;
+  @apply prose-thead:border-divider prose-thead:bg-elevated;
+  @apply prose-th:relative prose-th:z-10 prose-th:px-4 prose-th:py-[18px] prose-th:text-ink;
+  @apply prose-tr:border-divider;
+  @apply prose-td:relative prose-td:z-10 prose-td:px-3 prose-td:py-[18px] prose-td:text-ink-muted;
+}
+
+/* Buttons inside prose content: prose-a styles would otherwise force
+ * text-ink-muted/underline onto buttons. Re-assert each variant's own
+ * text colors with !important so light + dark mode stay consistent. */
+.content .btn {
+  @apply no-underline;
+}
+.content .btn-primary {
+  @apply !text-on-accent hover:!text-on-accent;
+}
+.content .btn-outline-primary {
+  @apply !text-ink hover:!text-on-accent;
+}
+
+.image--partial {
+  @apply w-full rounded object-cover;
+  will-change: transform;
+  content-visibility: auto;
+}
+
+/* Blog cards: match post hero ratio; centered object-cover fill. */
+.component--blog-card .blog-card__media {
+  @apply absolute top-1/2 left-1/2 block min-h-full min-w-full max-w-none -translate-x-1/2 -translate-y-1/2 rounded-none object-cover;
+  width: auto;
+  height: auto;
+}
+
+/* Table of Contents styling */
+#TableOfContents ol {
+  @apply list-none pl-0;
+}
+
+#TableOfContents ol ol {
+  @apply pl-4;
+}
+
+#TableOfContents ol ol ol {
+  @apply pl-6;
+}
+
+#TableOfContents ol ol ol ol {
+  @apply pl-8;
+}
+
+#TableOfContents .toc-level-3 {
+  @apply pl-4;
+}
+
+#TableOfContents .toc-level-4 {
+  @apply pl-6;
+}
+
+#TableOfContents .toc-level-5 {
+  @apply pl-8;
+}
+
+.dark .mermaid {
+  background: var(--color-elevated);
+}
+
+.dark .mermaid p {
+  color: var(--color-ink);
+}
+
+code {
+  padding-inline: 0 !important;
+}
+
+blockquote p {
+  padding-bottom: 20px;
+}
+
+blockquote p:last-child {
+  padding-bottom: 0;
+}
+
+blockquote li {
+  font-size: var(--text-base);
+}
+
+.tags_section ul {
+  padding-inline: 0;
+  margin: 0;
+}
+
+.pagination-control {
+  @apply inline-flex items-center justify-center;
+  padding-top: var(--btn-py);
+  padding-bottom: var(--btn-py);
+  min-height: var(--touch-target-min);
+  min-width: var(--touch-target-min);
+  touch-action: manipulation;
+}
+
+/* Back-to-top scroll fill. Paired with assets/js/back-to-top.js. */
+.back-to-top__fill {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  height: 0;
+  pointer-events: none;
+  transition: height 0.1s ease-out;
+}
+@media (prefers-reduced-motion: reduce) {
+  .back-to-top__fill {
+    transition: none;
+  }
+}
+

@@ -1,0 +1,90 @@
+{{- $page := . -}}
+{{- $bodyOnly := false -}}
+{{- $scope := "" -}}
+{{- if reflect.IsMap . -}}
+  {{- $page = .Page -}}
+  {{- $bodyOnly = .BodyOnly | default false -}}
+  {{- $scope = .Scope | default "" -}}
+{{- end -}}
+{{- $class := site.Params.notes.wikilink_class | default "wikilink" -}}
+
+{{- $assembled := dict "Page" $page -}}
+{{- if $scope -}}
+  {{- $assembled = dict "Page" $page "Scope" $scope -}}
+{{- end -}}
+{{- $raw := cond $bodyOnly (partial "notes/note-raw-body.html" $page) (partial "notes/assembled-content.html" $assembled) -}}
+{{- $raw = replaceRE `(?s)\n## See also[\s\S]*$` "" $raw -}}
+{{- $raw = partial "notes/expand-bible-mentions.html" (dict "Raw" $raw "Page" $page) -}}
+{{- $content := $page.RenderString $raw -}}
+
+{{- /* Hide static See also sections; rendered dynamically via see-also.html */ -}}
+{{- $content = replaceRE `(?s)<h2[^>]*id="see-also"[^>]*>See also</h2>.*$` "" $content -}}
+{{- $content = replaceRE `(?s)<h2[^>]*>See also</h2>.*$` "" $content -}}
+
+{{- /* Typographer may curl apostrophes inside [[wikilinks]] before we replace them */ -}}
+{{- $content = replace $content "\u2019" "'" -}}
+{{- $content = replace $content "\u2018" "'" -}}
+{{- $content = replace $content "&rsquo;" "'" -}}
+{{- $content = replace $content "&#8217;" "'" -}}
+{{- $content = replace $content "&apos;" "'" -}}
+
+{{- /* Keep inline code / pre blocks literal (e.g. `[[wikilinks]]` in Getting Started) */ -}}
+{{- $protected := slice -}}
+{{- $blocks := findRE `(?s)<(?:code|pre)[^>]*>.*?</(?:code|pre)>` $content -}}
+{{- range $i, $block := $blocks -}}
+  {{- $token := printf "WIKILINK-PROTECT-%d-END" $i -}}
+  {{- $protected = $protected | append (dict "token" $token "block" $block) -}}
+  {{- $content = replace $content $block $token -}}
+{{- end -}}
+
+{{- /* Resolve each [[wikilink]] via the link registry (case-insensitive keys) */ -}}
+{{- $links := findRE `\[\[[^\]|]+\]\]` $content -}}
+{{- $links = union $links (findRE `\[\[[^\]|]+#[^\]|]+\]\]` $content) -}}
+{{- $seen := dict -}}
+{{- range $links -}}
+  {{- $full := . -}}
+  {{- if index $seen $full -}}
+    {{- continue -}}
+  {{- end -}}
+  {{- $seen = merge $seen (dict $full true) -}}
+
+  {{- $inner := replaceRE `^\[\[|\]\]$` "" $full -}}
+  {{- $target := $inner -}}
+  {{- $anchor := "" -}}
+  {{- if strings.Contains $inner "#" -}}
+    {{- $hashParts := split $inner "#" -}}
+    {{- $target = index $hashParts 0 | strings.TrimSpace -}}
+    {{- $anchor = index $hashParts 1 | strings.TrimSpace -}}
+  {{- end -}}
+
+  {{- $resolved := partialCached "notes/resolve-target.html" (dict "Target" $target) $target -}}
+  {{- with $resolved.Page -}}
+    {{- $href := .RelPermalink -}}
+    {{- if $anchor -}}
+      {{- $href = printf "%s#%s" $href $anchor -}}
+    {{- end -}}
+    {{- $text := $target -}}
+    {{- if $anchor -}}
+      {{- $text = $anchor -}}
+    {{- end -}}
+    {{- $link := printf `<a href="%s" class="%s" data-wikilink-preview="%s">%s</a>` $href $class .RelPermalink $text -}}
+    {{- $content = replace $content $full $link -}}
+  {{- end -}}
+{{- end -}}
+
+{{- /* Unresolved wikilinks and deprecated [[target|label]] syntax */ -}}
+{{- $content = replaceRE `\[\[([^\]]+)\|([^\]]+)\]\]` (printf `<span class="%s-broken" title="Pipe wikilinks are not supported - use [[Note Title]] only">$1|$2</span>` $class) $content -}}
+{{- $content = replaceRE `\[\[([^\]]+)\]\]` (printf `<span class="%s-broken" title="No matching note for this wikilink">$1</span>` $class) $content -}}
+
+{{- range $protected -}}
+  {{- $content = replace $content .token .block -}}
+{{- end -}}
+
+{{- /* NASB verse paragraphs: text left, reference right on its own line; Gospel quotes red. */ -}}
+{{- $nasbBook := `(?:[1-3] )?(?:Matthew|Mark|Luke|John|Romans|Ephesians|Galatians|Deuteronomy|1 Corinthians|2 Corinthians|James|Hebrews|Psalm|Psalms|Proverbs)` -}}
+{{- $content = replaceRE (printf `<p>(.+?) ((?:Matthew|Mark|Luke|John) [\d:,\s-]+ NASB1995)</p>`) `<p class="scripture-verse"><span class="scripture-text jesus-words">$1</span><span class="scripture-ref">$2</span></p>` $content -}}
+{{- $content = replaceRE (printf `<p>(.+?) (%s [\d:,\s-]+ NASB1995)</p>` $nasbBook) `<p class="scripture-verse"><span class="scripture-text">$1</span><span class="scripture-ref">$2</span></p>` $content -}}
+{{- $content = replaceRE `<p class="scripture-verse"><span class="scripture-text">(.+?) ((?:Matthew|Mark|Luke|John) [\d:,\s-]+ NASB1995)</span></p>` `<p class="scripture-verse"><span class="scripture-text jesus-words">$1</span><span class="scripture-ref">$2</span></p>` $content -}}
+{{- $content = replaceRE (printf `<p class="scripture-verse">(.+?) (%s [\d:,\s-]+ NASB1995)</p>` $nasbBook) `<p class="scripture-verse"><span class="scripture-text">$1</span><span class="scripture-ref">$2</span></p>` $content -}}
+
+{{- $content | safeHTML -}}

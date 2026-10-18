@@ -1,0 +1,29 @@
+{{- /*
+  ponytail: never call .Summary here - Hugo 0.163+ panics (slice bounds out of range)
+  when summaryLength is small (see hugo.toml).
+  Notes: rebuild from frontmatter (key_concept, levels, examples, relationships).
+*/ -}}
+{{- if eq .Section "notes" -}}
+  {{- $body := partial "notes/assembled-content-body.html" . -}}
+  {{- if $body -}}
+{{- $body -}}
+{{- with .Params.shareable_thought -}}
+{{- $bullets := slice -}}
+{{- range . -}}
+  {{- if strings.TrimSpace . -}}
+    {{- $bullets = $bullets | append (printf "- %s" .) -}}
+  {{- end -}}
+{{- end -}}
+{{- if $bullets -}}
+
+## Shareable thoughts
+
+{{ delimit $bullets "\n" }}
+{{- end -}}
+{{- end -}}
+  {{- else -}}
+    {{- with .Params.description }}{{ . }}{{ else }}{{ .Plain | plainify }}{{ end -}}
+  {{- end -}}
+{{- else -}}
+  {{- with .Params.description }}{{ . }}{{ else }}{{ .Plain | plainify }}{{ end -}}
+{{- end -}}

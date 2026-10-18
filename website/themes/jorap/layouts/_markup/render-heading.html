@@ -1,0 +1,7 @@
+{{- $lvl := .Level -}}
+{{- if and (eq .Page.Section "blog") (eq .Ordinal 0) (gt $lvl 2) -}}
+  {{- $lvl = 2 -}}
+{{- end -}}
+<h{{ $lvl }} id="{{ .Anchor }}" {{- with .Attributes.class }} class="{{ . }}" {{- end }}>
+  {{- partial "func/title-case" .PlainText -}}
+</h{{ $lvl }}>

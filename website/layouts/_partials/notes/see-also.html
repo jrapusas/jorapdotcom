@@ -1,0 +1,37 @@
+{{- /*
+  Dynamic tag-related notes, excluding notes already linked in the body.
+  Renders nothing when there are no suggestions.
+*/ -}}
+{{- $page := . -}}
+{{- if eq $page.Params.slug "getting-started" -}}
+  {{- return -}}
+{{- end -}}
+
+{{- $limit := site.Params.notes.see_also_limit | default 5 -}}
+{{- $relatedLimit := add $limit 3 -}}
+{{- $related := partialCached "notes/related-notes.html" (dict "Context" $page "Limit" $relatedLimit) (printf "%s-%d-1" $page.RelPermalink $relatedLimit) -}}
+{{- $outgoing := partialCached "notes/outgoing-links.html" $page $page.RelPermalink -}}
+{{- $linked := dict -}}
+{{- range $outgoing -}}
+  {{- $linked = merge $linked (dict .Page.RelPermalink true) -}}
+{{- end -}}
+{{- $linked = merge $linked (dict $page.RelPermalink true) -}}
+
+{{- $items := slice -}}
+{{- range $related -}}
+  {{- if not (index $linked .Page.RelPermalink) -}}
+    {{- $items = $items | append . -}}
+  {{- end -}}
+{{- end -}}
+{{- $items = first $limit $items -}}
+
+{{- with $items -}}
+  <aside class="notes-see-also border-divider mt-6 rounded border p-5">
+    <h2 class="h6 mb-3">See also</h2>
+    <ul class="notes-see-also-list grid gap-3 sm:grid-cols-2">
+      {{- range . -}}
+        {{- partial "notes/note-link-card.html" (dict "Page" .Page) -}}
+      {{- end -}}
+    </ul>
+  </aside>
+{{- end -}}

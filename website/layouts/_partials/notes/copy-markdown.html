@@ -1,0 +1,37 @@
+{{- /*
+  Copy Hugo source + optional hub cluster / OKF catalog for agent copy.
+  Pass dict with Context (the note page). Sits upper-right beside the title.
+*/ -}}
+{{- $page := .Context -}}
+{{- with $page.File -}}
+  {{- $source := readFile .Path -}}
+  {{- $kind := $page.Params.note_kind | default "note" -}}
+  {{- $slug := $page.Params.slug | default .ContentBaseName -}}
+  {{- $showAgent := and (ne $kind "meta") (not ($page.Params.draft | default false)) -}}
+  {{- $okfFile := cond (eq $kind "index") (printf "static/exports/okf/hubs/%s/index.md" $slug) (printf "static/exports/okf/concepts/%s.md" $slug) -}}
+  <div class="notes-copy-md flex shrink-0 flex-wrap items-center justify-end gap-2">
+    <div class="notes-copy-wrap">
+      <button type="button" class="btn btn-outline-primary btn-sm" data-notes-copy>{{ T "copy_md" }}</button>
+      <script type="application/json" class="notes-copy-data">{{ dict "source" $source | jsonify | safeJS }}</script>
+    </div>
+    {{- if and $showAgent (fileExists $okfFile) -}}
+      <div class="notes-copy-wrap">
+        <button type="button" class="btn btn-outline-primary btn-sm" data-notes-copy>{{ T "agent_copy" }}</button>
+        <script type="application/json" class="notes-copy-data">{{ dict "source" (readFile $okfFile) | jsonify | safeJS }}</script>
+      </div>
+    {{- end -}}
+    {{- if eq $kind "index" -}}
+      {{- $cluster := partial "notes/build-hub-cluster.html" $page -}}
+      <div class="notes-copy-wrap">
+        <button type="button" class="btn btn-outline-primary btn-sm" data-notes-copy>{{ T "copy_hub_cluster" }}</button>
+        <script type="application/json" class="notes-copy-data">{{ dict "source" $cluster | jsonify | safeJS }}</script>
+      </div>
+    {{- end -}}
+    {{- if eq $slug "okf-export" -}}
+      <div class="notes-copy-wrap">
+        <button type="button" class="btn btn-outline-primary btn-sm" data-notes-copy>{{ T "copy_okf_catalog" }}</button>
+        <script type="application/json" class="notes-copy-data">{{ dict "source" (readFile "static/exports/okf/index.md") | jsonify | safeJS }}</script>
+      </div>
+    {{- end -}}
+  </div>
+{{- end -}}

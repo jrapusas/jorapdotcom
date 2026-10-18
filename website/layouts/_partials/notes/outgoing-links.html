@@ -1,0 +1,34 @@
+{{- /*
+  Wikilinks in the current note's raw body, resolved to pages.
+  Returns slice of dict: Page, Label, Anchor.
+*/ -}}
+{{- $page := . -}}
+{{- $raw := partial "notes/assembled-content.html" $page -}}
+{{- $matches := findRE `\[\[[^\]|#]+(?:#[^\]|]+)?\]\]` $raw -}}
+{{- $seen := dict -}}
+{{- $links := slice -}}
+{{- range $matches -}}
+  {{- $inner := replaceRE `^\[\[|\]\]$` "" . -}}
+  {{- $target := $inner -}}
+  {{- $anchor := "" -}}
+  {{- if strings.Contains $inner "#" -}}
+    {{- $hashParts := split $inner "#" -}}
+    {{- $target = index $hashParts 0 | strings.TrimSpace -}}
+    {{- $anchor = index $hashParts 1 | strings.TrimSpace -}}
+  {{- end -}}
+  {{- $resolved := partialCached "notes/resolve-target.html" (dict "Target" $target) $target -}}
+  {{- with $resolved.Page -}}
+    {{- if ne .RelPermalink $page.RelPermalink -}}
+      {{- if not (index $seen .RelPermalink) -}}
+        {{- $seen = merge $seen (dict .RelPermalink true) -}}
+        {{- $label := .Title -}}
+        {{- $href := .RelPermalink -}}
+        {{- if $anchor -}}
+          {{- $href = printf "%s#%s" .RelPermalink ($anchor | anchorize) -}}
+        {{- end -}}
+        {{- $links = $links | append (dict "Page" . "Label" $label "Anchor" $anchor "Href" $href) -}}
+      {{- end -}}
+    {{- end -}}
+  {{- end -}}
+{{- end -}}
+{{- return $links -}}

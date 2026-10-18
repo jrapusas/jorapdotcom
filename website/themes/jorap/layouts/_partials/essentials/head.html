@@ -1,0 +1,82 @@
+<meta charset="utf-8" />
+
+<!-- responsive meta -->
+<meta
+  name="viewport"
+  content="width=device-width, initial-scale=1, maximum-scale=5" />
+
+<!-- Dark-mode bootstrap: must run BEFORE styles to prevent FOUC. -->
+{{ partial "essentials/theme-init.html" . }}
+
+<!-- theme meta -->
+<meta name="theme-name" content="jorap" />
+
+<!-- favicon -->
+{{ partialCached "favicon" . }}
+
+
+<!-- manifest -->
+{{ partialCached "manifest" . }}
+
+
+<!-- site verifications -->
+{{ partialCached "site-verifications.html" . }}
+
+
+<!-- opengraph and twitter card -->
+{{ partial "basic-seo.html" . }}
+
+
+<!-- custom script -->
+{{ partialCached "custom-script.html" . }}
+
+
+<!-- google analytics -->
+{{ if and site.Config.Services.GoogleAnalytics.ID (ne site.Config.Services.GoogleAnalytics.ID "G-MEASUREMENT_ID") }}
+  {{ template "_internal/google_analytics.html" . }}
+{{ end }}
+
+
+<!-- google tag manager -->
+{{ partialCached "gtm.html" . }}
+
+
+<!-- search index -->
+{{ partial "search-index.html" . }}
+
+
+<!-- matomo analytics -->
+{{/* {{ partialCached "matomo-analytics.html" . }} */}}
+
+<!--  Baidu analytics -->
+{{/* {{ partialCached "baidu-analytics.html" . }} */}}
+
+<!-- Plausible Analytics -->
+{{/* {{ partialCached "plausible-analytics.html" . }} */}}
+
+<!-- Counter Analytics -->
+{{/* {{ partialCached "counter-analytics.html" . }} */}}
+
+<!-- Crisp Chat -->
+{{/* {{ partialCached "crisp-chat.html" . }} */}}
+
+<!-- Preload critical images -->
+{{ if .IsHome }}
+  {{ range first 1 (where site.RegularPages "Type" "blog") }}
+    {{ $image:= .Params.image }}
+    {{ if and $image (not (or (strings.HasPrefix $image "http://") (strings.HasPrefix $image "https://") (strings.HasPrefix $image "//"))) (strings.HasPrefix $image "/") }}
+      {{ $image = strings.TrimPrefix "/" $image }}
+    {{ end }}
+    {{ if $image }}
+      {{ $size:= "413x208" }}
+      {{ if and (path.Ext $image) (fileExists (add `assets/` (string $image))) }}
+        {{ with resources.Get $image }}
+          {{ if eq .MediaType.MainType "image" }}
+          {{ $imageWebp:= .Resize (add (string $size) " webp") }}
+          <link rel="preload" as="image" href="{{ $imageWebp.RelPermalink }}" imagesrcset="{{ $imageWebp.RelPermalink }}">
+          {{ end }}
+        {{ end }}
+      {{ end }}
+    {{ end }}
+  {{ end }}
+{{ end }}

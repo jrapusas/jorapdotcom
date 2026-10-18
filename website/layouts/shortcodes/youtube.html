@@ -1,0 +1,16 @@
+{{- $pc := .Page.Site.Config.Privacy.YouTube -}}
+{{- if not $pc.Disable -}}
+  {{- $ytHost := cond $pc.PrivacyEnhanced "www.youtube-nocookie.com" "www.youtube.com" -}}
+  {{- $id := .Get "id" | default (.Get 0) -}}
+  {{- $class := .Get "class" | default "youtube-video" -}}
+  {{- $title := .Get "title" | default "YouTube Video" -}}
+  <div class="{{ $class }}" style="position: relative; padding-bottom: 56.25%; height: 0; overflow: hidden;">
+    <iframe
+      src="https://{{ $ytHost }}/embed/{{ $id }}"
+      style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; border: 0;"
+      allowfullscreen
+      loading="lazy"
+      title="{{ $title }}">
+    </iframe>
+  </div>
+{{ end -}}

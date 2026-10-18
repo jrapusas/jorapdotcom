@@ -1,0 +1,23 @@
+{{- /*
+  Copy Hugo source + OKF blog export for agent handoff.
+  Pass dict with Context (the blog page).
+*/ -}}
+{{- $page := .Context -}}
+{{- with $page.File -}}
+  {{- $source := readFile .Path -}}
+  {{- $slug := $page.Params.slug | default .ContentBaseName -}}
+  {{- $showAgent := not ($page.Params.draft | default false) -}}
+  {{- $okfFile := printf "static/exports/okf-blog/articles/%s.md" $slug -}}
+  <div class="notes-copy-md flex shrink-0 flex-wrap items-center justify-end gap-2">
+    <div class="notes-copy-wrap">
+      <button type="button" class="btn btn-outline-primary btn-sm" data-notes-copy>{{ T "copy_md" }}</button>
+      <script type="application/json" class="notes-copy-data">{{ dict "source" $source | jsonify | safeJS }}</script>
+    </div>
+    {{- if and $showAgent (fileExists $okfFile) -}}
+      <div class="notes-copy-wrap">
+        <button type="button" class="btn btn-outline-primary btn-sm" data-notes-copy>{{ T "agent_copy" }}</button>
+        <script type="application/json" class="notes-copy-data">{{ dict "source" (readFile $okfFile) | jsonify | safeJS }}</script>
+      </div>
+    {{- end -}}
+  </div>
+{{- end -}}

@@ -1,0 +1,9 @@
+{{- $pool := partialCached "notes/random-pool.html" . "notes-random-pool-v1" -}}
+<section class="notes-featured-random" data-notes-featured-random>
+  <h2 class="h5 mb-1">Random pick</h2>
+  <p class="text-ink-muted mb-3 text-sm">Two notes from the garden - refreshed each visit.</p>
+  <div class="notes-featured-random-grid grid gap-3 sm:grid-cols-2" data-notes-featured-random-slot>
+    <p class="notes-random-loading text-ink-muted col-span-full text-sm">Loading…</p>
+  </div>
+  <script type="application/json" class="notes-featured-random-data">{{ $pool | jsonify | safeJS }}</script>
+</section>

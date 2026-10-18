@@ -1,0 +1,210 @@
+{{ define "main" }}
+  {{- $index := partialCached "notes/backlinks-index.html" site "backlinks-index-v5" -}}
+  {{- $notes := partialCached "notes/pages.html" (dict) "notes-pages-v1" -}}
+  {{- $rows := slice -}}
+  {{- range $notes -}}
+    {{- $key := .RelPermalink -}}
+    {{- $backlinks := index $index $key | default slice -}}
+    {{- if gt (len $backlinks) 0 -}}
+      {{- $rows = $rows | append (dict "Page" . "Backlinks" $backlinks "Count" (len $backlinks)) -}}
+    {{- end -}}
+  {{- end -}}
+  {{- $rows = sort $rows "Count" "desc" -}}
+  {{- $totalBacklinks := 0 -}}
+  {{- range $rows -}}
+    {{- $totalBacklinks = add $totalBacklinks .Count -}}
+  {{- end -}}
+  {{- $maxCount := 1 -}}
+  {{- with index $rows 0 -}}
+    {{- $maxCount = .Count -}}
+  {{- end -}}
+  {{- $avgBacklinks := 0 -}}
+  {{- if gt (len $rows) 0 -}}
+    {{- $avgBacklinks = div $totalBacklinks (len $rows) -}}
+  {{- end -}}
+
+  {{ partial "page-header" . }}
+
+  <section class="section">
+    <div class="container">
+      <div class="row justify-center">
+        <div class="lg:col-12">
+          {{ partial "notes/toolbar.html" (dict "Context" . "active" "backlinks") }}
+
+          <div class="content notes-content mb-6">
+            {{ partial "notes/render-content.html" . }}
+          </div>
+
+          {{- if gt (len $rows) 0 -}}
+            <div class="notes-backlinks-panel border-divider mb-6 rounded border">
+              <div class="notes-backlinks-panel__stats grid gap-3 p-4 sm:grid-cols-3 sm:p-5">
+                <div class="notes-backlinks-stat">
+                  <span class="notes-backlinks-stat__value tabular-nums">{{ len $rows }}</span>
+                  <span class="notes-backlinks-stat__label">Anchor notes</span>
+                </div>
+                <div class="notes-backlinks-stat">
+                  <span class="notes-backlinks-stat__value tabular-nums">{{ $totalBacklinks }}</span>
+                  <span class="notes-backlinks-stat__label">Total backlinks</span>
+                </div>
+                <div class="notes-backlinks-stat">
+                  {{- with index $rows 0 -}}
+                    <a
+                      class="notes-backlinks-stat__value notes-backlinks-stat__value--link tabular-nums no-underline"
+                      href="{{ .Page.RelPermalink }}"
+                      data-wikilink-preview="{{ .Page.RelPermalink }}">
+                      {{ .Count }}
+                    </a>
+                    <span class="notes-backlinks-stat__label">Top: {{ .Page.Title }}</span>
+                  {{- end -}}
+                </div>
+              </div>
+
+              {{- if gt (len $rows) 1 -}}
+                <nav class="notes-backlinks-jump border-divider border-t px-4 py-3 sm:px-5" aria-label="Top anchor notes">
+                  <span class="notes-backlinks-jump__label text-ink-muted mb-2 block text-xs font-medium tracking-wide uppercase">Jump to</span>
+                  <ul class="notes-backlinks-jump__list mb-0 flex list-none flex-wrap gap-2 p-0">
+                    {{- range first 10 $rows -}}
+                      <li>
+                        <a class="notes-backlinks-jump__link" href="#{{ .Page.File.ContentBaseName }}">
+                          <span class="notes-backlinks-jump__title">{{ .Page.Title }}</span>
+                          <span class="notes-backlinks-jump__count tabular-nums">{{ .Count }}</span>
+                        </a>
+                      </li>
+                    {{- end -}}
+                  </ul>
+                </nav>
+              {{- end -}}
+
+              <div class="notes-backlinks-controls border-divider border-t p-4 sm:p-5">
+                <div class="notes-backlinks-controls__top flex flex-wrap items-center gap-2 sm:gap-3">
+                  <label class="notes-backlinks-search-wrap min-w-0 w-full sm:flex-1">
+                    <span class="sr-only">Filter anchor notes</span>
+                    <input
+                      type="search"
+                      class="notes-backlinks-search form-input w-full"
+                      placeholder="Filter by anchor or linking note…"
+                      autocomplete="off"
+                      spellcheck="false"
+                      data-backlinks-search />
+                  </label>
+
+                  <div class="notes-backlinks-actions flex shrink-0 flex-wrap items-center gap-2">
+                    <label class="notes-backlinks-sort-wrap text-sm">
+                      <span class="sr-only">Sort anchor notes</span>
+                      <select class="notes-backlinks-sort form-input text-sm" data-backlinks-sort>
+                        <option value="count" selected>Most linked</option>
+                        <option value="title">A–Z</option>
+                      </select>
+                    </label>
+                    <button type="button" class="notes-backlinks-expand btn btn-outline-primary btn-sm" data-backlinks-expand>
+                      Expand all
+                    </button>
+                    <button type="button" class="notes-backlinks-collapse btn btn-outline-primary btn-sm" data-backlinks-collapse>
+                      Collapse all
+                    </button>
+                  </div>
+
+                  <button
+                    type="button"
+                    class="notes-backlinks-clear btn btn-outline-primary btn-sm hidden shrink-0"
+                    data-backlinks-clear
+                    hidden>
+                    Clear
+                  </button>
+
+                  <span
+                    class="notes-backlinks-count text-ink-muted ms-auto shrink-0 text-sm tabular-nums whitespace-nowrap"
+                    data-backlinks-count
+                    data-backlinks-total="{{ len $rows }}"
+                    aria-live="polite">
+                    {{ len $rows }} / {{ len $rows }}
+                  </span>
+                </div>
+                <p class="notes-backlinks-hint text-ink-muted mb-0 mt-3 text-xs">
+                  Avg {{ $avgBacklinks }} backlink{{ if ne $avgBacklinks 1 }}s{{ end }} per anchor · Large groups start collapsed
+                </p>
+              </div>
+            </div>
+
+            <div class="notes-backlinks-index space-y-3" data-notes-backlinks>
+              {{- range $i, $row := $rows -}}
+                {{- $searchBits := slice $row.Page.Title -}}
+                {{- range $row.Backlinks -}}
+                  {{- $searchBits = $searchBits | append .Page.Title -}}
+                  {{- with .SnippetHtml -}}
+                    {{- $searchBits = $searchBits | append (. | plainify) -}}
+                  {{- end -}}
+                {{- end -}}
+                {{- $fillPct := div (mul $row.Count 100) $maxCount -}}
+                <details
+                  class="notes-backlinks-group border-divider rounded border{{ if lt $i 3 }} notes-backlinks-group--top{{ end }}"
+                  data-backlinks-group
+                  data-backlinks-count="{{ $row.Count }}"
+                  data-backlinks-title="{{ $row.Page.Title | lower }}"
+                  data-backlinks-search="{{ delimit $searchBits " " | lower }}"
+                  id="{{ $row.Page.File.ContentBaseName }}"
+                  {{- if le $row.Count 6 -}}
+                    open
+                  {{- end -}}>
+                  <summary class="notes-backlinks-group__summary">
+                    {{- if lt $i 10 -}}
+                      <span class="notes-backlinks-rank tabular-nums" aria-hidden="true">#{{ add $i 1 }}</span>
+                    {{- end -}}
+                    <div class="notes-backlinks-group__heading">
+                      <span class="notes-backlinks-group__title">{{ $row.Page.Title }}</span>
+                      {{- with partial "notes/note-blurb.html" (dict "Page" $row.Page "DescriptionOnly" true) -}}
+                        <span class="notes-backlinks-group__desc">{{ . }}</span>
+                      {{- end -}}
+                    </div>
+                    <span class="notes-backlinks-group__meta">
+                      <span
+                        class="notes-backlinks-strength"
+                        style="--backlinks-fill: {{ $fillPct }}%"
+                        aria-hidden="true"
+                        title="{{ $fillPct }}% of top anchor"></span>
+                      <span class="notes-backlinks-badge" aria-label="{{ $row.Count }} backlink{{ if ne $row.Count 1 }}s{{ end }}">{{ $row.Count }}</span>
+                    </span>
+                  </summary>
+                  <div class="notes-backlinks-group__body">
+                    <div class="notes-backlinks-group__anchor-row mb-4 flex flex-wrap items-center justify-between gap-2">
+                      <a
+                        class="notes-backlinks-group__anchor text-accent text-sm font-medium no-underline hover:underline"
+                        href="{{ $row.Page.RelPermalink }}"
+                        data-wikilink-preview="{{ $row.Page.RelPermalink }}">
+                        Open anchor note →
+                      </a>
+                      {{- with $row.Page.Params.tags -}}
+                        {{ partial "notes/tag-chips.html" (dict
+                          "Tags" (first 3 .)
+                          "ListClass" "notes-backlinks-group__tags mb-0 flex flex-wrap gap-1.5 p-0 list-none"
+                          "SizeClass" "text-xs"
+                          "PadClass" "px-2 py-0.5"
+                        ) }}
+                      {{- end -}}
+                    </div>
+                    <ul class="notes-backlinks-list mb-0 grid list-none gap-2 p-0 sm:grid-cols-2 lg:grid-cols-3">
+                      {{- range $row.Backlinks -}}
+                        {{ partial "notes/backlink-item.html" . }}
+                      {{- end -}}
+                    </ul>
+                  </div>
+                </details>
+              {{- end -}}
+            </div>
+
+            <p class="notes-backlinks-empty text-ink-muted mt-6 hidden text-sm" data-backlinks-empty>
+              No anchor notes match this filter.
+            </p>
+          {{- else -}}
+            <div class="notes-backlinks-empty-state border-divider rounded border p-6 text-center">
+              <p class="text-ink-muted mb-2 text-sm">No backlinks yet.</p>
+              <p class="text-ink-muted mb-0 text-sm">Add <code>[[wikilinks]]</code> between notes to build inbound links.</p>
+            </div>
+          {{- end -}}
+        </div>
+      </div>
+    </div>
+  </section>
+
+  {{ partial "essentials/fingerprint-asset.html" (dict "src" "js/notes-backlinks.js" "defer" true) }}
+{{ end }}

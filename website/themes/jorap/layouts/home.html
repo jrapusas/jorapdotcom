@@ -1,0 +1,13 @@
+{{ define "main" }}
+  <section class="section section--home !py-8 md:!py-10">
+    <div class="container">
+      {{ partial "sections/home-intro.html" . }}
+
+      <div class="mt-10 border-t border-divider pt-10 lg:mt-12">
+        {{ partial "sections/home-scope.html" . }}
+      </div>
+    </div>
+  </section>
+
+  {{ partial "sections/home-writing.html" . }}
+{{ end }}

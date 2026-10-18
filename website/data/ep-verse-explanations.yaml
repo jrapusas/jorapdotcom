@@ -1,0 +1,229 @@
+# JoRap-voice gloss before each scripture shortcode in Eternal Principles key_concept.
+# Keyed by note slug; ref must appear in the verse line to match.
+verses:
+  grace:
+    - ref: John 3:16
+      explain: "God didn't wait for me to earn it - He gave His Son so belief, not merit, decides where I spend forever."
+    - ref: Ephesians 2:4-5
+      explain: "Paul names the same rescue from the dead side - alive with Christ by grace, not wages I stacked."
+  mercy:
+    - ref: Matthew 5:7
+      explain: "Show mercy and you'll receive mercy - the beatitude ties compassion out to compassion back."
+    - ref: Ephesians 2:4-5
+      explain: "Paul keeps mercy and grace in one breath - rich in mercy, saved by grace while I was still dead in sin."
+  free-grace:
+    - ref: John 5:24
+      explain: "Hear Christ's word and believe - you've crossed from death to life; judgment isn't hanging over your head."
+    - ref: Ephesians 2:8-9
+      explain: "Paul says the same gift out loud - saved by grace through faith, not your works, so nobody brags their way in."
+    - ref: Romans 4:5
+      explain: "Faith credited as righteousness - trust, not a merit report card, is what God counts."
+    - ref: Ephesians 2:10
+      explain: "Good works come after the gift - created in Christ for them, not to buy the ticket."
+  justification:
+    - ref: Luke 18:14
+      explain: "The tax collector went home justified - humility before God, not self-promotion, is what Jesus commended."
+    - ref: Romans 3:24
+      explain: "Paul names the verdict - justified as a gift by grace, Christ's redemption, not my performance."
+    - ref: Romans 4:5
+      explain: "Faith credited as righteousness for the one who believes, not the one who works the room."
+    - ref: Romans 5:1
+      explain: "Justified by faith, peace with God - the case closed at trust, not at perfect obedience."
+  sanctification:
+    - ref: John 17:17
+      explain: "Jesus asks the Father to make us holy through truth - Scripture shapes the slow becoming, not one heroic week."
+  present-a-living-sacrifice:
+    - ref: Matthew 16:24
+      explain: "Following Jesus costs self-denial and a cross - not suffering theater, daily surrender of my will to His."
+    - ref: Romans 12:1
+      explain: "Paul pictures the same move as worship that's alive - my Tuesday and my body offered after mercy received."
+  renewed-mind:
+    - ref: John 8:31-32
+      explain: "Stay in His word and you're His disciple - truth frees the mind culture tried to lock in hurry and outrage."
+    - ref: Romans 12:1-2
+      explain: "Mercy first, then sacrifice, then a mind being renewed - Paul stacks the order I keep swapping."
+  dont-copy-the-pattern:
+    - ref: John 15:19
+      explain: "Chosen out of the world - so when the feed's outrage feels normal, that's the world's script, not mine."
+    - ref: Romans 12:2
+      explain: "Don't conform - refuse the default before renewal reshapes how I react."
+  discern-his-will-daily:
+    - ref: John 7:17
+      explain: "Willing to obey first - then you can tell whether the teaching is God's or noise."
+  christlikeness:
+    - ref: Luke 6:40
+      explain: "Fully trained, like the teacher - the aim isn't my old default self on display, it's looking more like Jesus over years."
+    - ref: Romans 8:29
+      explain: "Paul names the same aim - conformed to the image of His Son, growth after faith not the entry fee."
+  faith-and-works:
+    - ref: Matthew 7:24-27
+      explain: "Hear Jesus and do - rock stands in the storm; hearing alone is sand."
+  repent-and-believe:
+    - ref: Mark 1:15
+      explain: "Kingdom's here now - turn from self-rule and trust the gospel today, not when habits look respectable."
+  childlike-faith:
+    - ref: Mark 10:15
+      explain: "Receive the kingdom like a kid - stop negotiating merit before you enter."
+  abide-in-me:
+    - ref: John 15:5
+      explain: "Cut off from the vine, I produce nothing lasting - fruit comes from staying connected, not willpower theater."
+    - ref: John 15:1-11
+      explain: "Abiding is ongoing dependence - pruning hurts but serves fruitfulness over time."
+  judgment-seat:
+    - ref: Matthew 16:27
+      explain: "The Son of Man repays deeds - reward review for the saved, not re-deciding who gets eternal life."
+    - ref: 1 Corinthians 3:12-15
+      explain: "Paul's fire test - some work burns, you're still saved through fire; worthless work shrinks reward, not standing."
+  loss-of-reward:
+    - ref: Matthew 25:29
+      explain: "Faithful use compounds; buried talent loses even what was given - reward can shrink without un-saving you."
+    - ref: 1 Corinthians 3:12-15
+      explain: "Saved through fire with loss - two ledgers: eternal life on Christ, reward on what lasted."
+  standing-vs-fellowship:
+    - ref: John 10:28
+      explain: "Eternal life in His hand - no one snatches you out; standing stays settled even when closeness feels thin."
+  assurance:
+    - ref: John 6:47
+      explain: "Believe and you have eternal life - rest on that promise when the week was ugly, not on your scorecard."
+  grateful-obedience:
+    - ref: John 14:15
+      explain: "Love shows up as keeping His commands - thanks after salvation, not payment to earn it."
+  faithful-steward:
+    - ref: Matthew 25:21
+      explain: "Well done for faithful use of what He entrusted - quiet Tuesdays count, not one heroic mission trip."
+  success-is-stewardship:
+    - ref: Matthew 25:21
+      explain: "Promotion and platform are entrusted for faithful use - enter the master's joy, don't bury the talent in ego."
+  love-god:
+    - ref: Matthew 22:37-38
+      explain: "First command, whole self - heart, soul, mind, not a corner of Sunday morning."
+    - ref: Deuteronomy 6:5
+      explain: "Jesus quoted Moses - love God with all your heart, soul, and might; whole-person devotion, not a checkbox."
+  love-your-neighbor:
+    - ref: Matthew 22:39
+      explain: "Second command, paired with the first - love the person in front of you the way you'd want care if roles flipped."
+    - ref: Mark 12:31
+      explain: "Jesus echoed Moses on the second command - no command ranks higher than loving God and neighbor."
+    - ref: Luke 10:37
+      explain: "The Samaritan acted as neighbor - go and do the same, don't debate who counts."
+  the-golden-rule:
+    - ref: Matthew 7:12
+      explain: "Treat people how you want to be treated - active care, not just avoiding harm."
+  love-your-enemies:
+    - ref: Matthew 5:44-45
+      explain: "Bless and pray for persecutors - the Father sends sun and rain on just and unjust; I copy that kindness."
+  forgiveness:
+    - ref: Matthew 6:14-15
+      explain: "Forgive others or the Father won't forgive you - daily rhythm, not a one-time sermon nod."
+    - ref: Matthew 18
+      explain: "The unforgiving servant - king forgave an unpayable debt; refusing a small debt exposed a heart out of step."
+    - ref: Matthew 18:22
+      explain: "Seventy times seven ends ledger-keeping - stop counting how many times you've been wronged."
+  reconciliation-before-worship:
+    - ref: Matthew 5:23-24
+      explain: "Fix the breach with your brother before the offering - worship with an unreconciled heart is hollow."
+  peacemakers:
+    - ref: Matthew 5:9
+      explain: "Blessed are peacemakers - active repair, not just staying quiet while two friends feud."
+  turn-the-other-cheek:
+    - ref: Matthew 5:38-39
+      explain: "Don't return evil for evil - break the retaliation loop, not pretend harm didn't happen."
+  let-your-yes-be-yes:
+    - ref: Matthew 5:33-37
+      explain: "Yes means yes - padded oaths mean your word wasn't trustworthy on its own."
+  judge-not:
+    - ref: Matthew 7:1-5
+      explain: "Don't play final judge on souls - pull your plank before you nitpick someone's speck."
+    - ref: Matthew 7:16-20
+      explain: "Still judge fruit - outcomes over time tell you what's underneath the hype."
+  by-their-fruits:
+    - ref: Matthew 7:16
+      explain: "Wolves wear sheep's clothing - time and results tell, not the polished talk."
+    - ref: Matthew 7:16-20
+      explain: "Don't condemn souls, but do evaluate fruit - grapes from vines, not hype."
+  heart-righteousness:
+    - ref: Matthew 5:21-30
+      explain: "Jesus goes deeper than courtroom compliance - anger is murder, lust is adultery, in the heart."
+    - ref: Matthew 5:22
+      explain: "Angry with your brother - guilty before the court even if you smiled outwardly."
+    - ref: Matthew 5:28
+      explain: "Lust logged mentally - adultery in the heart though marriage looks fine outside."
+  ask-seek-knock:
+    - ref: Matthew 7:7-11
+      explain: "Keep asking, seeking, knocking - God gives like a parent who gives bread, not a stone."
+    - ref: Matthew 6:9-13
+      explain: "Lord's Prayer order - Father's name, kingdom, will first, then daily bread and forgiveness."
+  secret-devotion:
+    - ref: Matthew 6:3-4
+      explain: "Give in secret - left hand does not know what the right is doing."
+    - ref: Matthew 6:5-6
+      explain: "Pray behind closed doors - Father who sees in secret is the audience."
+    - ref: Matthew 6:17-18
+      explain: "Fast without performing - wash your face for the Father, not the crowd."
+  seek-the-kingdom-first:
+    - ref: Matthew 6:33
+      explain: "Kingdom and righteousness first - food, status, and tomorrow sort behind that, not before my inbox."
+  god-centered-design:
+    - ref: Matthew 5:16
+      explain: "Good works visible so the Father gets glory - build for His name, not my brand."
+  dont-worry:
+    - ref: Matthew 6:27
+      explain: "Worry can't add an hour to your life - trust the Father who already feeds birds before you stack anxiety on tomorrow."
+  treasure-in-heaven:
+    - ref: Matthew 6:19-21
+      explain: "Earthly stuff rusts and gets stolen - where your treasure is, your heart follows; store what lasts."
+  eternal-rewards:
+    - ref: Matthew 6:4
+      explain: "Father who sees in secret repays - hidden devotion counted, not applause theater."
+    - ref: Matthew 6:18
+      explain: "Secret fasting gets the same promise - Father who sees in secret rewards, not the crowd's applause."
+    - ref: Matthew 16:27
+      explain: "Son of Man repays deeds at His return - reward review for the saved life, not the price of eternal life."
+    - ref: Matthew 25:21
+      explain: "Well done for faithful use - gift first, repayment for faithfulness second, not the price of eternal life."
+  the-beatitudes:
+    - ref: Matthew 5:3-12
+      explain: "Eight blessings flip the scoreboard - kingdom favor for the spiritually needy, not the self-sufficient."
+    - ref: Matthew 5:3
+      explain: "Poor in spirit - broke before God, receiving the kingdom as gift not wage."
+  fruits-of-the-spirit:
+    - ref: Galatians 5:22-23
+      explain: "Paul lists the cluster - one Spirit, love through self-control, not a merit checklist."
+    - ref: Galatians 5:19-21
+      explain: "Flesh works on the other side - Paul names what to crucify, not ignore."
+  discipleship:
+    - ref: Luke 9:23
+      explain: "Daily cross - deny self and follow after faith, not to buy heaven but because grace already saved."
+  discipleship-vs-leadership:
+    - ref: Matthew 20:26-28
+      explain: "Greatness is service - Son of Man came to serve; two seats, upward allegiance and outward care."
+  humility-and-service:
+    - ref: Mark 10:45
+      explain: "Came to serve and give His life - greatness in the kingdom runs opposite the world's ladder."
+  let-your-light-shine:
+    - ref: Matthew 5:14-16
+      explain: "City on a hill can't hide - let good works shine so people glorify the Father, not my personal brand."
+    - ref: Matthew 6:1
+      explain: "Not performance piety for applause - visible good for God's credit, not my feed."
+  take-up-your-cross:
+    - ref: Luke 9:23
+      explain: "Daily self-denial and follow - choosing God's will over mine, not collecting suffering points."
+  the-wise-builder:
+    - ref: Matthew 7:24-27
+      explain: "Hear and do - rock in the storm; hearing sermons without obedience is sand."
+    - ref: Matthew 7:21-23
+      explain: "Lord Lord without doing the Father's will - empty profession, not a stumbled believer who repents."
+  the-narrow-way:
+    - ref: Matthew 7:13-14
+      explain: "Broad road is crowded and easy; narrow gate costs self-rule - few find it, but it's the one Jesus named."
+    - ref: Matthew 7:21-23
+      explain: "Not everyone who says Lord Lord enters - false profession vs believer who stumbles and may lose reward but stays saved."
+  christianity-and-politics:
+    - ref: Matthew 22:21
+      explain: "Coin to Caesar, self to God - civic duty without making Rome or any party ultimate lord."
+  render-unto-caesar:
+    - ref: Matthew 22:21
+      explain: "Pay lawful taxes, reserve worship for God - no revolutionary tax refusal, no idolizing the state."
+  great-commission:
+    - ref: Matthew 28:19-20
+      explain: "Go, baptize, teach obedience - Christ's authority and presence to the end of the age, not recruitment zeal."

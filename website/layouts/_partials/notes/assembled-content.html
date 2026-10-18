@@ -1,0 +1,13 @@
+{{- /*
+  Cached entry for assembled note markdown. Keys: page URL + scope (full | intro | tail).
+*/ -}}
+{{- $page := . -}}
+{{- $scope := "" -}}
+{{- if reflect.IsMap . -}}
+  {{- $page = .Page -}}
+  {{- $scope = .Scope | default "" -}}
+{{- end -}}
+{{- $ctx := dict "Page" $page "Scope" $scope -}}
+{{- $scopeKey := cond (eq $scope "") "full" $scope -}}
+{{- $cacheKey := printf "assembled-content-v1|%s|%s" $page.RelPermalink $scopeKey -}}
+{{- partialCached "notes/assembled-content-body.html" $ctx $cacheKey -}}

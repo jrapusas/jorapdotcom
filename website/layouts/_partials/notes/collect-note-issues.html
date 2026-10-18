@@ -1,0 +1,294 @@
+{{- /*
+  Scan garden notes for link and structure issues.
+  Returns dict:
+    byPath - map File.Path → { broken, pipe, unlinked, structure, orphan, deadEnd, utility, relBroken, bodySection, total }
+    notes - slice of { Page, …, total }
+    brokenCount, pipeCount, unlinkedCount, structureCount,
+    orphanCount, deadEndCount, utilityCount, relBrokenCount, bodySectionCount,
+    notesWithIssues
+*/ -}}
+{{- $registry := partialCached "notes/link-registry.html" site "notes-registry-v3" -}}
+{{- $graph := partialCached "notes/graph-data.html" site "graph-data-v4" -}}
+{{- $graphByUrl := dict -}}
+{{- range $graph.nodes -}}
+  {{- $graphByUrl = merge $graphByUrl (dict .url .) -}}
+{{- end -}}
+{{- $gardenNotes := partialCached "notes/pages.html" (dict) "notes-pages-v1" -}}
+{{- $minLen := site.Params.notes.unlinked_min_length | default 6 | int -}}
+{{- $byPath := dict -}}
+{{- $allNotes := slice -}}
+{{- $brokenCount := 0 -}}
+{{- $pipeCount := 0 -}}
+{{- $unlinkedCount := 0 -}}
+{{- $structureCount := 0 -}}
+{{- $orphanCount := 0 -}}
+{{- $deadEndCount := 0 -}}
+{{- $utilityCount := 0 -}}
+{{- $relBrokenCount := 0 -}}
+{{- $bodySectionCount := 0 -}}
+{{- $bodySectionHeadings := slice "Key Concept" "Examples" "Note Relationships" "See also" -}}
+
+{{- range $gardenNotes -}}
+  {{- $note := . -}}
+  {{- $path := $note.File.Path -}}
+  {{- $raw := partial "notes/assembled-content.html" $note -}}
+  {{- $bodyOnly := partial "notes/note-raw-body.html" $note -}}
+  {{- $fence := "```" -}}
+  {{- $tick := "`" -}}
+  {{- $raw = replaceRE (printf "(?s)%s[\\s\\S]*?%s" $fence $fence) "" $raw -}}
+  {{- $raw = replaceRE (printf "%s[^%s\\n]+%s" $tick $tick $tick) "" $raw -}}
+  {{- $raw = replaceRE `(?s)<h2[^>]*id="see-also"[^>]*>See also</h2>.*$` "" $raw -}}
+  {{- $raw = replaceRE `(?s)## See also.*$` "" $raw -}}
+
+  {{- $broken := slice -}}
+  {{- $brokenKeys := dict -}}
+  {{- $matches := findRE `\[\[[^\]|#]+(?:#[^\]|]+)?\]\]` $raw -}}
+  {{- range $matches -}}
+    {{- $inner := replaceRE `^\[\[|\]\]$` "" . -}}
+    {{- $target := $inner -}}
+    {{- if strings.Contains $target "#" -}}
+      {{- $target = index (split $target "#") 0 | strings.TrimSpace -}}
+    {{- end -}}
+    {{- $target = replace $target "\u2019" "'" -}}
+    {{- $target = replace $target "\u2018" "'" -}}
+    {{- if not (index $registry.byKey (lower $target)) -}}
+      {{- $key := lower $target -}}
+      {{- if not (index $brokenKeys $key) -}}
+        {{- $brokenKeys = merge $brokenKeys (dict $key true) -}}
+        {{- $broken = $broken | append (dict "target" $target "raw" $inner) -}}
+      {{- end -}}
+    {{- end -}}
+  {{- end -}}
+
+  {{- $pipe := slice -}}
+  {{- $pipeKeys := dict -}}
+  {{- $pipeMatches := findRE `\[\[[^\]]+\|[^\]]+\]\]` $raw -}}
+  {{- range $pipeMatches -}}
+    {{- $inner := replaceRE `^\[\[|\]\]$` "" . -}}
+    {{- $key := lower $inner -}}
+    {{- if not (index $pipeKeys $key) -}}
+      {{- $pipeKeys = merge $pipeKeys (dict $key true) -}}
+      {{- $target := $inner -}}
+      {{- if strings.Contains $inner "|" -}}
+        {{- $target = index (split $inner "|") 0 | strings.TrimSpace -}}
+      {{- end -}}
+      {{- $pipe = $pipe | append (dict "raw" $inner "target" $target) -}}
+    {{- end -}}
+  {{- end -}}
+
+  {{- $utility := slice -}}
+  {{- $utilityKeys := dict -}}
+  {{- range $matches -}}
+    {{- $inner := replaceRE `^\[\[|\]\]$` "" . -}}
+    {{- $target := $inner -}}
+    {{- if strings.Contains $target "#" -}}
+      {{- $target = index (split $target "#") 0 | strings.TrimSpace -}}
+    {{- end -}}
+    {{- if strings.Contains $target "|" -}}
+      {{- $target = index (split $target "|") 0 | strings.TrimSpace -}}
+    {{- end -}}
+    {{- $target = replace $target "\u2019" "'" -}}
+    {{- $target = replace $target "\u2018" "'" -}}
+    {{- $resolved := index $registry.byKey (lower $target) -}}
+    {{- if and $resolved (partial "notes/is-utility-page.html" $resolved) -}}
+      {{- $key := lower $target -}}
+      {{- if not (index $utilityKeys $key) -}}
+        {{- $utilityKeys = merge $utilityKeys (dict $key true) -}}
+        {{- $slug := $resolved.File.ContentBaseName | default "" -}}
+        {{- $utility = $utility | append (dict "target" $target "slug" $slug "utilityPage" $resolved) -}}
+      {{- end -}}
+    {{- end -}}
+  {{- end -}}
+
+  {{- $unlinked := slice -}}
+  {{- $unlinkedKeys := dict -}}
+  {{- /* Headings are structure, not prose mentions - e.g. ## Note Relationships */ -}}
+  {{- $mentionSrc := replaceRE `(?m)^#{1,6}\s+[^\n]*\n?` "" $raw -}}
+  {{- $mentionRendered := $note.RenderString $mentionSrc -}}
+  {{- /* ponytail: NASB blocks trip alias lint (blessed are, Romans 12:1) - scan prose, not citations */ -}}
+  {{- $mentionRaw := replaceRE `(?s)<p class="scripture-verse">.*?</p>` " " $mentionRendered -}}
+  {{- $mentionRaw = replaceRE `<[^>]+>` " " $mentionRaw -}}
+  {{- $mentionRaw = replaceRE `\s+` " " $mentionRaw | strings.TrimSpace -}}
+  {{- range $other := $gardenNotes -}}
+    {{- if eq $other.RelPermalink $note.RelPermalink -}}
+      {{- continue -}}
+    {{- end -}}
+    {{- $linkedToOther := false -}}
+    {{- range findRE `\[\[[^\]|#]+(?:#[^\]|]+)?\]\]` $raw -}}
+      {{- $inner := replaceRE `^\[\[|\]\]$` "" . -}}
+      {{- $target := $inner -}}
+      {{- if strings.Contains $target "#" -}}
+        {{- $target = index (split $target "#") 0 | strings.TrimSpace -}}
+      {{- end -}}
+      {{- if strings.Contains $target "|" -}}
+        {{- $target = index (split $target "|") 0 | strings.TrimSpace -}}
+      {{- end -}}
+      {{- $target = replace $target "\u2019" "'" -}}
+      {{- $target = replace $target "\u2018" "'" -}}
+      {{- $resolved := index $registry.byKey (lower $target) -}}
+      {{- if and $resolved (eq $resolved.RelPermalink $other.RelPermalink) -}}
+        {{- $linkedToOther = true -}}
+      {{- end -}}
+    {{- end -}}
+    {{- $needles := slice $other.Title -}}
+    {{- with $other.Params.aliases -}}
+      {{- $needles = union $needles . -}}
+    {{- end -}}
+    {{- range $needles -}}
+      {{- if lt (len .) $minLen -}}
+        {{- continue -}}
+      {{- end -}}
+      {{- $isAlias := ne . $other.Title -}}
+      {{- if and $isAlias $linkedToOther -}}
+        {{- continue -}}
+      {{- end -}}
+      {{- $words := split . " " -}}
+      {{- $multiWord := gt (len $words) 1 -}}
+      {{- $escaped := replaceRE `([.*+?^${}()|[\]\\])` `\\$1` . -}}
+      {{- $wikilinkPattern := printf `(?i)\[\[%s(?:#[^\]|]+)?\]\]` $escaped -}}
+      {{- if findRE $wikilinkPattern $raw -}}
+        {{- continue -}}
+      {{- end -}}
+      {{- if $multiWord -}}
+        {{- if not (findRE (printf `(?i)%s` $escaped) $mentionRaw) -}}
+          {{- continue -}}
+        {{- end -}}
+        {{- $wordPattern := printf `(?i)(?:^|[^[\w])%s(?:[^]\w]|$)` $escaped -}}
+        {{- if not (findRE $wordPattern $mentionRaw) -}}
+          {{- continue -}}
+        {{- end -}}
+      {{- else -}}
+        {{- if not (findRE (printf `%s` $escaped) $mentionRaw) -}}
+          {{- continue -}}
+        {{- end -}}
+        {{- $wordPattern := printf `(?:^|[^[\wA-Z])%s(?:[^]\w]|$)` $escaped -}}
+        {{- if not (findRE $wordPattern $mentionRaw) -}}
+          {{- continue -}}
+        {{- end -}}
+      {{- end -}}
+      {{- $ukey := printf "%s|%s" $path (lower .) -}}
+      {{- if not (index $unlinkedKeys $ukey) -}}
+        {{- $unlinkedKeys = merge $unlinkedKeys (dict $ukey true) -}}
+        {{- $unlinked = $unlinked | append (dict "mention" . "suggestTitle" $other.Title "suggestPage" $other) -}}
+      {{- end -}}
+    {{- end -}}
+  {{- end -}}
+
+  {{- $structure := slice -}}
+  {{- if and (eq ($note.Params.note_kind | default "note") "note") (not (partial "notes/is-utility-page.html" $note)) -}}
+    {{- $rels := partial "notes/relationship-types.html" $note -}}
+    {{- $hasRels := or $note.Params.relationships (strings.Contains $raw "## Note Relationships") -}}
+    {{- if not $hasRels -}}
+      {{- $structure = $structure | append (dict "type" "missingTable") -}}
+    {{- end -}}
+    {{- if not $rels.extends -}}
+      {{- $structure = $structure | append (dict "type" "missingExtends") -}}
+    {{- end -}}
+    {{- if not $rels.contradicts -}}
+      {{- $structure = $structure | append (dict "type" "missingContradicts") -}}
+    {{- end -}}
+    {{- $allowedSections := slice "key concept" "examples" "note relationships" "see also" -}}
+    {{- $extraKeys := dict -}}
+    {{- range findRE `(?m)^## ([^\n]+)` $bodyOnly -}}
+      {{- $title := . | replaceRE `(?m)^## ` "" | strings.TrimSpace -}}
+      {{- if not (in $allowedSections (lower $title)) -}}
+        {{- $key := lower $title -}}
+        {{- if not (index $extraKeys $key) -}}
+          {{- $extraKeys = merge $extraKeys (dict $key true) -}}
+          {{- $structure = $structure | append (dict "type" "extraSection" "heading" $title) -}}
+        {{- end -}}
+      {{- end -}}
+    {{- end -}}
+  {{- end -}}
+
+  {{- $relBroken := slice -}}
+  {{- $relBrokenKeys := dict -}}
+  {{- with $note.Params.relationships -}}
+    {{- range . -}}
+      {{- $relType := .type | default "" -}}
+      {{- $wl := .wikilink | default "" | string -}}
+      {{- range findRE `\[\[([^\]|#]+)(?:#[^\]|]+)?\]\]` $wl -}}
+        {{- $inner := replaceRE `^\[\[|\]\]$` "" . -}}
+        {{- $target := $inner -}}
+        {{- if strings.Contains $target "#" -}}
+          {{- $target = index (split $target "#") 0 | strings.TrimSpace -}}
+        {{- end -}}
+        {{- $target = replace $target "\u2019" "'" -}}
+        {{- $target = replace $target "\u2018" "'" -}}
+        {{- if not (index $registry.byKey (lower $target)) -}}
+          {{- $key := lower $target -}}
+          {{- if not (index $relBrokenKeys $key) -}}
+            {{- $relBrokenKeys = merge $relBrokenKeys (dict $key true) -}}
+            {{- $relBroken = $relBroken | append (dict "target" $target "relType" $relType) -}}
+          {{- end -}}
+        {{- end -}}
+      {{- end -}}
+    {{- end -}}
+  {{- end -}}
+
+  {{- $bodySection := slice -}}
+  {{- $bodySectionKeys := dict -}}
+  {{- range $bodySectionHeadings -}}
+    {{- $heading := . -}}
+    {{- if findRE (printf `(?m)^## %s\s*$` $heading) $bodyOnly -}}
+      {{- $key := lower $heading -}}
+      {{- if not (index $bodySectionKeys $key) -}}
+        {{- $bodySectionKeys = merge $bodySectionKeys (dict $key true) -}}
+        {{- $bodySection = $bodySection | append (dict "heading" $heading) -}}
+      {{- end -}}
+    {{- end -}}
+  {{- end -}}
+
+  {{- $orphan := slice -}}
+  {{- $deadEnd := slice -}}
+  {{- with index $graphByUrl $note.RelPermalink -}}
+    {{- if .orphan -}}
+      {{- $orphan = $orphan | append (dict "inDegree" (.inDegree | default 0)) -}}
+    {{- end -}}
+    {{- if .deadEnd -}}
+      {{- $deadEnd = $deadEnd | append (dict "type" "deadEnd") -}}
+    {{- end -}}
+  {{- end -}}
+
+  {{- if or (gt (len $broken) 0) (gt (len $pipe) 0) (gt (len $unlinked) 0) (gt (len $structure) 0) (gt (len $orphan) 0) (gt (len $deadEnd) 0) (gt (len $utility) 0) (gt (len $relBroken) 0) (gt (len $bodySection) 0) -}}
+    {{- $total := add (add (add (add (add (add (add (add (len $broken) (len $pipe)) (len $unlinked)) (len $structure)) (len $orphan)) (len $deadEnd)) (len $utility)) (len $relBroken)) (len $bodySection) -}}
+    {{- $row := dict
+      "broken" $broken
+      "pipe" $pipe
+      "unlinked" $unlinked
+      "structure" $structure
+      "orphan" $orphan
+      "deadEnd" $deadEnd
+      "utility" $utility
+      "relBroken" $relBroken
+      "bodySection" $bodySection
+      "total" $total
+    -}}
+    {{- $byPath = merge $byPath (dict $path $row) -}}
+    {{- $allNotes = $allNotes | append (merge $row (dict "Page" $note)) -}}
+    {{- $brokenCount = add $brokenCount (len $broken) -}}
+    {{- $pipeCount = add $pipeCount (len $pipe) -}}
+    {{- $unlinkedCount = add $unlinkedCount (len $unlinked) -}}
+    {{- $structureCount = add $structureCount (len $structure) -}}
+    {{- $orphanCount = add $orphanCount (len $orphan) -}}
+    {{- $deadEndCount = add $deadEndCount (len $deadEnd) -}}
+    {{- $utilityCount = add $utilityCount (len $utility) -}}
+    {{- $relBrokenCount = add $relBrokenCount (len $relBroken) -}}
+    {{- $bodySectionCount = add $bodySectionCount (len $bodySection) -}}
+  {{- end -}}
+{{- end -}}
+
+{{- return (dict
+  "byPath" $byPath
+  "notes" $allNotes
+  "brokenCount" $brokenCount
+  "pipeCount" $pipeCount
+  "unlinkedCount" $unlinkedCount
+  "structureCount" $structureCount
+  "orphanCount" $orphanCount
+  "deadEndCount" $deadEndCount
+  "utilityCount" $utilityCount
+  "relBrokenCount" $relBrokenCount
+  "bodySectionCount" $bodySectionCount
+  "notesWithIssues" (len $allNotes)
+) -}}

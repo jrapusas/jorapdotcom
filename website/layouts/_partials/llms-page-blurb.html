@@ -1,0 +1,5 @@
+{{- /*
+  ponytail: never call .Summary here - Hugo 0.163+ panics (slice bounds out of range)
+  when summaryLength is small (see hugo.toml). Prefer frontmatter description.
+*/ -}}
+{{- with .Params.description }}{{ . }}{{ else }}{{ .Plain | plainify | truncate 120 }}{{ end -}}

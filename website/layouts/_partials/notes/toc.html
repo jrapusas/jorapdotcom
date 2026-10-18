@@ -1,0 +1,89 @@
+{{- /*
+  Table of contents for notes - body headings from RawContent, plus page sections
+  (flashcards, outgoing links, backlinks, related posts, random note) when present.
+*/ -}}
+{{- $page := . -}}
+{{- $start := 2 -}}
+{{- $end := 5 -}}
+{{- $ordered := true -}}
+{{- $listTag := cond $ordered "ol" "ul" -}}
+{{- $skipIds := slice "see-also" -}}
+{{- $html := "" -}}
+
+{{- $raw := partial "notes/assembled-content.html" $page -}}
+{{- $raw = replaceRE `(?s)\n## See also[\s\S]*$` "" $raw -}}
+
+{{- $headings := slice -}}
+{{- range $line := split $raw "\n" -}}
+  {{- if findRE `^#{2,5}\s+` $line -}}
+    {{- $level := len (index (findRE `^#{2,5}` $line) 0) -}}
+    {{- if and (ge $level $start) (le $level $end) -}}
+      {{- $title := replaceRE `^#{2,5}\s+` "" $line | strings.TrimSpace -}}
+      {{- $title = replaceRE `\[\[([^\]|#]+)(?:#[^\]]+)?\]\]` "$1" $title -}}
+      {{- $title = replaceRE `[*_]` "" $title -}}
+      {{- $title = replaceRE `\{#[^}]+\}$` "" $title | strings.TrimSpace -}}
+      {{- $title = $title | plainify | strings.TrimSpace -}}
+      {{- $id := anchorize $title -}}
+      {{- if and $title (not (in $skipIds $id)) -}}
+        {{- $headings = $headings | append (dict "level" $level "title" $title "id" $id) -}}
+      {{- end -}}
+    {{- end -}}
+  {{- end -}}
+{{- end -}}
+
+{{- with $page.Params.shareable_thought -}}
+  {{- if gt (len .) 0 -}}
+    {{- $shareableHeading := dict "level" 2 "title" "Shareable thoughts" "id" "shareable-thought" -}}
+    {{- $inserted := false -}}
+    {{- $ordered := slice -}}
+    {{- range $headings -}}
+      {{- if and (not $inserted) (eq .id "note-relationships") -}}
+        {{- $ordered = $ordered | append $shareableHeading -}}
+        {{- $inserted = true -}}
+      {{- end -}}
+      {{- $ordered = $ordered | append . -}}
+    {{- end -}}
+    {{- if not $inserted -}}
+      {{- $ordered = $ordered | append $shareableHeading -}}
+    {{- end -}}
+    {{- $headings = $ordered -}}
+  {{- end -}}
+{{- end -}}
+
+{{- $extras := slice -}}
+{{- if and (eq ($page.Params.review | default false) true) (gt (len (partialCached "notes/cards-for-page.html" $page $page.RelPermalink)) 0) -}}
+  {{- $extras = $extras | append (dict "level" 2 "title" "Flashcards" "id" "flashcards") -}}
+{{- end -}}
+{{- $relNeighbors := partialCached "notes/relationship-neighbors.html" $page $page.RelPermalink -}}
+{{- if $relNeighbors.has -}}
+  {{- $extras = $extras | append (dict "level" 2 "title" "Relationship neighbors" "id" "relationship-neighbors") -}}
+{{- end -}}
+{{- $outgoing := partialCached "notes/outgoing-links.html" $page $page.RelPermalink | default slice -}}
+{{- if gt (len $outgoing) 0 -}}
+  {{- $extras = $extras | append (dict "level" 2 "title" "Links from this Note" "id" "links-from-this-note") -}}
+{{- end -}}
+{{- $backlinkIndex := partialCached "notes/backlinks-index.html" site "backlinks-index-v5" -}}
+{{- $backlinks := index $backlinkIndex $page.RelPermalink | default slice -}}
+{{- if gt (len $backlinks) 0 -}}
+  {{- $extras = $extras | append (dict "level" 2 "title" "Backlinks" "id" "backlinks") -}}
+{{- end -}}
+{{- $relatedLimit := site.Params.notes.related_posts_limit | default 3 -}}
+{{- range partial "toc-related-extras.html" (dict
+  "Context" $page
+  "relatedPostsLimit" $relatedLimit
+  "relatedNotesLimit" 0
+  "excludeSelfFromRandom" true
+) -}}
+  {{- $extras = $extras | append . -}}
+{{- end -}}
+{{- $headings = $headings | append $extras -}}
+
+{{- if $headings -}}
+  {{- $items := "" -}}
+  {{- range $headings -}}
+    {{- $items = printf `%s<li class="toc-level-%d"><a href="#%s">%s</a></li>` $items .level .id (partial "func/title-case" .title) -}}
+  {{- end -}}
+  {{- $html = printf `<nav id="TableOfContents"><%s>%s</%s></nav>` $listTag $items $listTag -}}
+{{- end -}}
+
+{{- return (dict "html" $html "has" (ne $html "")) -}}

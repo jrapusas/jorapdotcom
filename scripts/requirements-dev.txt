@@ -1,0 +1,3 @@
+# Garden/blog lint scripts (pnpm lint:garden, lint:blog). Not used on Cloudflare deploy.
+# Install locally: pip install -r scripts/requirements-dev.txt
+PyYAML>=6.0

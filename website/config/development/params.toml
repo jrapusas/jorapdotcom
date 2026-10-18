@@ -1,0 +1,5 @@
+# Development-only overrides (hugo server / npm run dev).
+# Draft posts preview at /drafts/ via buildDrafts in config/development/hugo.toml.
+
+[search]
+include_sections = ["blog", "notes"]

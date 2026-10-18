@@ -1,0 +1,88 @@
+{{- $ctx := .Context -}}
+{{- $active := .active | default "" -}}
+{{- $noteCount := len (partialCached "notes/pages.html" $ctx "notes-pages-v1") -}}
+{{- /* Issue counts live on /notes/issues/ only - collect-note-issues is too slow for every page. */ -}}
+{{- $toolsActive := or (eq $active "issues") (eq $active "review") (eq $active "create") (eq $active "okf") -}}
+<div class="notes-toolbar mb-6 flex flex-wrap items-center gap-2 xl:gap-3">
+  <a
+    class="btn btn-sm{{ if eq $active "list" }} btn-primary{{ else }} btn-outline-primary{{ end }}"
+    href="{{ `/notes/` | relLangURL }}"
+    {{- if eq $active "list" -}}
+      aria-current="page"
+    {{- end -}}>
+    All<span class="notes-filter__count"> | {{ $noteCount }}</span>
+  </a>
+  {{- if site.Params.notes.enable_graph -}}
+    <a
+      class="btn btn-sm{{ if eq $active "graph" }} btn-primary{{ else }} btn-outline-primary{{ end }}"
+      href="{{ `/notes/graph/` | relLangURL }}"
+      {{- if eq $active "graph" -}}
+        aria-current="page"
+      {{- end -}}>
+      Graph
+    </a>
+  {{- end -}}
+  <a
+    class="btn btn-sm{{ if eq $active "backlinks" }} btn-primary{{ else }} btn-outline-primary{{ end }}"
+    href="{{ `/notes/backlinks/` | relLangURL }}"
+    {{- if eq $active "backlinks" -}}
+      aria-current="page"
+    {{- end -}}>
+    Backlinks
+  </a>
+  {{- if site.Params.notes.enable_cards -}}
+    <a
+      class="btn btn-sm{{ if eq $active "flashcards" }} btn-primary{{ else }} btn-outline-primary{{ end }}"
+      href="{{ `/notes/flashcards/` | relLangURL }}"
+      {{- if eq $active "flashcards" -}}
+        aria-current="page"
+      {{- end -}}>
+      Flashcards
+    </a>
+  {{- end -}}
+  {{- if ne $active "note" -}}
+    {{- partial "notes/random-note.html" (dict "Context" $ctx "active" $active) -}}
+  {{- end -}}
+
+  <details class="notes-toolbar-tools shrink-0"{{- if $toolsActive }} open{{ end }}>
+    <summary class="notes-toolbar-tools__summary btn btn-outline-primary btn-sm">
+      Tools
+    </summary>
+    <div class="notes-toolbar-tools__body border-divider mt-2 flex flex-wrap gap-2 rounded border bg-surface p-3 sm:absolute sm:left-0 sm:mt-2 sm:min-w-[14rem] sm:shadow-md">
+      <a
+        class="btn btn-sm{{ if eq $active "issues" }} btn-primary{{ else }} btn-outline-primary{{ end }}"
+        href="{{ `/notes/issues/` | relLangURL }}"
+        {{- if eq $active "issues" -}}
+          aria-current="page"
+        {{- end -}}>
+        Issues
+      </a>
+      {{- if site.Params.notes.enable_cards -}}
+        <a
+          class="btn btn-sm{{ if eq $active "review" }} btn-primary{{ else }} btn-outline-primary{{ end }}"
+          href="{{ `/notes/review/` | relLangURL }}"
+          {{- if eq $active "review" -}}
+            aria-current="page"
+          {{- end -}}>
+          Review
+        </a>
+      {{- end -}}
+      <a
+        class="btn btn-sm{{ if eq $active "create" }} btn-primary{{ else }} btn-outline-primary{{ end }}"
+        href="{{ `/notes/create/` | relLangURL }}"
+        {{- if eq $active "create" -}}
+          aria-current="page"
+        {{- end -}}>
+        <span class="xl:hidden">Create</span><span class="hidden xl:inline">Create Note</span>
+      </a>
+      <a
+        class="btn btn-sm{{ if eq $active "okf" }} btn-primary{{ else }} btn-outline-primary{{ end }}"
+        href="{{ `/notes/okf-export/` | relLangURL }}"
+        {{- if eq $active "okf" -}}
+          aria-current="page"
+        {{- end -}}>
+        OKF
+      </a>
+    </div>
+  </details>
+</div>

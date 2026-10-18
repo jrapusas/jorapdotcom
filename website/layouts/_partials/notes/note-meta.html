@@ -1,0 +1,11 @@
+{{- /*
+  Note dates from file mtime (see file-dates.html).
+  Returns dict: Created, Updated.
+*/ -}}
+{{- $dates := partial "notes/file-dates.html" . -}}
+{{- return (dict
+  "Created" $dates.Created
+  "Updated" $dates.Updated
+  "CreatedDisplay" $dates.CreatedDisplay
+  "UpdatedDisplay" $dates.UpdatedDisplay
+) -}}

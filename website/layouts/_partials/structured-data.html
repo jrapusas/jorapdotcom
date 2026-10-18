@@ -1,0 +1,117 @@
+{{/*
+  JSON-LD: WebSite (home), Person (about), Article (blog + notes singles),
+  BreadcrumbList (non-home pages).
+*/}}
+{{- $graph := slice -}}
+
+{{- if .IsHome -}}
+  {{- $siteDesc := site.Params.metadata.description | default site.Title -}}
+  {{- $website := dict
+    "@type" "WebSite"
+    "name" site.Title
+    "url" site.Home.Permalink
+    "description" $siteDesc
+    "publisher" (dict "@type" "Person" "name" (site.Params.copyright | default site.Params.metadata.author | default site.Title))
+  -}}
+  {{- $graph = $graph | append $website -}}
+{{- end -}}
+
+{{- if and (eq .Kind "section") (eq .Section "about") -}}
+  {{- $personName := site.Params.copyright | default "Jonathan Rapusas" -}}
+  {{- $personDesc := .Params.description | default site.Params.metadata.description -}}
+  {{- $imagePath := .Params.image | default site.Params.metadata.image -}}
+  {{- $imageURL := "" -}}
+  {{- if $imagePath -}}
+    {{- if hasPrefix $imagePath "http" -}}
+      {{- $imageURL = $imagePath -}}
+    {{- else -}}
+      {{- $imageURL = $imagePath | absURL -}}
+    {{- end -}}
+  {{- end -}}
+  {{- $person := dict
+    "@type" "Person"
+    "name" $personName
+    "alternateName" site.Params.metadata.author
+    "url" .Permalink
+    "jobTitle" "Front-end developer"
+    "description" $personDesc
+  -}}
+  {{- if $imageURL -}}
+    {{- $person = merge $person (dict "image" $imageURL) -}}
+  {{- end -}}
+  {{- with site.Params.metadata.twitter -}}
+    {{- $person = merge $person (dict "sameAs" (slice (printf "https://twitter.com/%s" .))) -}}
+  {{- end -}}
+  {{- $graph = $graph | append $person -}}
+{{- end -}}
+
+{{- if not .IsHome -}}
+  {{- $crumbs := slice -}}
+  {{- $pos := 1 -}}
+  {{- $crumbs = $crumbs | append (dict "@type" "ListItem" "position" $pos "name" (site.Title) "item" site.Home.Permalink) -}}
+  {{- range .Ancestors.Reverse -}}
+    {{- if and (not .IsHome) (ne .Title "Pages") -}}
+      {{- $pos = add $pos 1 -}}
+      {{- $crumbs = $crumbs | append (dict "@type" "ListItem" "position" $pos "name" .Title "item" .Permalink) -}}
+    {{- end -}}
+  {{- end -}}
+  {{- $pos = add $pos 1 -}}
+  {{- $crumbs = $crumbs | append (dict "@type" "ListItem" "position" $pos "name" .Title "item" .Permalink) -}}
+  {{- $graph = $graph | append (dict "@type" "BreadcrumbList" "itemListElement" $crumbs) -}}
+{{- end -}}
+
+{{- if and .IsPage (in (slice "blog" "notes") .Section) -}}
+  {{- $headline := partial "page-meta-title.html" . -}}
+  {{- $description := "" -}}
+  {{- if .Params.meta_description -}}
+    {{- $description = .Params.meta_description -}}
+  {{- else if .Params.description -}}
+    {{- $description = .Params.description -}}
+  {{- else if site.Params.metadata.description -}}
+    {{- $description = site.Params.metadata.description -}}
+  {{- else -}}
+    {{- $description = .Plain | plainify | truncate 160 -}}
+  {{- end -}}
+
+  {{- $imageURL := "" -}}
+  {{- $imagePath := .Params.meta_image | default .Params.image | default site.Params.metadata.image -}}
+  {{- if $imagePath -}}
+    {{- if hasPrefix $imagePath "http" -}}
+      {{- $imageURL = $imagePath -}}
+    {{- else -}}
+      {{- $imageURL = $imagePath | absURL -}}
+    {{- end -}}
+  {{- end -}}
+
+  {{- $authorName := .Params.author | default site.Params.metadata.author | default site.Title -}}
+  {{- $published := .PublishDate.Format "2006-01-02T15:04:05Z07:00" -}}
+  {{- $modified := .Lastmod.Format "2006-01-02T15:04:05Z07:00" -}}
+  {{- if not .Lastmod -}}
+    {{- $modified = $published -}}
+  {{- end -}}
+
+  {{- $article := dict
+    "@type" "Article"
+    "headline" $headline
+    "description" $description
+    "datePublished" $published
+    "dateModified" $modified
+    "mainEntityOfPage" (dict "@type" "WebPage" "@id" .Permalink)
+    "author" (dict "@type" "Person" "name" $authorName)
+    "publisher" (dict
+      "@type" "Organization"
+      "name" site.Title
+      "url" site.Home.Permalink
+    )
+  -}}
+  {{- if $imageURL -}}
+    {{- $article = merge $article (dict "image" (slice $imageURL)) -}}
+  {{- end -}}
+  {{- $graph = $graph | append $article -}}
+{{- end -}}
+
+{{- if $graph -}}
+<script type="application/ld+json">
+{{- dict "@context" "https://schema.org" "@graph" $graph | jsonify -}}
+</script>
+{{- end -}}

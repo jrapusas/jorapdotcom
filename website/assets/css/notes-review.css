@@ -1,0 +1,54 @@
+/* Review session */
+.notes-review__start,
+.notes-review__done {
+  background: var(--color-elevated);
+}
+
+.notes-review__card {
+  min-height: 14rem;
+  background: var(--color-surface);
+}
+
+.notes-review__front,
+.notes-review__back {
+  color: var(--color-ink);
+}
+
+.notes-review__label {
+  letter-spacing: 0.06em;
+}
+
+[data-notes-review-exit] {
+  display: inline-flex;
+  align-items: center;
+  padding-top: var(--btn-py, 0.5rem);
+  padding-bottom: var(--btn-py, 0.5rem);
+  min-height: var(--touch-target-min, 2.75rem);
+  touch-action: manipulation;
+}
+
+.notes-review__start kbd,
+.notes-review__session kbd {
+  border: 1px solid var(--color-divider);
+  border-radius: 0.25rem;
+  background: var(--color-elevated);
+  padding: 0.1rem 0.35rem;
+  font-size: 0.75rem;
+}
+
+.notes-review__done.hidden,
+.notes-review__session.hidden,
+.notes-review__start.hidden {
+  display: none !important;
+}
+
+.notes-review__answer.hidden,
+.notes-review__ratings.hidden {
+  display: none !important;
+}
+
+.notes-review__actions.hidden {
+  display: none !important;
+}
+
+/* Game prompt randomizer (/randomizer/) */

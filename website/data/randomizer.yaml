@@ -1,0 +1,2850 @@
+# Game prompt collections. Names describe the prompt type, not branded deck titles.
+# All prompts are family-friendly and generic for a worldwide audience.
+collections:
+- id: scale-clues
+  title: Ranking prompts
+  mode: ranked-prompts
+  tagline: A theme on the card. You name one real thing; everyone ranks it 1-100 in their head.
+  play_hint: One real example ("flashlight", "take a nap", "duct tape"). 1 = weakest fit for the theme, 100 = strongest. Rank what you meant, not what the table would guess. Don't say your number out loud.
+  items:
+  - Things to bring on a deserted island.
+  - Things you'd want to do when you're very tired.
+  - Snacks you'd want during a movie at home.
+  - Superpowers perfect for a helpful person.
+  - Superpowers perfect for a lazy person.
+  - Superpowers you'd actually use every week.
+  - Superpowers you'd actually want to have.
+  - Sounds that would be awkward in a quiet library.
+  - Things that would be awkward to forget someone's name.
+  - Things that would be embarrassing to drop in public.
+  - Things that would be embarrassing to say too loudly.
+  - Things that would be embarrassing to wear to a formal event.
+  - Things that would be funny to bring to show-and-tell.
+  - Things that would be funny to see a celebrity do.
+  - Things that would end an awkward silence.
+  - Things that would make a prank harmless and funny.
+  - Things to bring if stranded in a forest overnight.
+  - Things that would cheer you up on a bad day.
+  - Things you'd want to do when you're bored at home.
+  - Things you'd want when you're bored at home.
+  - Desserts you'd order if calories didn't matter.
+  - Foods you'd want for a comfort meal.
+  - Snacks you'd want after school or work.
+  - Snacks you'd want at a sleepover.
+  - Snacks you'd want on a long car ride.
+  - Birthday party ideas that always work.
+  - Foods you'd want at a casual picnic.
+  - Things that would make a party more fun.
+  - Things that would start a good conversation.
+  - Things you'd want during a neighborhood block party.
+  - Things you'd want when hosting your first dinner party.
+  - Movies perfect for a family night.
+  - Movies perfect for a solo rainy afternoon.
+  - Movies you'd watch again and again.
+  - Songs you'd put on a cleaning playlist.
+  - Songs you'd put on a road-trip playlist.
+  - Songs you'd put on a workout playlist.
+  - Things you'd want during a power outage.
+  - Things you'd want if you could rewind one conversation a day.
+  - Things you'd want if you had no internet for a month.
+  - Activities for a rainy day with kids.
+  - Activities for a sunny day at the park.
+  - Animals you'd want as an impossible pet.
+  - Animals you'd want to see in the wild once.
+  - Back-to-school supplies worth splurging on.
+  - Bedtime stories that never get old.
+  - Books you'd bring on a long trip.
+  - Breakfast foods that would wake you up.
+  - Cartoons adults still enjoy.
+  - Chores you actually don't mind doing.
+  - Chores you'd feel good about finishing before guests arrive.
+  - Cities you'd want to wander without a plan.
+  - Countries you'd want to visit for history.
+  - Countries you'd want to visit for nature.
+  - Countries you'd want to visit for the food.
+  - Dinner foods you'd cook for someone you like.
+  - Drinks you'd want on a freezing day.
+  - Drinks you'd want on a scorching day.
+  - Excuses for being late that might actually work.
+  - Family outings that don't cost much.
+  - Family outings worth saving up for.
+  - Festivals or fairs you'd travel to attend.
+  - Foods that smell amazing while cooking.
+  - Foods you'd avoid eating in public.
+  - Foods you'd bring to a potluck.
+  - Foods you'd teach a kid to cook first.
+  - Foods you'd want at a celebration dinner.
+  - Foods you'd want on a cold winter night.
+  - Foods you'd want on a hot summer afternoon.
+  - Foods you'd want on a sick day.
+  - Groceries you'd grab first if the store was about to close.
+  - Historical figures you'd want to meet for an hour.
+  - Hobbies you'd pick up if you had more free time.
+  - Hobbies you'd recommend to a complete beginner.
+  - Holiday traditions you'd invent for friends.
+  - Holiday traditions you'd want to keep.
+  - Household tasks that always take longer than expected.
+  - Household tasks that feel satisfying when done.
+  - Inventions that would make daily life easier.
+  - Inventions that would make travel easier.
+  - Jobs children often dream about.
+  - Jobs that would suit someone who loves being outdoors.
+  - Jobs that would suit someone who loves building things.
+  - Jobs that would suit someone who loves helping people.
+  - Jobs that would suit someone who loves quiet.
+  - Jobs that would suit someone who loves travel.
+  - Jobs you'd pick if you love working outdoors all day.
+  - Jobs you'd want to try for just one day.
+  - Lunch foods you could eat every week.
+  - Museum exhibits that would hold your attention.
+  - Outfits that would blend in anywhere.
+  - Outfits that would stand out at a wedding.
+  - Pets that would fit a busy family.
+  - Pets that would fit a small home.
+  - Places that would feel exciting to visit alone.
+  - Places that would feel fun with a big group.
+  - Places that would feel peaceful to sit in for an hour.
+  - Places you'd want to explore on foot for a day.
+  - Places you'd want to photograph on vacation.
+  - Places you'd want to return to again and again.
+  - Places you'd want to see at night.
+  - Places you'd want to see at sunrise.
+  - Places you'd want to take a visiting friend.
+  - Places you'd want to visit on a once-in-a-lifetime trip.
+  - Plants you'd want in every neighborhood.
+  - Products you'd happily buy a second time.
+  - Qualities you'd want in a relay-race teammate.
+  - Rewards you'd offer for good behavior.
+  - School projects you'd actually look forward to.
+  - Science fair project ideas that sound impressive.
+  - Skills that would impress at a talent show.
+  - Skills you'd want to learn in a weekend workshop.
+  - Sounds that would be welcome at a sports game.
+  - Sports you'd actually try yourself.
+  - Sports you'd watch even if you don't play.
+  - Surprises you'd enjoy on an ordinary Tuesday.
+  - Surprises you'd hate on an ordinary Tuesday.
+  - TV shows you'd binge on a sick day.
+  - Things in life you'd never want to lose.
+  - Things that feel more valuable the longer you keep them.
+  - Things that feel worth the wait.
+  - Things that would be nice to hear after a hard week.
+  - Things that would be nice to hear from a friend far away.
+  - Things that would be nice to hear on your birthday.
+  - Things that would calm you down when you're stressed.
+  - Things that would help you focus when studying.
+  - Things that would help you relax before a test.
+  - Things that would make a compliment land well.
+  - Things that would make a guest feel welcome.
+  - Things that would make a long dinner more interesting.
+  - Things that would make a road trip more bearable.
+  - Things that would make a shy person open up.
+  - Things that would make a small gift feel thoughtful.
+  - Things that would make a thank-you feel sincere.
+  - Things that would make a waiting room less boring.
+  - Things that would make an apology feel genuine.
+  - Things that would make an ordinary day feel special.
+  - Things that would ruin a perfectly good cake.
+  - Things that would save a ruined dinner.
+  - Things to bring if an elevator stopped between floors.
+  - Things to bring if the power went out for a week.
+  - Things to bring if you were locked out of your house.
+  - Things to bring if you were stuck in a snowstorm indoors.
+  - Things to bring if your car broke down far from town.
+  - Things you'd give a tourist from another planet.
+  - Things you'd grab if the store was closing in two minutes.
+  - Things you'd hate to find in your lunchbox.
+  - Things you'd love to find in your lunchbox.
+  - Things you'd replace the moment they start to wear out.
+  - Things you'd save first in a small fire (if safe).
+  - Things you'd want after finishing a big project.
+  - Things you'd want at a beach all day.
+  - Things you'd want before a hurricane indoors.
+  - Things you'd want before giving a presentation.
+  - Things you'd want during a broken washing machine.
+  - Things you'd want during a cold snap with a weak furnace.
+  - Things you'd want during a delayed flight.
+  - Things you'd want during a heat advisory with no AC.
+  - Things you'd want during a heat wave.
+  - Things you'd want during a last-minute potluck.
+  - Things you'd want during a long drought.
+  - Things you'd want during a long queue at the doctor.
+  - Things you'd want during a school fundraiser.
+  - Things you'd want during a sick day at home.
+  - Things you'd want during a snow day.
+  - Things you'd want during a week of nonstop rain.
+  - Things you'd want in a backyard obstacle course.
+  - Things you'd want in a bathroom cabinet.
+  - Things you'd want in a blindfolded taste test.
+  - Things you'd want in a build-the-tallest-tower contest.
+  - Things you'd want in a cooking challenge with random ingredients.
+  - Things you'd want in a cozy reading nook.
+  - Things you'd want in a dream kitchen.
+  - Things you'd want in a first apartment.
+  - Things you'd want in a garage toolbox.
+  - Things you'd want in a garden shed.
+  - Things you'd want in a homemade fort.
+  - Things you'd want in a hotel room.
+  - Things you'd want in a kid's backpack.
+  - Things you'd want in a no-talking team challenge.
+  - Things you'd want in a one-minute packing challenge.
+  - Things you'd want in a perfect study space.
+  - Things you'd want in a school lunchbox.
+  - Things you'd want in a treasure hunt in the backyard.
+  - Things you'd want in an egg-and-spoon race.
+  - Things you'd want near the front door.
+  - Things you'd want on a hot-air balloon ride gone long.
+  - Things you'd want on a lazy Sunday morning.
+  - Things you'd want on a long flight.
+  - Things you'd want on a train journey.
+  - Things you'd want on a well-stocked desk.
+  - Things you'd want on the first day of school.
+  - Things you'd want to barricade a door with in an emergency.
+  - Things you'd want to build a raft with.
+  - Things you'd want to cross a muddy field with.
+  - Things you'd want to do before going to bed.
+  - Things you'd want to do during a lunch break.
+  - Things you'd want to do during a short break at work or school.
+  - Things you'd want to do on a commute.
+  - Things you'd want to do on a lazy Sunday morning.
+  - Things you'd want to do on your first day off in months.
+  - Things you'd want to do right after a big meal.
+  - Things you'd want to do right after waking up.
+  - Things you'd want to do the morning of a trip.
+  - Things you'd want to do the night before a trip.
+  - Things you'd want to do when it's raining outside.
+  - Things you'd want to do when it's too cold to go outside.
+  - Things you'd want to do when it's too hot to go outside.
+  - Things you'd want to do when waiting for food to arrive.
+  - Things you'd want to do when you can't sleep.
+  - Things you'd want to do when you have a whole afternoon free.
+  - Things you'd want to do when you have ten free minutes.
+  - Things you'd want to do when you're slightly hungry.
+  - Things you'd want to do when you're stuck indoors all day.
+  - Things you'd want to do while waiting in a long line.
+  - Things you'd want to find when cleaning a messy room.
+  - Things you'd want to finish before a vacation.
+  - Things you'd want to grab before guests arrive.
+  - Things you'd want to navigate without GPS.
+  - Things you'd want to own if you lived alone.
+  - Things you'd want to pass time during a long blackout.
+  - Things you'd want to purify questionable water.
+  - Things you'd want when it's raining outside.
+  - Things you'd want when the Wi-Fi goes down at home.
+  - Things you'd want when you can't find your keys.
+  - Things you'd want when you forget an umbrella.
+  - Things you'd want when you lock yourself out of a room.
+  - Things you'd want when you spill coffee on your shirt.
+  - Things you'd want when you're stuck indoors all day.
+  - Things you'd want when your phone battery hits one percent.
+  - Time periods you'd visit with a time machine.
+  - Things you'd want if a heat wave knocked out air conditioning.
+  - Things you'd want if a river rose near a campsite.
+  - Things you'd want if a tree fell across your driveway.
+  - Things you'd want if all screens stopped working for a weekend.
+  - Things you'd want if animals could talk for one day.
+  - Things you'd want if batteries disappeared for a day.
+  - Things you'd want if bees moved into your porch.
+  - Things you'd want if chores paid real coins.
+  - Things you'd want if delivery apps stopped working.
+  - Things you'd want if every cat in town gathered on your lawn.
+  - Things you'd want if every door became a portal for an hour.
+  - Things you'd want if fog made driving impossible.
+  - Things you'd want if gravity suddenly halved for an hour.
+  - Things you'd want if hail damaged your garden.
+  - Things you'd want if ice coated every sidewalk.
+  - Things you'd want if it rained something other than water.
+  - Things you'd want if it snowed in summer for one day.
+  - Things you'd want if maps stopped working on your phone.
+  - Things you'd want if money grew on a tree in your yard.
+  - Things you'd want if restaurants closed for a week.
+  - Things you'd want if the moon looked twice as big tonight.
+  - Things you'd want if water supply was cut off for three days.
+  - Things you'd want if wildlife wandered into your yard.
+  - Things you'd want if you could breathe underwater for a day.
+  - Things you'd want if you could fly for one afternoon.
+  - Things you'd want if you could only carry one bag.
+  - Things you'd want if you could only eat one food for a week.
+  - Things you'd want if you could only use hand tools.
+  - Things you'd want if you could only wear one outfit for a month.
+  - Things you'd want if you could pause time for five minutes a day.
+  - Things you'd want if you could speak every language for a week.
+  - Things you'd want if you discovered a secret garden.
+  - Things you'd want if you found a hidden room in your house.
+  - Things you'd want if you grew to the size of a building.
+  - Things you'd want if you had no car for a month.
+  - Things you'd want if you heard a strange noise at night.
+  - Things you'd want if you woke up a hundred years in the future.
+  - Things you'd want if you woke up a hundred years in the past.
+  - Things you'd want if your bicycle could only go backwards.
+  - Things you'd want if your phone only worked on Tuesdays.
+  - Things you'd want if your town flooded (safe indoors).
+  - "Things you'd want if elevators only went up, never down."
+  - Things you'd want if homework graded itself honestly.
+  - Things you'd want if sandstorm trapped you at a rest stop.
+  - Things you'd want if you shrunk to the size of an ant.
+  - Things grandparents love to do with grandkids.
+  - Card games you'd teach in five minutes.
+  - Birthday gifts kids actually use.
+  - Books you'd give to a curious teenager.
+  - Games you'd play with a five-year-old.
+  - Games you'd play with a teenager.
+  - School subjects you'd enjoy revisiting as an adult.
+  - Summer activities you'd sign a kid up for.
+  - Things that would make you laugh in a serious meeting.
+  - Things that would make you ten minutes late to an important meeting.
+  - Things to bring if you were lost on a hiking trail.
+  - Things you'd buy if you could only shop at a dollar store.
+  - Things you'd grab in a five-minute pharmacy run.
+  - Things you'd pack for a one-week space station visit.
+  - Things you'd want in a team meeting to go smoothly.
+  - Things you'd want in a twenty-four-hour charity livestream.
+  - Things you'd want on a submarine for a month.
+  - Things you'd want on the first colony on Mars.
+  - Things you'd want on the first day of a new job.
+  - Things you'd want to learn before age thirty.
+  - Party games that work with any group size.
+  - Board games you'd bring to game night.
+  - Board games you'd play with non-gamers.
+  - Things you'd want if a volcano erupted far away but ash arrived.
+
+- id: personal-scales
+  title: Personal icebreakers
+  mode: personal
+  tagline: Rate yourself 1-100 on habits you'd actually admit at the table. Someone always surprises the room.
+  play_hint: Pick your number honestly. Out loud or in your head - your call.
+  scale_label: On a scale of 1 to 100
+  items:
+  - "How dramatic are you?"
+  - "How lazy are you?"
+  - "How stubborn are you?"
+  - "How likely are you to gossip?"
+  - "How much of a procrastinator are you?"
+  - "To what degree would you call yourself a sore loser?"
+  - "How competitive are you at board games?"
+  - "How honest are you, even when it hurts?"
+  - "How impulsive are you?"
+  - "How sarcastic are you?"
+  - "How funny do you think you are?"
+  - "How hard is it for you to ignore your phone?"
+  - "How likely are you to eat food that fell on the floor?"
+  - "How likely are you to return a shopping cart?"
+  - "How likely are you to cry during a movie?"
+  - "How likely are you to double-dip at a party?"
+  - "How likely are you to sing in the shower?"
+  - "How often do you replay awkward moments in your head?"
+  - "How likely are you to apologize first?"
+  - "How likely are you to include someone sitting alone?"
+  - "How likely are you to scroll on your phone in bed?"
+  - "How adventurous are you with food?"
+  - "How anxious are you in everyday life?"
+  - "How easily are you distracted?"
+  - "How empathetic are you?"
+  - "How energetic are you in the evening?"
+  - "How energetic are you in the morning?"
+  - "How forgiving are you?"
+  - "How gracious are you when you win?"
+  - "How jealous are you?"
+  - "How likely are you to eat breakfast?"
+  - "How likely are you to hold a grudge?"
+  - "How likely are you to host holidays?"
+  - "How likely are you to overpack?"
+  - "How likely are you to stress-eat?"
+  - "How likely are you to stretch daily?"
+  - "How likely are you to tip generously?"
+  - "How likely are you to tip on takeout?"
+  - "How minimalist are you at home?"
+  - "How moody are you?"
+  - "How much of a chatterbox are you?"
+  - "How much of a night owl are you?"
+  - "How optimistic are you?"
+  - "How organized is your workspace?"
+  - "How outgoing are you at parties?"
+  - "How patient are you?"
+  - "How perfectionist are you?"
+  - "How pessimistic are you?"
+  - "How picky are you about what you eat?"
+  - "How punctual are you?"
+  - "How rule-following are you?"
+  - "How sentimental are you?"
+  - "How short-tempered are you?"
+  - "How shy are you around strangers?"
+  - "How superstitious are you?"
+  - "How tech-savvy are you?"
+  - "How tidy is your bedroom right now?"
+  - "How affectionate are you with people you care about?"
+  - "How comfortable are you asking for help?"
+  - "How comfortable are you meeting new people?"
+  - "How comfortable are you speaking in front of a group?"
+  - "How comfortable are you with silence in conversation?"
+  - "How competitive are you at work or school?"
+  - "How confident are you in new situations?"
+  - "How diplomatic are you in disagreements?"
+  - "How environmentally conscious are you?"
+  - "How focused are you when working or studying?"
+  - "How good a cook are you?"
+  - "How good a driver are you?"
+  - "How good a listener are you?"
+  - "How health-conscious are you about what you eat?"
+  - "How likely are you to Google symptoms after a minor ache?"
+  - "How likely are you to abandon habits after a week?"
+  - "How likely are you to address conflict directly?"
+  - "How likely are you to admit a recipe experiment failed?"
+  - "How likely are you to always tell the full truth?"
+  - "How likely are you to answer unknown numbers?"
+  - "How likely are you to appreciate tough love?"
+  - "How likely are you to arrive early to get a good spot?"
+  - "How likely are you to ask dumb questions on purpose?"
+  - "How likely are you to ask for feedback at work or school?"
+  - "How likely are you to ask for substitutions?"
+  - "How likely are you to ask people what they want?"
+  - "How likely are you to ask questions when confused?"
+  - "How likely are you to ask the server for recommendations?"
+  - "How likely are you to assume others will contact you?"
+  - "How likely are you to audit subscriptions yearly?"
+  - "How likely are you to avoid conflict at all costs?"
+  - "How likely are you to avoid horror movies?"
+  - "How likely are you to avoid public speaking?"
+  - "How likely are you to avoid spoilers at all costs?"
+  - "How likely are you to avoid the spotlight?"
+  - "How likely are you to back up your photos?"
+  - "How likely are you to be the emotional support friend?"
+  - "How likely are you to be the friend who checks in first?"
+  - "How likely are you to be the last one to leave a party?"
+  - "How likely are you to be the peacemaker in your family?"
+  - "How likely are you to be the planner in your friend group?"
+  - "How likely are you to believe humor is your core trait?"
+  - "How likely are you to believe in luck?"
+  - "How likely are you to believe kindness is your core trait?"
+  - "How likely are you to believe love at first sight?"
+  - "How likely are you to believe opposites attract?"
+  - "How likely are you to believe people can really change?"
+  - "How likely are you to believe systems beat willpower?"
+  - "How likely are you to believe willpower is enough?"
+  - "How likely are you to believe you are a good driver?"
+  - "How likely are you to believe you are lucky?"
+  - "How likely are you to believe you are unlucky?"
+  - "How likely are you to blame traffic when you left late?"
+  - "How likely are you to bluff in casual games?"
+  - "How likely are you to blurt secrets when excited?"
+  - "How likely are you to bring workout clothes you never use?"
+  - "How likely are you to burn food while multitasking?"
+  - "How likely are you to buy books you never read?"
+  - "How likely are you to buy clothes for comfort only?"
+  - "How likely are you to buy clothes for who you want to be?"
+  - "How likely are you to buy gifts months early?"
+  - "How likely are you to buy something because it is on sale?"
+  - "How likely are you to buy souvenirs for everyone?"
+  - "How likely are you to buy souvenirs only for yourself?"
+  - "How likely are you to buy the checkout-line item?"
+  - "How likely are you to buy the extended warranty?"
+  - "How likely are you to call out friendly cheating?"
+  - "How likely are you to call someone's bluff?"
+  - "How likely are you to carry a portable battery?"
+  - "How likely are you to celebrate others' wins genuinely?"
+  - "How likely are you to celebrate personal records quietly?"
+  - "How likely are you to celebrate small wins out loud?"
+  - "How likely are you to celebrate your own birthday loudly?"
+  - "How likely are you to chat with cashiers or baristas?"
+  - "How likely are you to cheat in a friendly game?"
+  - "How likely are you to choose generic brands?"
+  - "How likely are you to clean a little every day?"
+  - "How likely are you to clean before guests arrive?"
+  - "How likely are you to clean in one big session?"
+  - "How likely are you to clean while listening to podcasts?"
+  - "How likely are you to clear notifications immediately?"
+  - "How likely are you to click suspicious links by accident?"
+  - "How likely are you to collect something when you travel?"
+  - "How likely are you to color-code your notes or calendar?"
+  - "How likely are you to compare your home to others online?"
+  - "How likely are you to compare your progress to others?"
+  - "How likely are you to compare yourself to people online?"
+  - "How likely are you to compliment someone's outfit?"
+  - "How likely are you to cook when you could order delivery?"
+  - "How likely are you to correct someone's grammar?"
+  - "How likely are you to cover your eyes during scary scenes?"
+  - "How likely are you to cringe at your old social posts?"
+  - "How likely are you to cry happy tears?"
+  - "How likely are you to customize your home screen?"
+  - "How likely are you to cut people off after one betrayal?"
+  - "How likely are you to dance at weddings?"
+  - "How likely are you to dance when everyone is watching?"
+  - "How likely are you to dance when no one is watching?"
+  - "How likely are you to decorate at the last minute?"
+  - "How likely are you to decorate early for holidays?"
+  - "How likely are you to deflect a compliment?"
+  - "How likely are you to delete old photos?"
+  - "How likely are you to display books for looks?"
+  - "How likely are you to dog-ear a book page?"
+  - "How likely are you to donate clothes every season?"
+  - "How likely are you to donate unused gifts?"
+  - "How likely are you to downplay your achievements?"
+  - "How likely are you to dread large family gatherings?"
+  - "How likely are you to drink water before coffee?"
+  - "How likely are you to dwell on mistakes?"
+  - "How likely are you to eat only at highly rated places?"
+  - "How likely are you to eat organic when possible?"
+  - "How likely are you to eat straight from the container?"
+  - "How likely are you to enable two-factor authentication?"
+  - "How likely are you to enjoy a full day without your phone?"
+  - "How likely are you to enjoy being scared on purpose?"
+  - "How likely are you to enjoy being the center of attention?"
+  - "How likely are you to enjoy family reunions?"
+  - "How likely are you to enjoy home improvement shows?"
+  - "How likely are you to enjoy learning in public?"
+  - "How likely are you to enjoy luck more than strategy?"
+  - "How likely are you to enjoy pranking friends?"
+  - "How likely are you to enjoy self-help content?"
+  - "How likely are you to enjoy strategy more than luck?"
+  - "How likely are you to exercise on vacation?"
+  - "How likely are you to exercise when stressed?"
+  - "How likely are you to fact-check before sharing online?"
+  - "How likely are you to fall asleep reading?"
+  - "How likely are you to feel guilty relaxing?"
+  - "How likely are you to feel naked without your phone?"
+  - "How likely are you to get lost and not mind?"
+  - "How likely are you to get your own dessert?"
+  - "How likely are you to give second chances?"
+  - "How likely are you to hate being pranked?"
+  - "How likely are you to hold the elevator?"
+  - "How likely are you to journal your feelings?"
+  - "How likely are you to love gift wrapping?"
+  - "How likely are you to mute a group chat?"
+  - "How likely are you to need silence to focus?"
+  - "How likely are you to notice fashion trends?"
+  - "How likely are you to play an instrument?"
+  - "How likely are you to play devil's advocate?"
+  - "How likely are you to prefer museums alone?"
+  - "How likely are you to prefer surprise gifts?"
+  - "How likely are you to pretend you didn't see a message?"
+  - "How likely are you to procrastinate on gift shopping?"
+  - "How likely are you to put your phone away at concerts?"
+  - "How likely are you to read before sleep?"
+  - "How likely are you to read nutrition labels?"
+  - "How likely are you to regift something?"
+  - "How likely are you to regift thoughtfully?"
+  - "How likely are you to rely on memory alone?"
+  - "How likely are you to remember dreams?"
+  - "How likely are you to rewatch comfort shows?"
+  - "How likely are you to say I love you first?"
+  - "How likely are you to set multiple alarms?"
+  - "How likely are you to skip lunch when busy?"
+  - "How likely are you to split a dessert?"
+  - "How likely are you to stand up for a friend?"
+  - "How likely are you to take leftovers home?"
+  - "How likely are you to take notes by hand?"
+  - "How likely are you to try store samples?"
+  - "How likely are you to try street food?"
+  - "How likely are you to value honesty over harmony?"
+  - "How likely are you to vent to friends often?"
+  - "How likely are you to walk away from drama?"
+  - "How likely are you to wing it with spices?"
+  - "How likely are you to write thank-you notes?"
+  - "How likely are you to write wish lists?"
+  - "How much do you like having a daily routine?"
+  - "How territorial are you about personal space?"
+  - "How trustworthy do you consider yourself?"
+  - "How salty do you like your food?"
+  - "How spicy do you like your food?"
+  - "How sweet do you like your drinks?"
+  - "How calm are you under pressure?"
+  - "How good are you at keeping secrets?"
+  - "How adventurous are you?"
+  - "How ambitious are you?"
+  - "How athletic are you?"
+  - "How brave are you?"
+  - "How cautious are you?"
+  - "How coordinated are you?"
+  - "How easygoing are you?"
+  - "How nostalgic are you?"
+  - "How rebellious are you?"
+  - "How romantic are you?"
+  - "How calm are you when plans fall apart?"
+  - "How calm are you when you lose a game?"
+  - "How good are you at admitting when you're wrong?"
+  - "How good are you at winning arguments?"
+  - "How likely are you to ask for help before you are desperate?"
+  - "How likely are you to ask for help with assembly instructions?"
+  - "How likely are you to avoid hurting feelings even if it means bending truth?"
+  - "How likely are you to be the first to try a new restaurant?"
+  - "How likely are you to be the friend who remembers everyone's orders?"
+  - "How likely are you to believe competence is your core trait?"
+  - "How likely are you to believe reliability is your core trait?"
+  - "How likely are you to believe white lies are sometimes kind?"
+  - "How likely are you to borrow something and forget to return it?"
+  - "How likely are you to bring a book you never open on trips?"
+  - "How likely are you to call a professional for home repairs?"
+  - "How likely are you to cancel because the house is not ready?"
+  - "How likely are you to cancel plans when something better comes up?"
+  - "How likely are you to change your opinion after a good argument?"
+  - "How likely are you to choose loyalty over trying new places?"
+  - "How likely are you to clap along even when you cannot keep rhythm?"
+  - "How likely are you to commit to plans you are unsure about?"
+  - "How likely are you to compete with friends on fitness apps?"
+  - "How likely are you to cry when saying goodbye at an airport?"
+  - "How likely are you to donate clothes you still kind of like?"
+  - "How likely are you to dress in layers no matter the forecast?"
+  - "How likely are you to eat only familiar food while traveling?"
+  - "How likely are you to get road rage?"
+  - "How likely are you to jaywalk?"
+  - "How likely are you to keep your phone on the table during meals?"
+  - "How likely are you to let the phone ring and text back later?"
+  - "How likely are you to put your phone away during conversations?"
+  - "How much do you enjoy board games?"
+  - "How much do you enjoy karaoke?"
+  - "How much do you enjoy surprises?"
+  - "How vengeful are you?"
+  - "How workaholic are you?"
+  - "How comfortable are you eating alone in public?"
+  - "How likely are you to Google someone before meeting them?"
+  - "How likely are you to argue a late fee?"
+  - "How likely are you to argue in comment sections?"
+  - "How likely are you to ask for a raise or promotion?"
+  - "How likely are you to be the rule lawyer at game night?"
+  - "How likely are you to cry at a wedding?"
+  - "How likely are you to dog-ear library books?"
+  - "How likely are you to ghost a group plan?"
+  - "How likely are you to hoard vacation days?"
+  - "How likely are you to house-rule a board game?"
+  - "How likely are you to mute politics online?"
+  - "How likely are you to talk on the phone while driving?"
+  - "How likely are you to tip creators online?"
+  - "How likely are you to try extreme sports?"
+  - "How likely are you to use speakerphone in public?"
+  - "How likely are you to use unique passwords?"
+  - "How likely are you to wear headphones to avoid small talk?"
+  - "How much do you enjoy being in charge?"
+  - "How much do you enjoy trying local food when traveling?"
+
+- id: spectrum
+  title: Concept spectrums
+  mode: spectrum
+  tagline: Two poles on one line. Someone picks a hidden spot; you give one clue that lands there.
+  play_hint: Give a single clue for where the target lands. Works near either pole, not only the middle. Expect friendly debate.
+  spectrums:
+  - left: Hot
+    right: Cold
+  - left: Overrated
+    right: Underrated
+  - left: Boring
+    right: Exciting
+  - left: Smells bad
+    right: Smells good
+  - left: Rough
+    right: Smooth
+  - left: Cheap
+    right: Expensive
+  - left: Easy
+    right: Hard
+  - left: Safe
+    right: Dangerous
+  - left: Common
+    right: Rare
+  - left: Simple
+    right: Complex
+  - left: Quiet
+    right: Loud
+  - left: Mild
+    right: Spicy
+  - left: Useless
+    right: Useful
+  - left: Predictable
+    right: Surprising
+  - left: Relaxing
+    right: Stressful
+  - left: Polite
+    right: Rude
+  - left: Healthy
+    right: Unhealthy
+  - left: Old-fashioned
+    right: Modern
+  - left: Local
+    right: Exotic
+  - left: Calm
+    right: Chaotic
+  - left: Forgiving
+    right: Strict
+  - left: Obvious
+    right: Subtle
+  - left: Big
+    right: Small
+  - left: Fast
+    right: Slow
+  - left: Bright
+    right: Dim
+  - left: Sweet
+    right: Savory
+  - left: Soft
+    right: Firm
+  - left: Light
+    right: Heavy
+  - left: Clean
+    right: Dirty
+  - left: Full
+    right: Empty
+  - left: Shallow
+    right: Deep
+  - left: Narrow
+    right: Wide
+  - left: Sharp
+    right: Dull
+  - left: Fresh
+    right: Stale
+  - left: Patient
+    right: Impatient
+  - left: Brave
+    right: Timid
+  - left: Honest
+    right: Deceptive
+  - left: Serious
+    right: Silly
+  - left: Formal
+    right: Casual
+  - left: Private
+    right: Public
+  - left: Temporary
+    right: Permanent
+  - left: Literal
+    right: Figurative
+  - left: Fact
+    right: Opinion
+  - left: Introvert
+    right: Extrovert
+  - left: Beginner
+    right: Expert
+  - left: Childish
+    right: Mature
+  - left: Optimistic
+    right: Pessimistic
+  - left: Lazy
+    right: Driven
+  - left: Pointless
+    right: Essential
+  - left: Weak
+    right: Powerful
+  - left: Fragile
+    right: Durable
+  - left: Gentle
+    right: Aggressive
+  - left: Passive
+    right: Assertive
+  - left: Flexible
+    right: Rigid
+  - left: Minimal
+    right: Extravagant
+  - left: Ordinary
+    right: Extraordinary
+  - left: Mainstream
+    right: Underground
+  - left: Natural
+    right: Artificial
+  - left: Handmade
+    right: Mass-produced
+  - left: Crowded
+    right: Empty
+  - left: Sandwich
+    right: Not a sandwich
+  - left: Sport
+    right: Not a sport
+  - left: Vegetable
+    right: Not a vegetable
+  - left: Art
+    right: Science
+  - left: Job
+    right: Career
+  - left: Tool
+    right: Toy
+  - left: Pet
+    right: Pest
+  - left: Fantasy
+    right: Sci-fi
+  - left: Sad song
+    right: Happy song
+  - left: Fiction
+    right: Nonfiction
+  - left: Comedy
+    right: Drama
+  - left: Indoor activity
+    right: Outdoor activity
+  - left: Gift
+    right: Not a gift
+  - left: Dessert
+    right: Not dessert
+  - left: Breakfast food
+    right: Dinner food
+  - left: Game
+    right: Not a game
+  - left: Snack
+    right: Meal
+  - left: Joke
+    right: Not a joke
+  - left: Exercise
+    right: Not exercise
+  - left: Holiday
+    right: Not a holiday
+  - left: Harmless prank
+    right: Cruel joke
+  - left: Icebreaker
+    right: Conversation ender
+  - left: Time saver
+    right: Time waster
+  - left: Stress relief
+    right: Stress cause
+  - left: Healthy choice
+    right: Indulgent choice
+  - left: Selfish choice
+    right: Generous choice
+  - left: Confidence boost
+    right: Confidence drain
+  - left: Team builder
+    right: Team divider
+  - left: Low effort
+    right: High effort
+  - left: Mild habit
+    right: Risky habit
+  - left: Simple skill
+    right: Impressive skill
+  - left: Cheap thrill
+    right: Expensive hobby
+  - left: Overhyped
+    right: Underrated gem
+  - left: Guilty pleasure
+    right: Proud favorite
+  - left: Comfort zone
+    right: Challenge
+  - left: Nostalgia
+    right: Novelty
+  - left: Classic
+    right: Trending
+  - left: Comfort food
+    right: Adventurous food
+  - left: Underdone
+    right: Overdone
+  - left: Overexplained
+    right: Mysterious
+  - left: Quiet hobby
+    right: Loud hobby
+  - left: Solo hobby
+    right: Group hobby
+  - left: Low-key hangout
+    right: Big night out
+  - left: Quick errand
+    right: All-day outing
+  - left: Short walk
+    right: Long hike
+  - left: Quick shower
+    right: Long bath
+  - left: Light snack
+    right: Full meal
+  - left: Power nap
+    right: Deep sleep
+  - left: Mini vacation
+    right: Dream trip
+  - left: Quick game
+    right: Epic campaign
+  - left: Casual sport
+    right: Competitive sport
+  - left: Practice round
+    right: Championship
+  - left: Chore
+    right: Hobby
+  - left: Routine
+    right: Adventure
+  - left: Stay home
+    right: Go out
+  - left: Rest day
+    right: Training day
+  - left: Window shopping
+    right: Big purchase
+  - left: Budget meal
+    right: Fine dining
+  - left: Instant reply
+    right: Thoughtful reply
+  - left: Quick fix
+    right: Long-term fix
+  - left: Last minute
+    right: Planned ahead
+  - left: Rough draft
+    right: Final version
+  - left: Warm-up
+    right: Main event
+  - left: Appetizer
+    right: Main course
+  - left: Trailer
+    right: Feature film
+  - left: Tutorial
+    right: Boss fight
+  - left: Whisper
+    right: Shout
+  - left: Shy greeting
+    right: Bold introduction
+  - left: Listen
+    right: Talk
+  - left: Follow
+    right: Lead
+  - left: Play it safe
+    right: Take a risk
+  - left: Overthink
+    right: Go with gut
+  - left: Trust easily
+    right: Trust slowly
+  - left: Open book
+    right: Hard to read
+  - left: Forgive quickly
+    right: Hold a grudge
+  - left: Ask permission
+    right: Take initiative
+  - left: Overshare
+    right: Keep mystery
+  - left: Early bird
+    right: Night owl
+  - left: Summer mood
+    right: Winter mood
+  - left: Rainy day
+    right: Sunny day
+  - left: School day
+    right: Weekend
+  - left: Work mode
+    right: Vacation mode
+  - left: Screen time
+    right: Outside time
+  - left: Homework
+    right: Passion project
+  - left: Background music
+    right: Live concert
+  - left: Short video
+    right: Feature film
+  - left: Cartoon
+    right: Documentary
+  - left: Rewatch
+    right: First watch
+  - left: Spoiler
+    right: Surprise twist
+  - left: Happy ending
+    right: Tragic ending
+  - left: Formal event
+    right: Casual hangout
+  - left: City life
+    right: Country life
+  - left: Planned trip
+    right: Spontaneous trip
+  - left: Minimal home
+    right: Cozy clutter
+  - left: Packing light
+    right: Packing heavy
+  - left: Deep research
+    right: Quick search
+  - left: Fresh pizza
+    right: Reheated pizza
+  - left: Firm mattress
+    right: Soft mattress
+  - left: Indie film
+    right: Blockbuster
+  - left: Thrift find
+    right: Brand new
+  - left: Learn by doing
+    right: Learn by watching
+  - left: Strict budget
+    right: Treat yourself
+  - left: Big city noise
+    right: Small town quiet
+  - left: Whole foods
+    right: Processed foods
+  - left: Gentle ride
+    right: Thrill ride
+  - left: Overprepared
+    right: Underprepared
+  - left: Detailed itinerary
+    right: Rough outline
+  - left: Inbox zero
+    right: Inbox backlog
+  - left: Early arrival
+    right: Fashionably late
+  - left: Strategy game
+    right: Luck game
+  - left: Loud restaurant
+    right: Quiet restaurant
+  - left: Home cooking
+    right: Restaurant meal
+  - left: Camping trip
+    right: Hotel stay
+  - left: Beach vacation
+    right: Mountain vacation
+  - left: Group travel
+    right: Solo travel
+  - left: Remote work
+    right: Office work
+  - left: Video call
+    right: In-person meeting
+  - left: Ask for help
+    right: Figure it out alone
+  - left: Digital detox
+    right: Always connected
+  - left: Physical book
+    right: E-book
+  - left: DIY repair
+    right: Call a pro
+  - left: Repair item
+    right: Replace item
+  - left: Cook from scratch
+    right: Use shortcuts
+  - left: Morning workout
+    right: Evening workout
+  - left: Car karaoke
+    right: Quiet drive
+  - left: Home movie night
+    right: Theater night
+  - left: Spontaneous gift
+    right: Planned gift
+  - left: Farmers market
+    right: Supermarket run
+  - left: Bookstore browse
+    right: Online checkout
+  - left: Theme park ride
+    right: Nature trail
+  - left: Tent camping
+    right: Cabin stay
+  - left: Hotel buffet
+    right: Corner café
+  - left: Guided tour
+    right: Self-guided tour
+  - left: City break
+    right: Nature retreat
+  - left: Board game
+    right: Video game
+  - left: Live music
+    right: Recorded music
+  - left: Comedy podcast
+    right: True crime podcast
+  - left: Kid movie
+    right: Grown-up movie
+  - left: Instant coffee
+    right: Fancy coffee
+  - left: Fruit dessert
+    right: Chocolate dessert
+
+- id: would-you-rather
+  title: Either-or dilemmas
+  mode: ranked-prompts
+  tagline: Two options, one choice. Pick a side and say why.
+  play_hint: Read both options aloud. Everyone picks one, no middle ground. Best argument wins.
+  items:
+  - "Always be ten minutes early, or always be ten minutes late?"
+  - "Always have perfect weather on vacation, or always get the best seat at home?"
+  - "Always know the plot of a movie before you watch it, or never know anything about it?"
+  - "Always laugh at your own jokes, or never laugh at your own jokes?"
+  - "Always remember names, or always remember faces?"
+  - "Always sleep eight hours but wake up groggy, or sleep six hours and wake up refreshed?"
+  - "Always speak your mind, or always think before you speak?"
+  - "Always win at board games, or always have the most fun losing?"
+  - "Be able to fly but only two feet off the ground, or be invisible but only when nobody is looking?"
+  - "Be famous for one amazing thing, or be unknown but great at many things?"
+  - "Be the funniest person in the room, or the kindest person in the room?"
+  - "Be the best player on a losing team, or the worst player on a winning team?"
+  - "Be the first to arrive at every party, or the last to leave every party?"
+  - "Be the person who plans every trip, or the person who happily follows along?"
+  - "Be able to talk to animals, or speak every human language fluently?"
+  - "Be able to pause time for one minute a day, or rewind one minute a day?"
+  - "Be stuck in summer forever, or stuck in winter forever?"
+  - "Eat only breakfast foods for a year, or eat only dinner foods for a year?"
+  - "Eat the same perfect meal every day, or never eat the same meal twice?"
+  - "Give up music forever, or give up movies forever?"
+  - "Give up salty snacks forever, or give up sweet snacks forever?"
+  - "Have a rewind button for conversations, or a pause button for awkward moments?"
+  - "Have a personal chef, or have a personal driver?"
+  - "Have a photographic memory for faces, or for places?"
+  - "Have free flights anywhere forever, or free meals anywhere forever?"
+  - "Have more free time, or have more spending money?"
+  - "Have one extra hour every morning, or one extra hour every night?"
+  - "Have super hearing, or super smell?"
+  - "Have the ability to find anything you lose, or never lose anything again?"
+  - "Have unlimited books, or unlimited board games?"
+  - "Have wifi everywhere you go, or never need wifi again?"
+  - "Know every language but only read them, or speak one language perfectly but write poorly?"
+  - "Know the ending of every book before you start, or never know how a story ends?"
+  - "Live in a house with a huge yard and a small home, or a huge home and no yard?"
+  - "Live in a treehouse, or live on a houseboat?"
+  - "Live next door to your best friend, or live next door to your favorite restaurant?"
+  - "Live without air conditioning, or live without heating?"
+  - "Lose your phone for a day, or lose your keys for a day?"
+  - "Never do laundry again, or never wash dishes again?"
+  - "Never get a mosquito bite again, or never get sunburned again?"
+  - "Never have to wait in line, or never hit traffic?"
+  - "Never need an alarm clock, or never feel tired during the day?"
+  - "Never use a microwave again, or never use an oven again?"
+  - "Only eat food you cook, or only eat food someone else cooks?"
+  - "Only listen to one song on repeat for a month, or only listen to new songs for a month?"
+  - "Only travel by train, or only travel by plane?"
+  - "Only watch cartoons, or only watch documentaries?"
+  - "Read minds but only happy thoughts, or read minds but only worried thoughts?"
+  - "Read one book a week forever, or watch one movie a week forever?"
+  - "Ride a bike everywhere, or walk everywhere?"
+  - "Share one bathroom with five tidy people, or have five messy bathrooms to yourself?"
+  - "Shower in the morning only, or shower at night only?"
+  - "Sing every time you speak, or dance every time you walk?"
+  - "Skip every Monday, or skip every Friday?"
+  - "Sleep in a hammock, or sleep on a giant beanbag?"
+  - "Talk to your past self for ten minutes, or your future self for ten minutes?"
+  - "Trade places with your pet for a day, or trade places with your favorite teacher for a day?"
+  - "Travel to the past for a week, or travel to the future for a week?"
+  - "Use only pencils, or use only pens?"
+  - "Wake up early on weekends, or sleep in on weekdays too?"
+  - "Watch only live sports, or play only sports and never watch them?"
+  - "Wear formal clothes every day, or wear pajamas every day?"
+  - "Win a small prize every day, or win one huge prize once?"
+  - "Always have cold drinks, or always have hot drinks?"
+  - "Always have snacks in your pocket, or always have tissues in your pocket?"
+  - "Always hear background music, or always hear gentle ocean sounds?"
+  - "Always know when someone is lying, or always know when someone needs help?"
+  - "Always take the scenic route, or always take the fastest route?"
+  - "Be able to breathe underwater, or be able to survive in extreme cold?"
+  - "Be able to draw perfectly, or be able to sing perfectly?"
+  - "Be able to run as fast as a bike, or bike as comfortably as walking?"
+  - "Be allergic to chocolate, or be allergic to cheese?"
+  - "Be great at telling stories, or be great at remembering facts?"
+  - "Be stuck with dial-up internet for a day, or no phone for a day?"
+  - "Be the captain of every team, or the cheerleader for every team?"
+  - "Be the best gift-giver, or be the best thank-you-note writer?"
+  - "Be the person who picks the restaurant, or the person who always enjoys whatever is picked?"
+  - "Be too hot all the time, or too cold all the time?"
+  - "Eat dessert before dinner every night, or never eat dessert again?"
+  - "Eat pizza every Friday, or eat tacos every Tuesday?"
+  - "Get a surprise party every year, or plan the perfect party for someone else every year?"
+  - "Get free tickets to every concert, or free passes to every museum?"
+  - "Give up all social media, or give up all streaming services?"
+  - "Give up coffee, or give up tea?"
+  - "Go camping every month, or go to the beach every month?"
+  - "Go to space for an hour, or explore the deepest ocean trench for an hour?"
+  - "Have a clone to do chores, or have a robot to do homework?"
+  - "Have a home library that restocks itself, or a kitchen that cooks one perfect meal daily?"
+  - "Have a magic backpack that fits anything, or shoes that never wear out?"
+  - "Have a pet dragon the size of a cat, or a pet elephant the size of a dog?"
+  - "Have a phone battery that lasts a week, or a car that never needs gas?"
+  - "Have a room that cleans itself, or laundry that folds itself?"
+  - "Have a week with no homework, or a week with no chores?"
+  - "Have an endless supply of your favorite candy, or your favorite fruit?"
+  - "Have every Friday off school or work, or have every Wednesday off?"
+  - "Have perfect handwriting, or type twice as fast?"
+  - "Have snow on your birthday every year, or sunshine on your birthday every year?"
+  - "Have the world's best memory for birthdays, or for favorite foods?"
+  - "Have to whisper for a day, or have to speak in rhyme for a day?"
+  - "Have your favorite meal once a week, or a pretty good meal every day?"
+  - "Keep one childhood toy forever, or keep one childhood photo album forever?"
+  - "Know how to fix any bike, or know how to cook any meal?"
+  - "Know the history of every place you visit, or know the best food in every place you visit?"
+  - "Live above a bakery, or live above a bookstore?"
+  - "Live in a city with great public transit, or live in a town where you can bike everywhere?"
+  - "Live where it rains every afternoon, or where it is sunny every afternoon?"
+  - "Lose the ability to taste sweet, or lose the ability to taste salty?"
+  - "Never eat ice cream again, or never eat french fries again?"
+  - "Never get hiccups again, or never get the hiccups from laughing too hard?"
+  - "Never have to set an alarm, or never have to charge your devices?"
+  - "Never step on a LEGO brick again, or never stub your toe again?"
+  - "Only eat with chopsticks, or only eat with a spoon?"
+  - "Only play outside games, or only play inside games?"
+  - "Only use paper maps, or only use voice directions?"
+  - "Ride a roller coaster every week, or watch fireworks every week?"
+  - "See every sunrise for a year, or see every sunset for a year?"
+  - "Share your room with a sibling who is tidy, or have your own room that is always messy?"
+  - "Shop only at small local stores, or shop only at huge supermarkets?"
+  - "Speak every language for one day, or play every instrument for one day?"
+  - "Spend a day as a zookeeper, or spend a day as a park ranger?"
+  - "Spend a day in the 1800s, or spend a day in the 2200s?"
+  - "Spend a week without TV, or spend a week without music?"
+  - "Swap lives with a cartoon character for a day, or with a historical figure for a day?"
+  - "Take a photo that lasts forever, or take a trip that lasts one perfect day?"
+  - "Take only baths, or take only showers?"
+  - "Talk to plants and hear them reply, or talk to books and hear their stories?"
+  - "Travel by hot-air balloon, or travel by speedboat?"
+  - "Use only stairs for a month, or only elevators for a month?"
+  - "Visit every continent once, or revisit your favorite place ten times?"
+  - "Wake up to birdsong, or wake up to your favorite song?"
+  - "Watch a movie with no sound, or listen to a movie with no picture?"
+  - "Wear socks with sandals confidently, or never wear sandals again?"
+  - "Win a year of free ice cream, or win a year of free movie tickets?"
+  - "Always find a parking spot, or always find a seat on public transit?"
+  - "Always get the last slice of pizza, or always get the first fresh batch?"
+  - "Always have clean socks, or always have a charged phone?"
+  - "Always have good hair days, or always have good outfit days?"
+  - "Always know the shortest line at the store, or always know the fastest checkout clerk?"
+  - "Be able to jump as high as a basketball hoop, or run as fast as a scooter?"
+  - "Be able to talk to babies and understand them, or talk to grandparents and hear their best stories?"
+  - "Be famous on a talent show, or be famous for helping your community?"
+  - "Be the best at charades, or be the best at riddles?"
+  - "Be the designated photographer, or be the person who never appears in photos?"
+  - "Be the friend who remembers birthdays, or the friend who always brings snacks?"
+  - "Be the teacher's helper for a day, or the coach's helper for a day?"
+  - "Be too tall for doorways, or too short to reach top shelves?"
+  - "Bring lunch from home every day, or eat cafeteria food every day?"
+  - "Build the world's tallest sandcastle, or find the coolest seashell on the beach?"
+  - "Camp in the mountains, or camp by the ocean?"
+  - "Carry a huge umbrella always, or never need an umbrella?"
+  - "Celebrate every holiday twice, or invent one new holiday each year?"
+  - "Clean your room in five minutes magically, or keep it tidy without thinking?"
+  - "Climb a real mountain, or kayak a real river?"
+  - "Cook one meal perfectly, or bake one dessert perfectly?"
+  - "Dance in public without embarrassment, or sing karaoke without embarrassment?"
+  - "Discover a new planet, or discover a new species in your backyard?"
+  - "Do homework in half the time, or chores in half the time?"
+  - "Drink only smoothies for a week, or only soup for a week?"
+  - "Eat breakfast for every meal, or dinner for every meal?"
+  - "Explore a cave, or explore a coral reef?"
+  - "Find a hidden door in your house, or find a secret garden behind your school?"
+  - "Fix any broken toy, or build any toy from scratch?"
+  - "Fly a kite in a storm safely, or sail a boat on a calm lake?"
+  - "Get a hundred small compliments, or one huge heartfelt compliment?"
+  - "Get free popcorn at every movie, or free toppings on every ice cream?"
+  - "Get stickers on every assignment, or get high-fives from every teacher?"
+  - "Give up video games for a month, or give up board games for a month?"
+  - "Go on a road trip with no map, or go on a road trip with a strict schedule?"
+  - "Go to bed at sunset, or go to bed at midnight every night?"
+  - "Grow the perfect garden, or grow the perfect treehouse?"
+  - "Have a birthday party every month, or one epic birthday party every year?"
+  - "Have a bubble machine follow you, or have confetti fall when you enter a room?"
+  - "Have a friendly ghost as a roommate, or a friendly robot as a roommate?"
+  - "Have a magic eraser for mistakes, or a magic pencil that never dulls?"
+  - "Have a pet that can talk, or a plant that gives advice?"
+  - "Have a slide instead of stairs at home, or a trampoline in the living room?"
+  - "Have a snow day every week in winter, or a pool day every week in summer?"
+  - "Have a tree that grows any fruit you want, or a garden that grows any vegetable?"
+  - "Have an endless supply of markers, or an endless supply of building blocks?"
+  - "Have every book read to you by a great narrator, or read every book yourself silently?"
+  - "Have homework that grades itself, or chores that complete themselves?"
+  - "Have lunch with your favorite athlete, or lunch with your favorite author?"
+  - "Have matching outfits with your best friend, or never match accidentally again?"
+  - "Have more snowball fights, or have more water balloon fights?"
+  - "Have pancakes every morning, or have waffles every morning?"
+  - "Have pizza delivered by drone, or by bicycle with a bell choir?"
+  - "Have super sticky shoes for climbing, or super bouncy shoes for jumping?"
+  - "Have the best seat at every concert, or meet the band after every show?"
+  - "Have the loudest laugh in the room, or the most contagious smile?"
+  - "Have the power to make anyone laugh, or the power to calm anyone down?"
+  - "Have the world's best tree fort, or the world's best blanket fort?"
+  - "Have to eat with your non-dominant hand, or write with your non-dominant hand?"
+  - "Have to wear a cape everywhere, or wear a hat everywhere?"
+  - "Have unlimited craft supplies, or unlimited sports equipment?"
+  - "Have your favorite animal as a pet, or your favorite vehicle as a toy?"
+  - "Hear every song before it is released, or read every book before it is published?"
+  - "Help build a playground, or help plant a community garden?"
+  - "Hold a snake calmly, or hold a tarantula calmly?"
+  - "Host a game show at school, or host a cooking show at home?"
+  - "Jump into a pile of leaves every day, or jump into a pile of pillows every day?"
+  - "Keep a diary that writes back, or keep a photo album that plays sounds?"
+  - "Keep every ticket stub forever, or keep every seashell from every beach?"
+  - "Learn magic tricks, or learn juggling?"
+  - "Live in a castle with no heating, or a cabin with perfect heating?"
+  - "Live in a neighborhood with every friend nearby, or live where the food is amazing?"
+  - "Live where it snows on holidays, or where it is warm on holidays?"
+  - "Lose power for a day with candles and board games, or lose internet for a day with books?"
+  - "Make the world's best paper airplane, or make the world's best origami crane?"
+  - "Meet a dinosaur safely, or meet an astronaut on the moon safely?"
+  - "Never brush your teeth again but have perfect teeth, or brush twice daily forever?"
+  - "Never get lost, or never lose your belongings?"
+  - "Never run out of hot water, or never run out of battery on game night?"
+  - "Only drink milkshakes, or only drink lemonade?"
+  - "Only eat finger foods, or only eat foods you eat with a fork?"
+  - "Only play team sports, or only play solo sports?"
+  - "Only read comic books, or only read chapter books?"
+  - "Only use crayons, or only use colored pencils?"
+  - "Open a lemonade stand that never runs out, or a bake sale that never runs out?"
+  - "Paint a mural on your school wall, or paint a mural on your bedroom wall?"
+  - "Pat a penguin, or feed a giraffe?"
+  - "Pick teams always, or never have to pick teams?"
+  - "Play hide-and-seek in a museum after hours, or play tag in a giant mall after hours?"
+  - "Play in the rain without getting cold, or play in the snow without getting wet?"
+  - "Play one instrument amazingly, or play every instrument a little?"
+  - "Play outside until dark every day, or play board games inside until dark every day?"
+  - "Play the hero in every story, or play the clever sidekick in every story?"
+  - "Read under the covers with a flashlight, or read in a sunny window seat?"
+  - "Ride a camel, or ride a horse on the beach?"
+  - "Ride the tallest slide, or ride the longest zip line?"
+  - "Run a marathon slowly, or sprint a hundred meters incredibly fast?"
+  - "See a whale up close, or see the northern lights up close?"
+  - "See your favorite band live once, or see a great unknown band ten times?"
+  - "Share one giant pizza, or everyone gets their own personal pizza?"
+  - "Sing in a choir, or play in a band?"
+  - "Sit in the front row at a show, or sit in the back with the best view?"
+  - "Skip rope for an hour, or hula hoop for an hour?"
+  - "Sleep in a tent every weekend, or sleep in a fancy hotel every weekend?"
+  - "Slide down a banister safely, or swing on a rope swing over a lake?"
+  - "Smell every flower in a garden, or taste every fruit in an orchard?"
+  - "Speak to crowds confidently, or perform on stage confidently?"
+  - "Spend a day at an amusement park alone, or spend a day at a water park with friends?"
+  - "Spend a day building with LEGO, or spend a day painting?"
+  - "Spend a night in a museum, or spend a night on a ship?"
+  - "Start a club at school, or join every club at school?"
+  - "Stay up late on New Year's Eve every year, or wake up early for sunrise every New Year?"
+  - "Swim with dolphins, or snorkel with colorful fish?"
+  - "Take a horse-drawn carriage ride, or take a gondola ride?"
+  - "Take the window seat on every flight, or take the aisle seat on every flight?"
+  - "Talk to your favorite fictional character, or talk to your favorite historical hero?"
+  - "Throw the best surprise party, or receive the best surprise party?"
+  - "Trade desserts at lunch every day, or keep your desserts secret?"
+  - "Travel by camel across a desert, or travel by sled across snow?"
+  - "Use a time machine once, or use a teleporter once?"
+  - "Visit a volcano safely, or visit a glacier safely?"
+  - "Visit every zoo in your country, or visit every national park?"
+  - "Volunteer at an animal shelter, or volunteer at a food bank?"
+  - "Wake up to pancakes on your birthday only, or wake up to pancakes every Saturday?"
+  - "Walk on stilts well, or ride a unicycle well?"
+  - "Watch a meteor shower every month, or watch a rainbow every week?"
+  - "Watch cartoons from the 1990s, or watch cartoons made this year?"
+  - "Watch only funny movies, or watch only adventure movies?"
+  - "Wear a costume to school every Friday, or wear pajamas to school one day a year?"
+  - "Wear goggles that see underwater, or boots that walk on water?"
+  - "Win a spelling bee, or win a science fair?"
+  - "Win at rock-paper-scissors every time, or win at coin flips every time?"
+  - "Write a bestselling children's book, or illustrate a bestselling children's book?"
+  - "Always have perfect picnic weather, or always have perfect stargazing weather?"
+  - "Always pick the right line at the grocery store, or always pick the ripest fruit?"
+  - "Be able to smell when cookies are done, or hear when the kettle is ready?"
+  - "Be friends with someone who tells great jokes, or someone who gives great hugs?"
+  - "Be the fastest reader in class, or the fastest runner at recess?"
+  - "Bring your pet to school one day, or bring your favorite toy to show-and-tell every week?"
+  - "Build a robot that does homework, or build a robot that tells jokes?"
+  - "Catch every ball in a game, or throw every ball perfectly?"
+  - "Celebrate your birthday in summer every year, or in winter every year?"
+  - "Choose the music on every car ride, or choose the snacks on every car ride?"
+  - "Climb the tallest tree in town, or dive into the deepest pool in town?"
+  - "Collect stamps, or collect interesting rocks?"
+  - "Color inside the lines perfectly, or draw freestyle masterpieces?"
+  - "Compete in a friendly talent show, or host the talent show?"
+  - "Curl up with a cat, or play fetch with a dog?"
+  - "Dance in the rain, or build a snowman in fresh snow?"
+  - "Discover buried treasure in your yard, or discover a time capsule at school?"
+  - "Drink hot cocoa with marshmallows every day, or iced tea every day?"
+  - "Eat a giant pretzel at a fair, or eat cotton candy at a fair?"
+  - "Find a four-leaf clover every week, or find a lucky penny every week?"
+  - "Get a standing ovation once, or make one person deeply happy every day?"
+  - "Get free ice cream on hot days, or free hot chocolate on cold days?"
+  - "Go sledding every winter day, or go swimming every summer day?"
+  - "Grow flowers that change color, or grow vegetables that taste like dessert?"
+  - "Have a backpack that organizes itself, or shoes that tie themselves?"
+  - "Have a birthday cake that never runs out for one party, or candles that never melt?"
+  - "Have a favorite pen that never runs dry, or a favorite notebook that never fills up?"
+  - "Have a magic carpet for short trips, or roller skates that work on grass?"
+  - "Have a phone that translates any language instantly, or a map that shows secret paths?"
+  - "Have a robot that walks your dog, or a dog that fetches your homework?"
+  - "Have a secret handshake with your best friend, or a secret code for notes?"
+  - "Have an extra day off every month, or an extra hour of recess every day?"
+  - "Have dessert first at every restaurant, or never wait for a table?"
+  - "Have fireworks on your birthday, or balloons everywhere on your birthday?"
+
+- id: table-topics
+  title: Conversation starters
+  mode: ranked-prompts
+  tagline: Open prompts to swap stories and opinions. No scoring.
+  play_hint: Take turns. There is no right answer; stories beat one-word replies.
+  items:
+  - A rule from childhood you still follow.
+  - A toy or game you wish you still had.
+  - A smell that instantly takes you back to childhood.
+  - A sound from your neighborhood growing up.
+  - A food you loved as a kid that you still love.
+  - A food you hated as a kid that you like now.
+  - A holiday tradition you looked forward to every year.
+  - A chore you actually did not mind doing.
+  - A chore you tried hard to avoid.
+  - A time you got lost and how it turned out.
+  - A teacher who changed how you see something.
+  - A friend from childhood you still think about.
+  - A playground game you could play for hours.
+  - A birthday party you still remember clearly.
+  - A gift you were thrilled to receive as a kid.
+  - A skill you learned young and still use.
+  - A family road trip story worth retelling.
+  - A time you stood up for someone at school.
+  - A time someone stood up for you.
+  - A book you read over and over as a kid.
+  - A cartoon or show that shaped your sense of humor.
+  - A song your family played on repeat.
+  - A nickname you had and whether you liked it.
+  - A superstition or ritual you had as a kid.
+  - A time you were braver than you expected.
+  - A time you were more scared than you expected.
+  - A pet or animal that was part of your childhood.
+  - "A tree, hill, or corner of town that felt like yours."
+  - A time you moved homes or schools and what helped.
+  - A hobby you picked up young and dropped.
+  - A hobby you picked up young and kept.
+  - A time you lied and still feel guilty about.
+  - A time you told the truth when it was hard.
+  - A prize or ribbon you earned and what it meant.
+  - A time you failed at something and tried again.
+  - A time you quit something and were glad you did.
+  - A relative who told the best stories.
+  - A meal that only tasted right at someone's house.
+  - A time you shared a room and what you learned.
+  - A time you had your own space and what you did with it.
+  - "A weather day you remember: snow, rain, or heat."
+  - A time you built something with your hands.
+  - A time you broke something and had to fix it.
+  - A time you laughed so hard you could not stop.
+  - A time you cried and who comforted you.
+  - A piece of clothing you wore until it fell apart.
+  - A time you felt proud of a sibling or cousin.
+  - A time you felt jealous of a sibling or cousin.
+  - A school project you still remember.
+  - A time you helped a neighbor without being asked.
+  - A place that surprised you when you finally visited.
+  - A place you would take a visitor on their first day in your town.
+  - A trip that did not go as planned but turned out fine.
+  - A trip that went better than planned.
+  - A city you could wander without a map.
+  - A country you want to visit for the food.
+  - A country you want to visit for nature.
+  - A country you want to visit for history.
+  - "A beach memory, good or bad."
+  - A mountain or hill climb worth the effort.
+  - A museum exhibit that stuck with you.
+  - A market or fair you loved browsing.
+  - "A long flight story, good seat or bad seat."
+  - A train or bus ride you still remember.
+  - A road trip snack tradition.
+  - A souvenir you actually kept and use.
+  - A souvenir you bought and immediately regretted.
+  - A photo from a trip you still look at.
+  - A place you would return to again and again.
+  - A place you would visit once and never need to return.
+  - A hotel or hostel story.
+  - "A camping memory: tent, cabin, or backyard."
+  - A time you got wonderfully lost in a new place.
+  - A local food you tried abroad and loved.
+  - A local food you tried abroad and could not finish.
+  - A language barrier moment that became funny.
+  - A time a stranger was kind while you traveled.
+  - A weather surprise on vacation.
+  - A sunrise or sunset you watched on a trip.
+  - A body of water you swam in and remember.
+  - A hike you would recommend to a friend.
+  - A hike you would not recommend.
+  - A theme park ride you would wait in line for again.
+  - A quiet place you found in a busy city.
+  - A festival or parade you stumbled into.
+  - A border or customs story.
+  - A time you traveled light and were glad.
+  - A time you overpacked and paid for it.
+  - A favorite street to walk with no destination.
+  - A view you would paint if you could.
+  - A place that felt peaceful within an hour.
+  - A place that felt overwhelming at first.
+  - A national park or protected area you loved.
+  - A small town that charmed you.
+  - A big city that energized you.
+  - A travel mistake that taught you something.
+  - A travel tip you give everyone.
+  - A place you visited as a kid you want your kids to see.
+  - A bucket-list trip you have not done yet.
+  - A trip you would repeat exactly as it happened.
+  - A dish you could eat every week without getting tired of it.
+  - A dish you only want on special occasions.
+  - A recipe someone taught you that you still make.
+  - A recipe you ruined the first time you tried.
+  - A food that smells better than it tastes for you.
+  - A food that tastes better than it smells for you.
+  - A comfort food when you are sick.
+  - A comfort food when you are celebrating.
+  - A snack you hide from other people.
+  - A snack you happily share with everyone.
+  - A restaurant you would recommend to anyone.
+  - A restaurant you would not send your worst enemy to.
+  - A street food you would travel for.
+  - A breakfast you could eat any time of day.
+  - A dinner that always makes you sleepy.
+  - A dessert you cannot resist.
+  - A dessert you do not understand the hype for.
+  - A fruit you wait for in season.
+  - A vegetable you learned to like as an adult.
+  - A spice or sauce that changed your cooking.
+  - A kitchen tool you use more than people expect.
+  - A kitchen tool you bought and never use.
+  - A cooking smell that makes a house feel like home.
+  - A food from another culture you love.
+  - A food combination that sounds weird but works.
+  - A food you eat in a specific way every time.
+  - A drink order that says something about you.
+  - A potluck dish you are known for.
+  - A potluck dish you avoid bringing.
+  - A time you cooked for someone and they loved it.
+  - A time you cooked for someone and it went wrong.
+  - A meal you ate alone and enjoyed.
+  - A meal you shared that felt special.
+  - A picnic that was perfect.
+  - A picnic that was a disaster.
+  - A food you tried once and never again.
+  - A food you refused as a kid and love now.
+  - A lunchbox item you still think about.
+  - A midnight snack you are not proud of.
+  - A holiday dish your family argues about.
+  - A baking success you brag about.
+  - A baking failure you laugh about now.
+  - A food you eat differently at home vs. in public.
+  - A condiment you put on almost everything.
+  - A condiment you think is overrated.
+  - A meal that is worth the long wait.
+  - A fast food order you will defend.
+  - A home-cooked meal that beats any restaurant.
+  - A food memory tied to a specific person.
+  - A food you want to learn to cook well.
+  - A hobby you picked up during a boring season of life.
+  - A hobby you quit and sometimes miss.
+  - A game you could play every game night.
+  - A game you refuse to play again.
+  - A sport or activity you are bad at but enjoy.
+  - A sport or activity you are good at but find stressful.
+  - A song you put on when you need energy.
+  - A song you put on when you need calm.
+  - A movie you have seen more than five times.
+  - A movie you walked out of or almost did.
+  - A TV show you recommend to everyone.
+  - A book you gave as a gift.
+  - A book someone gave you that mattered.
+  - A craft or project sitting half-finished at home.
+  - A craft or project you finished and still display.
+  - A concert or live show you still talk about.
+  - A podcast topic you never get tired of.
+  - A board game role you always end up playing.
+  - A video game world you would live in for a week.
+  - A card game you learned as a kid.
+  - "A puzzle type you love: jigsaw, crossword, or other."
+  - "A collection you had as a kid: cards, rocks, stickers."
+  - A talent you would perform at a school talent show.
+  - A talent you absolutely would not perform.
+  - A hobby that costs more than people think.
+  - A hobby that costs almost nothing.
+  - A weekend activity that never gets old.
+  - A weekend activity you are tired of.
+  - A rainy-day indoor activity you recommend.
+  - A sunny-day outdoor activity you recommend.
+  - A hobby you do alone to recharge.
+  - A hobby you only enjoy with other people.
+  - A instrument you wish you had learned.
+  - A language you wish you had learned.
+  - A YouTube rabbit hole you fall into.
+  - A meme or joke format you still find funny.
+  - A holiday craft or decoration you enjoy making.
+  - A party game that works with any group.
+  - A party game that needs exactly the right group.
+  - "A place you go to think: park, café, library."
+  - A creative block you pushed through.
+  - A time you taught someone a game or skill.
+  - A time someone taught you something that stuck.
+  - A competition you won and still smile about.
+  - A competition you lost and still smile about.
+  - A fandom you were deep into.
+  - A character from fiction you relate to.
+  - A hobby you want to try this year.
+  - A hobby you want your kids or nieces to try.
+  - A simple pleasure you wish you did more often.
+  - A friend who feels like family.
+  - A family member who feels like a friend.
+  - A tradition your friend group invented.
+  - A tradition your family refuses to change.
+  - A time a friend made you laugh when you needed it.
+  - A time you made a friend laugh when they needed it.
+  - A piece of advice a parent or elder gave you that stuck.
+  - A piece of advice you give younger people.
+  - A sibling or cousin story that still comes up at reunions.
+  - A reunion moment you look forward to.
+  - A reunion moment you dread a little.
+  - A gift you gave that someone still uses.
+  - A gift you received that surprised you.
+  - A handwritten note or card you kept.
+  - A text or message you re-read sometimes.
+  - A time you apologized and meant it.
+  - A time someone apologized to you and it mattered.
+  - A friend you lost touch with but think of fondly.
+  - A friend you reconnected with and were glad.
+  - A neighbor who made your block better.
+  - A pet that brought your household together.
+  - A pet story your family tells too often.
+  - A meal where everyone talked at once.
+  - A meal where comfortable silence was enough.
+  - A time you hosted and it went well.
+  - A time you hosted and learned a lesson.
+  - A time you were a guest and felt welcomed.
+  - A inside joke only your family understands.
+  - A inside joke only your friends understand.
+  - A time you helped a friend move or fix something.
+  - A time a friend helped you without being asked.
+  - A wedding or celebration you loved attending.
+  - A milestone you are proud someone close achieved.
+  - A hard conversation you are glad you had.
+  - A hard conversation you are still avoiding.
+  - A compliment you remember years later.
+  - A compliment you give easily.
+  - A time you felt like the responsible one in the group.
+  - A time you felt like the chaotic one in the group.
+  - A friend who challenges you to grow.
+  - A friend who helps you relax.
+  - A family recipe or ritual passed down.
+  - A holiday where your people are all in one place.
+  - A long-distance friendship that still works.
+  - A group chat that is mostly memes.
+  - A group chat that is mostly logistics.
+  - A time you met a friend as an adult unexpectedly.
+  - A mentor outside your family who mattered.
+  - A kid in your life who makes you laugh.
+  - A way you stay in touch that actually works.
+  - A small kindness from a stranger you still remember.
+  - A time you were in the right place at the right time.
+  - A coincidence that still feels unreal.
+  - A dream you remember vividly.
+  - A nightmare that stuck with you.
+  - "A near miss (car, bike, kitchen, sports) that taught you something."
+  - A time you found money or lost money in a memorable way.
+  - A prank you pulled that went perfectly.
+  - A prank that backfired on you.
+  - A surprise that made your week.
+  - A surprise you would not want repeated.
+  - A rumor you believed as a kid.
+  - A fact you learned that changed a conversation.
+  - A question a kid asked you that stopped you cold.
+  - A question you wish more people asked.
+  - A time you said yes without knowing what you agreed to.
+  - A time you said no and were relieved.
+  - A costume or outfit you wore proudly.
+  - A costume or outfit you regret.
+  - "A weather event you lived through: storm, flood, heat wave."
+  - A power outage story.
+  - A time the internet went out and you did something better.
+  - A thing you believed until embarrassingly late in life.
+  - A superstition you still half believe.
+  - A lucky charm or ritual before big moments.
+  - A unlucky day that became a funny story.
+  - A time you met someone famous or almost did.
+  - "A autograph, ticket stub, or keepsake you saved."
+  - "A time you were on the news, radio, or school announcement."
+  - "A time you helped in an emergency, big or small."
+  - A fear you overcame.
+  - A fear you still have and manage.
+  - A prediction you made that came true.
+  - A prediction you made that failed spectacularly.
+  - A time you guessed someone's secret correctly.
+  - A time your secret got out.
+  - A object you almost threw away and were glad you kept.
+  - A object you kept too long and finally let go.
+  - A sound in your home that still startles you.
+  - A smell in your home that means comfort.
+  - A time you laughed at the wrong moment.
+  - A time silence was the right response.
+  - A rule you break on purpose every time.
+  - A rule you follow even when nobody is watching.
+  - A headline you still think about.
+  - A local legend or story from your town.
+  - A travel story you tell at every dinner party.
+  - A story you shorten every time you tell it.
+  - A story that gets better with every retelling.
+  - A plot twist in your own life you did not see coming.
+- id: grade-1-quiz
+  title: Grade 1 quick quiz
+  mode: quiz
+  tagline: Animals, colors, and facts - no arithmetic. Every answer is 3 to 5 letters.
+  play_hint: Read the question aloud. Let them guess before you reveal the answer. Tap Shuffle for a random question - about half are medium, a quarter easy, a quarter hard.
+  items:
+  - q: "What animal says meow?"
+    a: cat
+    d: easy
+  - q: "What animal says woof?"
+    a: dog
+    d: easy
+  - q: "What animal says moo?"
+    a: cow
+    d: easy
+  - q: "What animal says oink?"
+    a: pig
+    d: easy
+  - q: "What animal says quack?"
+    a: duck
+    d: easy
+  - q: "What animal says baa?"
+    a: sheep
+    d: easy
+  - q: "What animal says neigh?"
+    a: horse
+    d: easy
+  - q: "What animal says ribbit?"
+    a: frog
+    d: easy
+  - q: "What animal says hoot?"
+    a: owl
+    d: easy
+  - q: "What animal says buzz?"
+    a: bee
+    d: easy
+  - q: "What animal says cluck?"
+    a: hen
+    d: easy
+  - q: "What color is grass?"
+    a: green
+    d: easy
+  - q: "What color is the sky on a clear day?"
+    a: blue
+    d: easy
+  - q: "What color is snow?"
+    a: white
+    d: easy
+  - q: "What color is a ripe strawberry?"
+    a: red
+    d: easy
+  - q: "What star gives us light and heat?"
+    a: sun
+    d: easy
+  - q: "What do you see in the sky at night?"
+    a: moon
+    d: easy
+  - q: "What do you drink when you are thirsty?"
+    a: water
+    d: easy
+  - q: "What sweet food do bees make?"
+    a: honey
+    d: easy
+  - q: "What do hens lay?"
+    a: eggs
+    d: easy
+  - q: "What is water when it is frozen?"
+    a: ice
+    d: easy
+  - q: "What body part do you see with?"
+    a: eyes
+    d: easy
+  - q: "What body part do you hear with?"
+    a: ears
+    d: easy
+  - q: "What body part do you smell with?"
+    a: nose
+    d: easy
+  - q: "What is at the end of your arm?"
+    a: hand
+    d: easy
+  - q: "What is at the end of your leg?"
+    a: foot
+    d: easy
+  - q: "What do you sleep on?"
+    a: bed
+    d: easy
+  - q: "What do you sit on?"
+    a: chair
+    d: easy
+  - q: "What do you wear on your feet?"
+    a: shoes
+    d: easy
+  - q: "What do you wear on your head?"
+    a: hat
+    d: easy
+  - q: "What is the opposite of hot?"
+    a: cold
+    d: easy
+  - q: "What fruit is purple or green?"
+    a: grape
+    d: easy
+  - q: "What flies and has colorful wings?"
+    a: moth
+    d: easy
+  - q: "What is the opposite of big?"
+    a: small
+    d: easy
+  - q: "What is the opposite of up?"
+    a: down
+    d: easy
+  - q: "What is the opposite of day?"
+    a: night
+    d: easy
+  - q: "What is the opposite of happy?"
+    a: sad
+    d: easy
+  - q: "What do you call a very young child?"
+    a: baby
+    d: easy
+  - q: "What round toy do you throw?"
+    a: ball
+    d: easy
+  - q: "What do you kick a ball with?"
+    a: foot
+    d: easy
+  - q: "What wags on a happy dog?"
+    a: tail
+    d: easy
+  - q: "What do you read stories in?"
+    a: book
+    d: easy
+  - q: "What big yellow ride takes you to school?"
+    a: bus
+    d: easy
+  - q: "What sweet treat do kids lick?"
+    a: candy
+    d: easy
+  - q: "What white drink comes from cows?"
+    a: milk
+    d: easy
+  - q: "What red fruit is crunchy?"
+    a: apple
+    d: easy
+  - q: "What do you open to go inside?"
+    a: door
+    d: easy
+  - q: "What do you drink from?"
+    a: cup
+    d: easy
+  - q: "How many fingers are on one hand?"
+    a: five
+    d: easy
+  - q: "Where do fish live?"
+    a: water
+    d: easy
+  - q: "What falls from gray clouds in the sky?"
+    a: rain
+    d: medium
+  - q: "What white flakes fall when it is cold?"
+    a: snow
+    d: medium
+  - q: "What body part do you taste with?"
+    a: mouth
+    d: medium
+  - q: "What hard white things chew food?"
+    a: teeth
+    d: medium
+  - q: "What covers your whole body?"
+    a: skin
+    d: medium
+  - q: "What beats inside your chest?"
+    a: heart
+    d: medium
+  - q: "What grows on top of your head?"
+    a: hair
+    d: medium
+  - q: "How many toes are on one foot?"
+    a: five
+    d: medium
+  - q: "What do you eat soup from?"
+    a: bowl
+    d: medium
+  - q: "What do you write with?"
+    a: pen
+    d: medium
+  - q: "What do you cook in on the stove?"
+    a: pan
+    d: medium
+  - q: "What bakes food in the kitchen?"
+    a: oven
+    d: medium
+  - q: "What do you wash your hands with?"
+    a: soap
+    d: medium
+  - q: "What do you dry off with?"
+    a: towel
+    d: medium
+  - q: "What white food comes from a hen?"
+    a: egg
+    d: medium
+  - q: "What sweet stuff do you put on bread?"
+    a: jam
+    d: medium
+  - q: "What do you eat for breakfast with butter?"
+    a: toast
+    d: medium
+  - q: "What veggie makes you cry when you cut it?"
+    a: onion
+    d: medium
+  - q: "What do you use to cut food?"
+    a: knife
+    d: medium
+  - q: "What do you use to make a sandwich?"
+    a: bread
+    d: medium
+  - q: "What do you stir soup with?"
+    a: spoon
+    d: medium
+  - q: "What room has a tub?"
+    a: bath
+    d: medium
+  - q: "What do you wear in the rain?"
+    a: coat
+    d: medium
+  - q: "What do cats like to chase?"
+    a: mice
+    d: medium
+  - q: "What do you hang on a wall?"
+    a: art
+    d: medium
+  - q: "What do you put photos in?"
+    a: album
+    d: medium
+  - q: "What holds hot cocoa?"
+    a: mug
+    d: medium
+  - q: "What game piece do you roll?"
+    a: dice
+    d: medium
+  - q: "What do birds use to fly?"
+    a: wings
+    d: medium
+  - q: "What do you find at the beach?"
+    a: sand
+    d: medium
+  - q: "What toy do you fly when it is windy?"
+    a: kite
+    d: medium
+  - q: "What do plants grow from?"
+    a: seed
+    d: medium
+  - q: "What is hot and can burn wood?"
+    a: fire
+    d: medium
+  - q: "What has four wheels and drives on roads?"
+    a: car
+    d: medium
+  - q: "What floats on water?"
+    a: boat
+    d: medium
+  - q: "What rides on tracks and says choo-choo?"
+    a: train
+    d: medium
+  - q: "Where do you see animals in cages?"
+    a: zoo
+    d: medium
+  - q: "What is the opposite of fast?"
+    a: slow
+    d: medium
+  - q: "What is the opposite of open?"
+    a: shut
+    d: medium
+  - q: "What is the opposite of wet?"
+    a: dry
+    d: medium
+  - q: "What is the opposite of old?"
+    a: new
+    d: medium
+  - q: "What is the opposite of loud?"
+    a: soft
+    d: medium
+  - q: "What is the opposite of dark?"
+    a: light
+    d: medium
+  - q: "What do you call a friend you play with?"
+    a: buddy
+    d: medium
+  - q: "What are children your age called?"
+    a: kids
+    d: medium
+  - q: "What do you bang with sticks?"
+    a: drum
+    d: medium
+  - q: "What do you use to unlock a door?"
+    a: key
+    d: medium
+  - q: "What does a key open?"
+    a: lock
+    d: medium
+  - q: "What do you tie on your shoes?"
+    a: bow
+    d: medium
+  - q: "What do you use to call people?"
+    a: phone
+    d: medium
+  - q: "What big animal loves honey?"
+    a: bear
+    d: medium
+  - q: "What yellow fruit is very sour?"
+    a: lemon
+    d: medium
+  - q: "What yellow kernels do you eat?"
+    a: corn
+    d: medium
+  - q: "What sweet food has candles on birthdays?"
+    a: cake
+    d: medium
+  - q: "What round dessert is cut in slices?"
+    a: pie
+    d: medium
+  - q: "What soft round bread do you eat?"
+    a: bun
+    d: medium
+  - q: "What green veggie is long and skinny?"
+    a: bean
+    d: medium
+  - q: "What fuzzy yellow baby bird says peep?"
+    a: chick
+    d: medium
+  - q: "Where do you put garbage?"
+    a: trash
+    d: medium
+  - q: "What warm things go on your feet?"
+    a: socks
+    d: medium
+  - q: "What covers you in bed?"
+    a: sheet
+    d: medium
+  - q: "What do you use on messy hair?"
+    a: comb
+    d: medium
+  - q: "What gives light in your room?"
+    a: lamp
+    d: medium
+  - q: "What do you sweep the floor with?"
+    a: broom
+    d: medium
+  - q: "What do we breathe?"
+    a: air
+    d: medium
+  - q: "What toy spins fast on the ground?"
+    a: top
+    d: medium
+  - q: "What loud sound comes with thunder?"
+    a: boom
+    d: medium
+  - q: "What white puff is in the sky?"
+    a: cloud
+    d: medium
+  - q: "What tall plant has a trunk?"
+    a: tree
+    d: medium
+  - q: "What green plant covers the ground?"
+    a: grass
+    d: medium
+  - q: "What shines in the sky at night?"
+    a: star
+    d: medium
+  - q: "How many legs does a dog have?"
+    a: four
+    d: medium
+  - q: "How many eyes do most people have?"
+    a: two
+    d: medium
+  - q: "How many ears do most people have?"
+    a: two
+    d: medium
+  - q: "How many wheels does a bike have?"
+    a: two
+    d: medium
+  - q: "How many fingers are on two hands?"
+    a: ten
+    d: medium
+  - q: "What drink comes from oranges?"
+    a: juice
+    d: medium
+  - q: "What short sleep do you take in the day?"
+    a: nap
+    d: medium
+  - q: "What do bunnies do when they go?"
+    a: hop
+    d: medium
+  - q: "What pet swims and blows bubbles?"
+    a: fish
+    d: medium
+  - q: "What do birds make in trees?"
+    a: nest
+    d: medium
+  - q: "What is a baby dog called?"
+    a: puppy
+    d: medium
+  - q: "What is a baby sheep called?"
+    a: lamb
+    d: medium
+  - q: "What is a baby cow called?"
+    a: calf
+    d: medium
+  - q: "What animal has a bushy tail and red fur?"
+    a: fox
+    d: medium
+  - q: "What insect wiggles in garden soil?"
+    a: worm
+    d: medium
+  - q: "What black bird says caw?"
+    a: crow
+    d: medium
+  - q: "What color is chocolate?"
+    a: brown
+    d: medium
+  - q: "What tells you the time?"
+    a: clock
+    d: medium
+  - q: "What meal do you eat at noon?"
+    a: lunch
+    d: medium
+  - q: "What do you sit on and pump your legs?"
+    a: swing
+    d: medium
+  - q: "What sea animal has big claws?"
+    a: crab
+    d: medium
+  - q: "What long animal has no legs?"
+    a: snake
+    d: medium
+  - q: "What dry grass do farm animals eat?"
+    a: hay
+    d: medium
+  - q: "What moves sand at the beach?"
+    a: scoop
+    d: medium
+  - q: "What rubber shoes do you wear in puddles?"
+    a: boots
+    d: medium
+  - q: "What big white bird swims in water?"
+    a: swan
+    d: medium
+  - q: "How many legs does a table have?"
+    a: four
+    d: medium
+  - q: "What color is a stop sign?"
+    a: red
+    d: medium
+  - q: "What helps plants grow from the sky?"
+    a: sun
+    d: medium
+  - q: "What big cat has a mane?"
+    a: lion
+    d: hard
+  - q: "What animal has black and white stripes?"
+    a: zebra
+    d: hard
+  - q: "What desert animal has one hump?"
+    a: camel
+    d: hard
+  - q: "What big cat has orange and black stripes?"
+    a: tiger
+    d: hard
+  - q: "What animal carries its house on its back?"
+    a: snail
+    d: hard
+  - q: "What bear is black and white?"
+    a: panda
+    d: hard
+  - q: "What big sea fish has sharp teeth?"
+    a: shark
+    d: hard
+  - q: "What animal flies at night and hangs upside down?"
+    a: bat
+    d: hard
+  - q: "What tiny insect lifts heavy things?"
+    a: ant
+    d: hard
+  - q: "What color is a dark piece of coal?"
+    a: black
+    d: hard
+  - q: "What color is a flamingo?"
+    a: pink
+    d: hard
+  - q: "What color is a fire truck?"
+    a: red
+    d: hard
+  - q: "What green part is on a tree?"
+    a: leaf
+    d: hard
+  - q: "What long water flows to the sea?"
+    a: river
+    d: hard
+  - q: "What is a little lake?"
+    a: pond
+    d: hard
+  - q: "What dark cloud brings thunder?"
+    a: storm
+    d: hard
+  - q: "What grows on a cactus?"
+    a: spine
+    d: hard
+  - q: "What do climbers scale?"
+    a: cliff
+    d: hard
+  - q: "What do sailors steer?"
+    a: helm
+    d: hard
+  - q: "How many days are in one week?"
+    a: seven
+    d: hard
+  - q: "How many sides does a triangle have?"
+    a: three
+    d: hard
+  - q: "How many corners does a square have?"
+    a: four
+    d: hard
+  - q: "How many wheels does a tricycle have?"
+    a: three
+    d: hard
+  - q: "How many sides does a square have?"
+    a: four
+    d: hard
+  - q: "What paper in class shows the weather?"
+    a: chart
+    d: hard
+  - q: "What helps you measure how long things are?"
+    a: ruler
+    d: hard
+  - q: "What pin holds paper on a corkboard?"
+    a: tack
+    d: hard
+  - q: "What sticky stuff holds paper?"
+    a: glue
+    d: hard
+  - q: "What do teachers write with on a board?"
+    a: chalk
+    d: hard
+  - q: "What has black and white keys you press?"
+    a: piano
+    d: hard
+  - q: "What shows roads and places?"
+    a: map
+    d: hard
+  - q: "What home do bees live in?"
+    a: hive
+    d: hard
+  - q: "What does a horse pull on a farm?"
+    a: cart
+    d: hard
+  - q: "What big boat sails on the ocean?"
+    a: ship
+    d: hard
+  - q: "Where do you buy milk and eggs?"
+    a: shop
+    d: hard
+  - q: "Who is your mother's sister?"
+    a: aunt
+    d: hard
+  - q: "Who is your father's brother?"
+    a: uncle
+    d: hard
+  - q: "What bird flies in a V?"
+    a: goose
+    d: hard
+  - q: "What white grains do many people eat?"
+    a: rice
+    d: hard
+  - q: "What white and yellow flower grows in grass?"
+    a: daisy
+    d: hard
+  - q: "What do library books sit on?"
+    a: shelf
+    d: hard
+  - q: "How many arms does an octopus have?"
+    a: eight
+    d: hard
+  - q: "What planet do we live on?"
+    a: earth
+    d: hard
+  - q: "How many legs does an insect have?"
+    a: six
+    d: hard
+  - q: "How many legs does a spider have?"
+    a: eight
+    d: hard
+  - q: "How many sides does a star have?"
+    a: five
+    d: hard
+  - q: "How many seasons are in one year?"
+    a: four
+    d: hard
+  - q: "How many planets go around the sun?"
+    a: eight
+    d: hard
+  - q: "What in your head helps you think?"
+    a: brain
+    d: hard
+  - q: "How many corners does a circle have?"
+    a: none
+    d: hard
+- id: grade-1-math-quiz
+  title: Grade 1 math quiz
+  mode: quiz
+  tagline: Addition, subtraction, and number bonds. Answers are 3 to 5 letters.
+  play_hint: Read the question aloud. Let them guess before you reveal. Start with easy cards; hide one in a general quiz round when they are warmed up.
+  items:
+  - q: "What is one plus one?"
+    a: two
+    d: easy
+  - q: "What is one plus two?"
+    a: three
+    d: easy
+  - q: "What is one plus three?"
+    a: four
+    d: easy
+  - q: "What is one plus four?"
+    a: five
+    d: easy
+  - q: "What is one plus five?"
+    a: six
+    d: easy
+  - q: "What is two plus one?"
+    a: three
+    d: easy
+  - q: "What is two plus two?"
+    a: four
+    d: easy
+  - q: "What is two plus three?"
+    a: five
+    d: easy
+  - q: "What is two plus four?"
+    a: six
+    d: easy
+  - q: "What is three plus one?"
+    a: four
+    d: easy
+  - q: "What is three plus two?"
+    a: five
+    d: easy
+  - q: "What is three plus three?"
+    a: six
+    d: easy
+  - q: "What is four plus one?"
+    a: five
+    d: easy
+  - q: "What is four plus two?"
+    a: six
+    d: easy
+  - q: "What is five plus one?"
+    a: six
+    d: easy
+  - q: "What is three minus one?"
+    a: two
+    d: easy
+  - q: "What is three minus two?"
+    a: one
+    d: easy
+  - q: "What is four minus one?"
+    a: three
+    d: easy
+  - q: "What is four minus three?"
+    a: one
+    d: easy
+  - q: "What is five minus one?"
+    a: four
+    d: easy
+  - q: "What is five minus two?"
+    a: three
+    d: easy
+  - q: "What is five minus three?"
+    a: two
+    d: easy
+  - q: "What is five minus four?"
+    a: one
+    d: easy
+  - q: "What is six minus one?"
+    a: five
+    d: easy
+  - q: "What is six minus two?"
+    a: four
+    d: easy
+  - q: "What is six minus four?"
+    a: two
+    d: easy
+  - q: "What is six minus five?"
+    a: one
+    d: easy
+  - q: "What number comes after zero?"
+    a: one
+    d: easy
+  - q: "What number comes after one?"
+    a: two
+    d: easy
+  - q: "What number comes after two?"
+    a: three
+    d: easy
+  - q: "What number comes after three?"
+    a: four
+    d: easy
+  - q: "What number comes after four?"
+    a: five
+    d: easy
+  - q: "What number comes after five?"
+    a: six
+    d: easy
+  - q: "What number comes after six?"
+    a: seven
+    d: easy
+  - q: "What number comes after seven?"
+    a: eight
+    d: easy
+  - q: "What number comes after eight?"
+    a: nine
+    d: easy
+  - q: "What number comes before one?"
+    a: zero
+    d: easy
+  - q: "What number comes before two?"
+    a: one
+    d: easy
+  - q: "What number comes before three?"
+    a: two
+    d: easy
+  - q: "What number comes before four?"
+    a: three
+    d: easy
+  - q: "What number comes before five?"
+    a: four
+    d: easy
+  - q: "What number comes before six?"
+    a: five
+    d: easy
+  - q: "What number comes before seven?"
+    a: six
+    d: easy
+  - q: "What number comes before eight?"
+    a: seven
+    d: easy
+  - q: "What number comes before nine?"
+    a: eight
+    d: easy
+  - q: "What is one more than one?"
+    a: two
+    d: easy
+  - q: "What is one more than two?"
+    a: three
+    d: easy
+  - q: "What is one more than three?"
+    a: four
+    d: easy
+  - q: "What is one more than four?"
+    a: five
+    d: easy
+  - q: "What is one more than five?"
+    a: six
+    d: easy
+  - q: "What is one plus six?"
+    a: seven
+    d: medium
+  - q: "What is one plus seven?"
+    a: eight
+    d: medium
+  - q: "What is one plus eight?"
+    a: nine
+    d: medium
+  - q: "What is one plus nine?"
+    a: ten
+    d: medium
+  - q: "What is two plus five?"
+    a: seven
+    d: medium
+  - q: "What is two plus six?"
+    a: eight
+    d: medium
+  - q: "What is two plus seven?"
+    a: nine
+    d: medium
+  - q: "What is two plus eight?"
+    a: ten
+    d: medium
+  - q: "What is three plus four?"
+    a: seven
+    d: medium
+  - q: "What is three plus five?"
+    a: eight
+    d: medium
+  - q: "What is three plus six?"
+    a: nine
+    d: medium
+  - q: "What is three plus seven?"
+    a: ten
+    d: medium
+  - q: "What is four plus three?"
+    a: seven
+    d: medium
+  - q: "What is four plus four?"
+    a: eight
+    d: medium
+  - q: "What is four plus five?"
+    a: nine
+    d: medium
+  - q: "What is four plus six?"
+    a: ten
+    d: medium
+  - q: "What is five plus two?"
+    a: seven
+    d: medium
+  - q: "What is five plus three?"
+    a: eight
+    d: medium
+  - q: "What is five plus four?"
+    a: nine
+    d: medium
+  - q: "What is five plus five?"
+    a: ten
+    d: medium
+  - q: "What is six plus one?"
+    a: seven
+    d: medium
+  - q: "What is six plus two?"
+    a: eight
+    d: medium
+  - q: "What is six plus three?"
+    a: nine
+    d: medium
+  - q: "What is six plus four?"
+    a: ten
+    d: medium
+  - q: "What is seven plus one?"
+    a: eight
+    d: medium
+  - q: "What is seven plus two?"
+    a: nine
+    d: medium
+  - q: "What is seven plus three?"
+    a: ten
+    d: medium
+  - q: "What is eight plus one?"
+    a: nine
+    d: medium
+  - q: "What is eight plus two?"
+    a: ten
+    d: medium
+  - q: "What is nine plus one?"
+    a: ten
+    d: medium
+  - q: "What is seven minus one?"
+    a: six
+    d: medium
+  - q: "What is seven minus two?"
+    a: five
+    d: medium
+  - q: "What is seven minus three?"
+    a: four
+    d: medium
+  - q: "What is seven minus four?"
+    a: three
+    d: medium
+  - q: "What is seven minus five?"
+    a: two
+    d: medium
+  - q: "What is seven minus six?"
+    a: one
+    d: medium
+  - q: "What is eight minus one?"
+    a: seven
+    d: medium
+  - q: "What is eight minus two?"
+    a: six
+    d: medium
+  - q: "What is eight minus three?"
+    a: five
+    d: medium
+  - q: "What is eight minus five?"
+    a: three
+    d: medium
+  - q: "What is eight minus six?"
+    a: two
+    d: medium
+  - q: "What is eight minus seven?"
+    a: one
+    d: medium
+  - q: "What is nine minus one?"
+    a: eight
+    d: medium
+  - q: "What is nine minus two?"
+    a: seven
+    d: medium
+  - q: "What is nine minus three?"
+    a: six
+    d: medium
+  - q: "What is nine minus four?"
+    a: five
+    d: medium
+  - q: "What is nine minus five?"
+    a: four
+    d: medium
+  - q: "What is nine minus six?"
+    a: three
+    d: medium
+  - q: "What is nine minus seven?"
+    a: two
+    d: medium
+  - q: "What is nine minus eight?"
+    a: one
+    d: medium
+  - q: "What is ten minus one?"
+    a: nine
+    d: medium
+  - q: "What is ten minus two?"
+    a: eight
+    d: medium
+  - q: "What is ten minus three?"
+    a: seven
+    d: medium
+  - q: "What is ten minus four?"
+    a: six
+    d: medium
+  - q: "What is ten minus six?"
+    a: four
+    d: medium
+  - q: "What is ten minus seven?"
+    a: three
+    d: medium
+  - q: "What is ten minus eight?"
+    a: two
+    d: medium
+  - q: "What is ten minus nine?"
+    a: one
+    d: medium
+  - q: "One and one together make what?"
+    a: two
+    d: medium
+  - q: "One and two together make what?"
+    a: three
+    d: medium
+  - q: "One and three together make what?"
+    a: four
+    d: medium
+  - q: "One and four together make what?"
+    a: five
+    d: medium
+  - q: "One and five together make what?"
+    a: six
+    d: medium
+  - q: "One and six together make what?"
+    a: seven
+    d: medium
+  - q: "One and seven together make what?"
+    a: eight
+    d: medium
+  - q: "One and eight together make what?"
+    a: nine
+    d: medium
+  - q: "One and nine together make what?"
+    a: ten
+    d: medium
+  - q: "Two and one together make what?"
+    a: three
+    d: medium
+  - q: "Two and two together make what?"
+    a: four
+    d: medium
+  - q: "Two and three together make what?"
+    a: five
+    d: medium
+  - q: "Two and four together make what?"
+    a: six
+    d: medium
+  - q: "Two and five together make what?"
+    a: seven
+    d: medium
+  - q: "Two and six together make what?"
+    a: eight
+    d: medium
+  - q: "Two and seven together make what?"
+    a: nine
+    d: medium
+  - q: "Two and eight together make what?"
+    a: ten
+    d: medium
+  - q: "Three and one together make what?"
+    a: four
+    d: medium
+  - q: "Three and two together make what?"
+    a: five
+    d: medium
+  - q: "Three and three together make what?"
+    a: six
+    d: medium
+  - q: "Three and four together make what?"
+    a: seven
+    d: medium
+  - q: "Three and five together make what?"
+    a: eight
+    d: medium
+  - q: "Three and six together make what?"
+    a: nine
+    d: medium
+  - q: "Three and seven together make what?"
+    a: ten
+    d: medium
+  - q: "Four and one together make what?"
+    a: five
+    d: medium
+  - q: "Four and two together make what?"
+    a: six
+    d: medium
+  - q: "Four and three together make what?"
+    a: seven
+    d: medium
+  - q: "Four and four together make what?"
+    a: eight
+    d: medium
+  - q: "Four and five together make what?"
+    a: nine
+    d: medium
+  - q: "Four and six together make what?"
+    a: ten
+    d: medium
+  - q: "Five and one together make what?"
+    a: six
+    d: medium
+  - q: "Five and two together make what?"
+    a: seven
+    d: medium
+  - q: "Five and three together make what?"
+    a: eight
+    d: medium
+  - q: "Five and four together make what?"
+    a: nine
+    d: medium
+  - q: "Five and five together make what?"
+    a: ten
+    d: medium
+  - q: "Six and one together make what?"
+    a: seven
+    d: medium
+  - q: "Six and two together make what?"
+    a: eight
+    d: medium
+  - q: "Six and three together make what?"
+    a: nine
+    d: medium
+  - q: "Six and four together make what?"
+    a: ten
+    d: medium
+  - q: "Seven and one together make what?"
+    a: eight
+    d: medium
+  - q: "Seven and two together make what?"
+    a: nine
+    d: medium
+  - q: "Seven and three together make what?"
+    a: ten
+    d: medium
+  - q: "What plus one makes three?"
+    a: two
+    d: hard
+  - q: "What plus two makes three?"
+    a: one
+    d: hard
+  - q: "What plus one makes four?"
+    a: three
+    d: hard
+  - q: "What plus three makes four?"
+    a: one
+    d: hard
+  - q: "What plus one makes five?"
+    a: four
+    d: hard
+  - q: "What plus two makes five?"
+    a: three
+    d: hard
+  - q: "What plus three makes five?"
+    a: two
+    d: hard
+  - q: "What plus four makes five?"
+    a: one
+    d: hard
+  - q: "What plus one makes six?"
+    a: five
+    d: hard
+  - q: "What plus two makes six?"
+    a: four
+    d: hard
+  - q: "What plus four makes six?"
+    a: two
+    d: hard
+  - q: "What plus five makes six?"
+    a: one
+    d: hard
+  - q: "What plus one makes seven?"
+    a: six
+    d: hard
+  - q: "What plus two makes seven?"
+    a: five
+    d: hard
+  - q: "What plus three makes seven?"
+    a: four
+    d: hard
+  - q: "What plus four makes seven?"
+    a: three
+    d: hard
+  - q: "What plus five makes seven?"
+    a: two
+    d: hard
+  - q: "What plus six makes seven?"
+    a: one
+    d: hard
+  - q: "What plus one makes eight?"
+    a: seven
+    d: hard
+  - q: "What plus two makes eight?"
+    a: six
+    d: hard
+  - q: "What plus three makes eight?"
+    a: five
+    d: hard
+  - q: "What plus five makes eight?"
+    a: three
+    d: hard
+  - q: "What plus six makes eight?"
+    a: two
+    d: hard
+  - q: "What plus seven makes eight?"
+    a: one
+    d: hard
+  - q: "What plus one makes nine?"
+    a: eight
+    d: hard
+  - q: "What plus two makes nine?"
+    a: seven
+    d: hard
+  - q: "What plus three makes nine?"
+    a: six
+    d: hard
+  - q: "What plus four makes nine?"
+    a: five
+    d: hard
+  - q: "What plus five makes nine?"
+    a: four
+    d: hard
+  - q: "What plus six makes nine?"
+    a: three
+    d: hard
+  - q: "What plus seven makes nine?"
+    a: two
+    d: hard
+  - q: "What plus eight makes nine?"
+    a: one
+    d: hard
+  - q: "What plus one makes ten?"
+    a: nine
+    d: hard
+  - q: "What plus two makes ten?"
+    a: eight
+    d: hard
+  - q: "What plus three makes ten?"
+    a: seven
+    d: hard
+  - q: "What plus four makes ten?"
+    a: six
+    d: hard
+  - q: "What plus six makes ten?"
+    a: four
+    d: hard
+  - q: "What plus seven makes ten?"
+    a: three
+    d: hard
+  - q: "What plus eight makes ten?"
+    a: two
+    d: hard
+  - q: "What plus nine makes ten?"
+    a: one
+    d: hard
+  - q: "What is one less than three?"
+    a: two
+    d: hard
+  - q: "What is one less than four?"
+    a: three
+    d: hard
+  - q: "What is one less than five?"
+    a: four
+    d: hard
+  - q: "What is one less than six?"
+    a: five
+    d: hard
+  - q: "What is one less than seven?"
+    a: six
+    d: hard
+  - q: "What is one less than eight?"
+    a: seven
+    d: hard
+  - q: "What is one less than nine?"
+    a: eight
+    d: hard
+  - q: "What is one less than ten?"
+    a: nine
+    d: hard
+  - q: "Bonus round: seven minus two?"
+    a: five
+    d: hard
+  - q: "Bonus round: seven minus three?"
+    a: four
+    d: hard

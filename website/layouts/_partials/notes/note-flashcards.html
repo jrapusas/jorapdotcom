@@ -1,0 +1,20 @@
+{{- /*
+  Flashcard deck for a single note page (frontmatter cards + shortcodes).
+  Only when review: true - disabled notes keep cards in YAML but hide the deck.
+*/ -}}
+{{- $page := . -}}
+{{- if eq ($page.Params.review | default false) true -}}
+{{- $cards := partialCached "notes/cards-for-page.html" $page $page.RelPermalink -}}
+{{- if gt (len $cards) 0 -}}
+  <aside class="notes-note-flashcards border-divider mb-6 rounded border p-5">
+    <h2 id="flashcards" class="h6 mb-4">{{ partial "func/title-case" "Flashcards" }}</h2>
+    <div class="notes-note-flashcards__grid grid gap-4 sm:grid-cols-2">
+      {{- range $cards -}}
+        <div class="notes-note-flashcards__item">
+          {{ partial "notes/flashcard.html" (dict "Front" .front "Back" .back "Class" "h-full") }}
+        </div>
+      {{- end -}}
+    </div>
+  </aside>
+{{- end -}}
+{{- end -}}

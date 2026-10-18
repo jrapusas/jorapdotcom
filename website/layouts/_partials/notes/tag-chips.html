@@ -1,0 +1,21 @@
+{{- /*
+  Linked tag chips for notes.
+  Dict: Tags (required slice), ListClass, SizeClass, PadClass.
+*/ -}}
+{{- $tags := .Tags -}}
+{{- $listClass := .ListClass | default "flex flex-wrap gap-2" -}}
+{{- $sizeClass := .SizeClass | default "text-sm" -}}
+{{- $padClass := .PadClass | default "px-3 py-1" -}}
+{{- with $tags -}}
+  <ul class="{{ $listClass }}">
+    {{- range . -}}
+      <li>
+        <a
+          class="bg-elevated text-ink hover:bg-accent hover:text-surface no-underline transition-colors motion-reduce:transition-none block rounded {{ $padClass }} {{ $sizeClass }}"
+          href="{{ `tags/` | relLangURL }}{{ . | urlize | lower }}/">
+          {{ . }}
+        </a>
+      </li>
+    {{- end -}}
+  </ul>
+{{- end -}}

@@ -1,0 +1,33 @@
+{{ define "main" }}
+  {{ partial "page-header" . }}
+  {{ partial "notes/dev-banner" . }}
+
+  <section class="section">
+    <div class="container">
+      <div class="row gx-5">
+        <div class="lg:col-8">
+          {{ $drafts := where (where site.Pages "Section" "blog") "Draft" true }}
+          {{ $drafts = partial "sort-featured-first.html" (dict "Pages" $drafts "Sort" "date") }}
+          {{ $paginator := .Paginate $drafts }}
+
+          {{ if eq (len $paginator.Pages) 0 }}
+            <p class="text-ink-muted">No draft posts yet. Add a file under <code>content/english/blog/</code> with <code>draft: true</code>.</p>
+          {{ else }}
+            <div class="row">
+              {{ range $paginator.Pages }}
+                <div class="md:col-6 mb-14">
+                  {{ partial "components/blog-card" . }}
+                </div>
+              {{ end }}
+            </div>
+            {{ partial "components/pagination.html" . }}
+          {{ end }}
+        </div>
+        <div class="lg:col-4">
+          {{ $widget := site.Params.widgets.sidebar }}
+          {{ partialCached "widgets/widget-wrapper" (dict "Widgets" $widget "Scope" .) .RelPermalink }}
+        </div>
+      </div>
+    </div>
+  </section>
+{{ end }}

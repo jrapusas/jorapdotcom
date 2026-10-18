@@ -1,0 +1,152 @@
+{{ define "main" }}
+  {{- $data := partialCached "notes/collect-note-issues.html" site "note-issues-v12" -}}
+  {{- $notes := $data.notes -}}
+  {{- $notes = sort $notes "total" "desc" -}}
+
+  {{ partial "page-header" . }}
+
+  <section class="section">
+    <div class="container">
+      <div class="row justify-center">
+        <div class="lg:col-12">
+          {{ partial "notes/toolbar.html" (dict "Context" . "active" "issues") }}
+
+          <div class="content notes-content mb-6">
+            {{ partial "notes/render-content.html" . }}
+          </div>
+
+          <div class="notes-issues-summary border-divider mb-8 rounded border p-5">
+            <div class="mb-3 flex flex-wrap items-center justify-between gap-2">
+              <h2 class="h6 mb-0">Summary</h2>
+              {{- if gt $data.notesWithIssues 0 -}}
+                {{- $report := partial "notes/build-issues-report.html" $data -}}
+                <div class="notes-copy-wrap">
+                  <button type="button" class="btn btn-outline-primary btn-sm" data-notes-copy>{{ T "copy_issues" }}</button>
+                  <script type="application/json" class="notes-copy-data">{{ dict "source" $report | jsonify | safeJS }}</script>
+                </div>
+              {{- end -}}
+            </div>
+            {{- if gt $data.notesWithIssues 0 -}}
+              <ul class="notes-issues-summary__stats mb-0 list-none space-y-1 p-0 text-sm">
+                <li><strong>{{ $data.brokenCount }}</strong> broken wikilink{{ if ne $data.brokenCount 1 }}s{{ end }} (target note does not exist)</li>
+                <li><strong>{{ $data.pipeCount }}</strong> pipe wikilink{{ if ne $data.pipeCount 1 }}s{{ end }} (deprecated <code>[[note|label]]</code> syntax)</li>
+                <li><strong>{{ $data.unlinkedCount }}</strong> unlinked mention{{ if ne $data.unlinkedCount 1 }}s{{ end }} (note title in prose without <code>[[wikilink]]</code>)</li>
+                <li><strong>{{ $data.structureCount }}</strong> structure issue{{ if ne $data.structureCount 1 }}s{{ end }} (missing typed links or extra sections)</li>
+                <li><strong>{{ $data.orphanCount }}</strong> orphan{{ if ne $data.orphanCount 1 }}s{{ end }} (no inbound wikilinks)</li>
+                <li><strong>{{ $data.deadEndCount }}</strong> dead end{{ if ne $data.deadEndCount 1 }}s{{ end }} (no body wikilinks)</li>
+                <li><strong>{{ $data.utilityCount }}</strong> utility wikilink{{ if ne $data.utilityCount 1 }}s{{ end }} (tool page linked via <code>[[wikilink]]</code>)</li>
+                <li><strong>{{ $data.relBrokenCount }}</strong> broken relationship target{{ if ne $data.relBrokenCount 1 }}s{{ end }} (frontmatter <code>relationships:</code>)</li>
+                <li><strong>{{ $data.bodySectionCount }}</strong> body section{{ if ne $data.bodySectionCount 1 }}s{{ end }} (frontmatter headings still in markdown body)</li>
+                <li><strong>{{ $data.notesWithIssues }}</strong> note{{ if ne $data.notesWithIssues 1 }}s{{ end }} affected</li>
+              </ul>
+            {{- else -}}
+              <p class="notes-issues-summary__ok mb-0 text-sm">No garden issues found. Links resolve, graph shape looks connected, and note bodies match the atomic format.</p>
+            {{- end -}}
+          </div>
+
+          {{- if gt $data.notesWithIssues 0 -}}
+            <div class="notes-issues-index space-y-6">
+              {{- range $notes -}}
+                {{- $note := .Page -}}
+                <section class="notes-issues-group border-divider rounded border p-5" id="{{ $note.File.ContentBaseName }}">
+                  <h2 class="h6 mb-3">
+                    <a class="text-accent no-underline hover:underline" href="{{ $note.RelPermalink }}">{{ $note.Title }}</a>
+                    <span class="text-ink-muted font-normal">({{ .total }})</span>
+                  </h2>
+                  <ul class="notes-issues__list mb-0 list-none space-y-2 p-0 text-sm">
+                    {{- range .broken -}}
+                      <li class="notes-issues__item notes-issues__item--broken">
+                        <strong>Missing note:</strong>
+                        <code>[[{{ .target }}]]</code> - no matching page.
+                      </li>
+                    {{- end -}}
+                    {{- range .pipe -}}
+                      <li class="notes-issues__item notes-issues__item--pipe">
+                        <strong>Pipe wikilink:</strong>
+                        <code>[[{{ .raw }}]]</code> - use <code>[[{{ .target }}]]</code> only (no <code>|label</code>).
+                      </li>
+                    {{- end -}}
+                    {{- range .unlinked -}}
+                      <li class="notes-issues__item notes-issues__item--unlinked">
+                        <strong>Unlinked mention:</strong>
+                        "{{ .mention }}" →
+                        <a class="text-accent no-underline hover:underline" href="{{ .suggestPage.RelPermalink }}"><code>[[{{ .suggestTitle }}]]</code></a>
+                      </li>
+                    {{- end -}}
+                    {{- range .structure -}}
+                      {{- if eq .type "missingTable" -}}
+                        <li class="notes-issues__item notes-issues__item--structure">
+                          <strong>Missing table:</strong>
+                          add a <code>## Note Relationships</code> table with <code>extends</code> and <code>contradicts</code> rows.
+                        </li>
+                      {{- else if eq .type "missingExtends" -}}
+                        <li class="notes-issues__item notes-issues__item--structure">
+                          <strong>Missing extends:</strong>
+                          add <code>| extends | [[Note Title]] | reason |</code> to <strong>Note Relationships</strong>.
+                        </li>
+                      {{- else if eq .type "missingContradicts" -}}
+                        <li class="notes-issues__item notes-issues__item--structure">
+                          <strong>Missing contradicts:</strong>
+                          add <code>| contradicts | [[Note Title]] | when … |</code> to <strong>Note Relationships</strong>.
+                        </li>
+                      {{- else if eq .type "extraSection" -}}
+                        <li class="notes-issues__item notes-issues__item--structure">
+                          <strong>Extra section:</strong>
+                          <code>## {{ .heading }}</code> - use <code>## Examples</code>, <code>## Note Relationships</code>, or optional <code>## See also</code> only.
+                        </li>
+                      {{- end -}}
+                    {{- end -}}
+                    {{- range .orphan -}}
+                      <li class="notes-issues__item notes-issues__item--orphan">
+                        <strong>Orphan:</strong>
+                        no other note links here - add inbound wikilinks from parent notes or hubs. See <a class="text-accent no-underline hover:underline" href="{{ `/notes/graph/` | relLangURL }}">Graph</a> (Orphans filter).
+                      </li>
+                    {{- end -}}
+                    {{- range .deadEnd -}}
+                      <li class="notes-issues__item notes-issues__item--dead-end">
+                        <strong>Dead end:</strong>
+                        no wikilinks in the note body - link out to related notes in prose. See <a class="text-accent no-underline hover:underline" href="{{ `/notes/graph/` | relLangURL }}">Graph</a> (No body links filter).
+                      </li>
+                    {{- end -}}
+                    {{- range .utility -}}
+                      <li class="notes-issues__item notes-issues__item--utility">
+                        <strong>Utility wikilink:</strong>
+                        <code>[[{{ .target }}]]</code> - use <code>/notes/{{ .slug }}/</code> instead (tool pages are not garden notes).
+                      </li>
+                    {{- end -}}
+                    {{- range .relBroken -}}
+                      <li class="notes-issues__item notes-issues__item--rel-broken">
+                        <strong>Broken relationship:</strong>
+                        {{- with .relType -}}
+                          <code>{{ . }}</code>
+                        {{- end -}}
+                        target <code>[[{{ .target }}]]</code> in <code>relationships:</code> - no matching page.
+                      </li>
+                    {{- end -}}
+                    {{- range .bodySection -}}
+                      <li class="notes-issues__item notes-issues__item--body-section">
+                        <strong>Body section:</strong>
+                        <code>## {{ .heading }}</code> still in markdown body -
+                        {{- if eq .heading "Key Concept" -}}
+                          move content to <code>key_concept:</code> frontmatter.
+                        {{- else if eq .heading "Examples" -}}
+                          move bullets to <code>examples:</code> frontmatter.
+                        {{- else if eq .heading "Note Relationships" -}}
+                          move rows to <code>relationships:</code> frontmatter.
+                        {{- else -}}
+                          remove the heading (See also is optional in body only when needed).
+                        {{- end -}}
+                      </li>
+                    {{- end -}}
+                  </ul>
+                </section>
+              {{- end -}}
+            </div>
+          {{- end -}}
+        </div>
+      </div>
+    </div>
+  </section>
+
+  {{ partial "essentials/fingerprint-asset.html" (dict "src" "js/notes-copy-md.js" "defer" true) }}
+{{ end }}

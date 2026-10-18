@@ -1,0 +1,66 @@
+{{ $homeBlog := site.Params.home_blog }}
+{{ $postLimit := 5 }}
+{{ $sectionTitle := "Selected Writing" }}
+{{ $viewAllLabel := "View all posts" }}
+{{ if $homeBlog }}
+  {{ with $homeBlog.post_limit }}{{ $postLimit = . }}{{ end }}
+  {{ with $homeBlog.section_title }}{{ $sectionTitle = . }}{{ end }}
+  {{ with $homeBlog.view_all_label }}{{ $viewAllLabel = . }}{{ end }}
+{{ end }}
+
+{{ $posts := slice }}
+{{ if and $homeBlog $homeBlog.post_slugs }}
+  {{ range $homeBlog.post_slugs }}
+    {{ $slug := . }}
+    {{ $page := site.GetPage (printf "/blog/%s" $slug) }}
+    {{ if not $page }}
+      {{ $page = index (where site.RegularPages "Params.slug" $slug) 0 }}
+    {{ end }}
+    {{ if not $page }}
+      {{ $page = site.GetPage (printf "blog/%s" $slug) }}
+    {{ end }}
+    {{ with $page }}
+      {{ $posts = $posts | append . }}
+    {{ end }}
+  {{ end }}
+{{ end }}
+{{ if eq (len $posts) 0 }}
+  {{ $blogPages := where site.RegularPages "Section" "blog" }}
+  {{ $posts = first $postLimit ($blogPages.ByDate.Reverse) }}
+{{ else }}
+  {{ $posts = first $postLimit $posts }}
+{{ end }}
+
+<section class="home-writing" data-site-reveal aria-labelledby="home-writing-title">
+  <div class="container">
+    <div class="home-writing__header">
+      <div>
+        <p class="home-writing__label" data-site-reveal-label>From the blog</p>
+        <h2 id="home-writing-title" class="home-writing__title" data-site-split-section>
+          {{ $sectionTitle | title }}
+        </h2>
+      </div>
+      <a class="nav-link shrink-0 text-sm font-semibold" href="{{ `blog/` | relLangURL }}" data-site-reveal-body>
+        {{ $viewAllLabel }} &rarr;
+      </a>
+    </div>
+
+    <div class="row home-writing__grid">
+      {{ range $i, $post := $posts }}
+        <div
+          class="{{ if eq $i 0 }}
+            mb-8 w-full lg:col-8 md:mb-10
+          {{ else }}
+            mb-8 md:col-6 md:mb-10 lg:col-4
+          {{ end }}"
+          data-site-reveal-card>
+          {{ partial "components/blog-card" (dict
+            "Page" $post
+            "Eager" (eq $i 0)
+            "HeadingLevel" 3
+          ) }}
+        </div>
+      {{ end }}
+    </div>
+  </div>
+</section>

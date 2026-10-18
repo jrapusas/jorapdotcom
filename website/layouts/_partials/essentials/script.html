@@ -1,0 +1,68 @@
+<!-- JS Plugins + Main script -->
+{{ $scripts := slice }}
+{{ $scriptsLazy := slice }}
+{{ range site.Params.plugins.js }}
+{{ if findRE "^http" .link }}
+<script src="{{ .link | relURL }}" type="application/javascript" {{ .attributes | safeHTMLAttr }}></script>
+{{ else }}
+{{ if not .lazy }}
+{{ with resources.Get .link }}
+{{ $scripts = $scripts | append . }}
+{{ end }}
+{{ else }}
+{{ with resources.Get .link }}
+{{ $scriptsLazy = $scriptsLazy | append . }}
+{{ end }}
+{{ end }}
+{{ end }}
+{{ end }}
+
+
+<!-- main script -->
+{{ with resources.Get "js/main.js" }}
+{{ $scripts = $scripts | append . }}
+{{ end }}
+
+<!-- Only concat if scripts is not empty -->
+{{ if ne (len $scripts) 0 }}
+{{ $scripts = $scripts | resources.Concat "js/script.js" }}
+{{ $scripts = partial "essentials/publish-asset.html" (dict "resource" $scripts) }}
+
+{{/* scripts */}}
+<script
+  src="{{ $scripts.RelPermalink }}"
+  crossorigin="anonymous"
+  {{ with $scripts.Data.Integrity }}integrity="{{ . }}"{{ end }}></script>
+{{ end }}
+
+{{/* search.js imports search-core.js - needs js.Build, not Concat */}}
+{{ partial "essentials/fingerprint-asset.html" (dict "src" "js/search.js" "bundle" true) }}
+
+<!-- Only concat if scriptsLazy is not empty -->
+{{ if ne (len $scriptsLazy) 0 }}
+{{ $scriptsLazy = $scriptsLazy | resources.Concat "js/script-lazy.js" }}
+{{ $scriptsLazy = partial "essentials/publish-asset.html" (dict "resource" $scriptsLazy) }}
+
+{{/* scripts lazy */}}
+<script
+  defer
+  async
+  crossorigin="anonymous"
+  {{ with $scriptsLazy.Data.Integrity }}integrity="{{ . }}"{{ end }}
+  src="{{ $scriptsLazy.RelPermalink }}"></script>
+{{ end }}
+
+<!-- progressive web app -->
+{{ partialCached "pwa.html" . }}
+
+
+<!-- cookie consent -->
+{{ partialCached "cookie-consent.html" . }}
+
+
+<!-- google adsense -->
+{{ partialCached "adsense-script.html" . }}
+
+
+<!-- cookie consent -->
+{{ partialCached "announcement-script.html" . }}

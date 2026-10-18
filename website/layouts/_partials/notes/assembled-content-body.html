@@ -1,0 +1,52 @@
+{{- /*
+  Rebuild note markdown from frontmatter fields + remaining body.
+  Used for render, wikilink scans, TOC, and graph analytics.
+  Scope: intro (through examples), tail (relationships + body), or empty (all).
+  Call through notes/assembled-content.html (partialCached wrapper).
+*/ -}}
+{{- $page := . -}}
+{{- $scope := "" -}}
+{{- if reflect.IsMap . -}}
+  {{- $page = .Page -}}
+  {{- $scope = .Scope | default "" -}}
+{{- end -}}
+{{- $parts := slice -}}
+
+{{- if ne $scope "tail" -}}
+{{- with or $page.Params.description $page.Params.summary -}}
+  {{- $parts = $parts | append (strings.TrimSpace .) -}}
+{{- end -}}
+{{- $kcFormatted := partial "notes/format-key-concept.html" $page -}}
+{{- with $kcFormatted -}}
+  {{- $parts = $parts | append (printf "## Key Concept\n\n%s" .) -}}
+{{- end -}}
+
+{{- with $page.Params.examples -}}
+  {{- $bullets := slice -}}
+  {{- range . -}}
+    {{- if strings.TrimSpace . -}}
+      {{- $bullets = $bullets | append (printf "- %s" .) -}}
+    {{- end -}}
+  {{- end -}}
+  {{- if $bullets -}}
+    {{- $parts = $parts | append (printf "## Examples\n\n%s" (delimit $bullets "\n")) -}}
+  {{- end -}}
+{{- end -}}
+{{- end -}}
+
+{{- if ne $scope "intro" -}}
+  {{- with $page.Params.relationships -}}
+    {{- $rows := slice "| Relationship | Wikilink | Reason |" "|--------------|----------|--------|" -}}
+    {{- range . -}}
+      {{- $rows = $rows | append (printf "| %s | %s | %s |" .type .wikilink .reason) -}}
+    {{- end -}}
+    {{- $parts = $parts | append (printf "## Note Relationships\n\n%s" (delimit $rows "\n")) -}}
+  {{- end -}}
+
+  {{- $body := partial "notes/note-raw-body.html" $page -}}
+  {{- if and $body (ne $body "-") -}}
+    {{- $parts = $parts | append $body -}}
+  {{- end -}}
+{{- end -}}
+
+{{- return (delimit $parts "\n\n") -}}

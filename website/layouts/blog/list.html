@@ -1,0 +1,41 @@
+{{ define "main" }}
+  <div class="site-canvas" data-site-motion>
+    {{ partial "sections/site-page-hero.html" (dict
+      "Page" .
+      "Eyebrow" "Writing"
+      "Title" .Title
+      "Description" .Params.description
+      "Layout" "center"
+      "HeadingId" "blog-hero-heading"
+    ) }}
+
+    <section class="site-blog-index" data-site-reveal aria-labelledby="blog-index-title">
+      <div class="container">
+        <p id="blog-index-title" class="sr-only">Blog posts</p>
+        <div class="row gx-5">
+          <div class="lg:col-8">
+            <div class="row">
+              {{ $posts := where .RegularPages "Draft" false }}
+              {{ $posts = partial "sort-featured-first.html" (dict "Pages" $posts "Sort" "date") }}
+              {{ $paginator := .Paginate $posts }}
+              {{ range $paginator.Pages }}
+                <div class="md:col-6 mb-14" data-site-reveal-card>
+                  {{ partial "components/blog-card" . }}
+                </div>
+              {{ end }}
+            </div>
+            <div data-site-reveal-body>
+              {{ partial "components/pagination.html" . }}
+            </div>
+          </div>
+          <aside class="lg:col-4" data-site-reveal-body>
+            {{ $widget := site.Params.widgets.sidebar }}
+            {{ partialCached "widgets/widget-wrapper" (dict "Widgets" $widget "Scope" .) .RelPermalink }}
+          </aside>
+        </div>
+      </div>
+    </section>
+  </div>
+
+  {{ partial "essentials/site-motion-assets.html" . }}
+{{ end }}

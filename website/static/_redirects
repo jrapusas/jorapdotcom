@@ -1,0 +1,37 @@
+# Cloudflare Pages redirects. Hugo copies this to public/_redirects at build time.
+# https://developers.cloudflare.com/pages/configuration/redirects/
+#
+# Pages rejects (and logs at deploy time) rules that Netlify would accept:
+#   - the `!` force suffix: write `301`, never `301!`
+#   - absolute or domain-level sources: `https://jorap.com/*` is skipped
+#   - rewrites to a non-redirect status: `/* /404.html 404` is skipped
+#
+# Apex -> www is NOT handled here. Domain-level redirects are unsupported in
+# _redirects, and jorap.com still resolves to SuperCP (LiteSpeed), not Pages.
+# Live fix: SuperCP cPanel → Redirects → permanent 301 wildcard to
+# https://www.jorap.com (Wild Card Redirect checked). Details:
+# docs/TROUBLESHOOTING.md#redirects-apex--www
+# Long-term: move apex DNS to Cloudflare, attach as Pages custom domain, then
+# use a Redirect Rule / Bulk Redirect.
+#
+# 404s need no rule: Pages serves public/404.html for any unmatched path.
+
+/index.xml /blog/index.xml 301
+/index.xml/ /blog/index.xml/ 301
+
+/notes/cards/ /notes/flashcards/ 301
+/notes/cards /notes/flashcards/ 301
+
+/notes/client-site-handoff/ /notes/client-site-pass-off/ 301
+/notes/client-site-handoff /notes/client-site-pass-off/ 301
+
+/blog/power-of-worship-pads-enhancing-your-worship-experience/ /blog/worship-pads-solo-guitar/ 301
+/blog/power-of-worship-pads-enhancing-your-worship-experience /blog/worship-pads-solo-guitar/ 301
+
+/blog/hugoplate-theme-review/ /blog/jorap-theme-review/ 301
+/blog/hugoplate-theme-review /blog/jorap-theme-review/ 301
+
+/cursor-usage.html /projects/cursor-spending-forecast/ 301
+/projects/cursor-usage/ /projects/cursor-spending-forecast/ 301
+/projects/cursor-usage /projects/cursor-spending-forecast/ 301
+/projects/cursor-spending-forecast /projects/cursor-spending-forecast/ 301

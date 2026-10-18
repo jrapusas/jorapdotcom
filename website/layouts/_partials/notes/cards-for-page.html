@@ -1,0 +1,59 @@
+{{- /*
+  Cards for one note page: frontmatter cards array, legacy card_front/back,
+  optional lead-line fallback, and {{< card >}} shortcodes in the body.
+  Returns a slice of dicts: front, back, kind (frontmatter|legacy|lead|shortcode).
+*/ -}}
+{{- $page := . -}}
+{{- $cards := slice -}}
+{{- $body := partial "notes/note-raw-body.html" $page | strings.TrimSpace -}}
+{{- $shortcodePattern := `\{\{[%<]\s*card\s+front="([^"]+)"\s+back="([^"]+)"\s*>\}\}` -}}
+{{- $leadPattern := `^\*\*([^*]+)\*\*\s*(?:=\s*|-\s*|-\s*)(.+)$` -}}
+{{- $lines := split $body "\n" -}}
+{{- $firstLine := "" -}}
+{{- if gt (len $lines) 0 -}}
+  {{- $firstLine = index $lines 0 -}}
+{{- end -}}
+
+{{- with $page.Params.cards -}}
+  {{- range . -}}
+    {{- $front := .front -}}
+    {{- $back := .back -}}
+    {{- if and $front $back -}}
+      {{- $sets := partial "notes/card-sets.html" (dict "Page" $page "Card" .) -}}
+      {{- $cards = $cards | append (dict "front" $front "back" $back "kind" "frontmatter" "sets" $sets) -}}
+    {{- end -}}
+  {{- end -}}
+{{- end -}}
+
+{{- if eq (len $cards) 0 -}}
+  {{- $front := $page.Params.card_front -}}
+  {{- $back := $page.Params.card_back -}}
+  {{- if not $front -}}
+    {{- $leadMatches := findRESubmatch $leadPattern $firstLine -}}
+    {{- with index $leadMatches 0 -}}
+      {{- $front = index . 1 -}}
+      {{- if not $back -}}
+        {{- $back = index . 2 -}}
+      {{- end -}}
+    {{- end -}}
+  {{- end -}}
+  {{- if and $front $back -}}
+    {{- $kind := "legacy" -}}
+    {{- if not $page.Params.card_front -}}
+      {{- $kind = "lead" -}}
+    {{- end -}}
+    {{- $sets := partial "notes/card-sets.html" (dict "Page" $page) -}}
+    {{- $cards = $cards | append (dict "front" $front "back" $back "kind" $kind "sets" $sets) -}}
+  {{- end -}}
+{{- end -}}
+
+{{- range findRESubmatch $shortcodePattern $body -}}
+  {{- $front := index . 1 -}}
+  {{- $back := index . 2 -}}
+  {{- if and $front $back -}}
+    {{- $sets := partial "notes/card-sets.html" (dict "Page" $page) -}}
+    {{- $cards = $cards | append (dict "front" $front "back" $back "kind" "shortcode" "sets" $sets) -}}
+  {{- end -}}
+{{- end -}}
+
+{{- return $cards -}}

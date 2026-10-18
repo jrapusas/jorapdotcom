@@ -1,0 +1,7 @@
+{{- $front := .Get "front" | default (.Get 0) -}}
+{{- $back := .Get "back" | default (.Get 1) -}}
+{{- if and $front $back -}}
+  {{ partial "notes/flashcard.html" (dict "Front" $front "Back" $back "Source" .Page "Class" "my-6") }}
+{{- else -}}
+  {{- warnf "card shortcode on %q needs front and back attributes" .Page.RelPermalink -}}
+{{- end -}}

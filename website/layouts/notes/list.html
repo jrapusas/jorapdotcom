@@ -1,0 +1,191 @@
+{{ define "main" }}
+  <div data-site-motion>
+  {{ partial "page-header" . }}
+
+  <section class="section notes-index">
+    <div class="container">
+      <div class="row justify-center">
+        <div class="lg:col-12">
+          <div data-site-intro-item>{{ partial "notes/toolbar.html" (dict "Context" . "active" "list") }}</div>
+
+          {{- $page := . -}}
+          {{- if or $page.Description $page.Content -}}
+            <div data-site-reveal>
+            <aside
+              class="notes-index-welcome border-divider mb-8 w-full rounded-xl border bg-elevated p-5 sm:p-6"
+              aria-labelledby="notes-index-welcome-title"
+              data-site-reveal-body>
+              <h2 id="notes-index-welcome-title" class="h5 mb-3 text-balance">
+                What is this Notes Garden?
+              </h2>
+              {{- with $page.Content -}}
+                <div class="notes-index-welcome__body content notes-content text-ink-muted">
+                  {{ partial "notes/render-content.html" (dict "Page" $page "BodyOnly" true) }}
+                </div>
+              {{- else -}}
+                {{- with $page.Description -}}
+                  <p class="notes-index-lede text-ink-muted mb-0">{{ . }}</p>
+                {{- end -}}
+              {{- end -}}
+            </aside>
+            </div>
+          {{- end -}}
+        </div>
+      </div>
+
+      <div class="notes-index-discover mb-10 grid gap-8" data-site-reveal>
+        <div data-site-reveal-card>{{ partial "notes/featured-random-note.html" . }}</div>
+        <div data-site-reveal-card>{{ partial "notes/recent-new.html" (dict "Context" . "Limit" 6) }}</div>
+      </div>
+
+      <div class="row justify-center">
+        <div class="lg:col-12">
+          {{- $notes := partialCached "notes/pages.html" . "notes-pages-v1" -}}
+          {{- $notes = partial "notes/sort-by-connections.html" (dict "Pages" $notes "Context" .) -}}
+          {{- $tagCounts := dict -}}
+          {{- $categoryCounts := dict -}}
+          {{- range $notes -}}
+            {{- range (.Params.tags | default slice) -}}
+              {{- $tagCounts = merge $tagCounts (dict . (add (index $tagCounts . | default 0) 1)) -}}
+            {{- end -}}
+            {{- range (.Params.categories | default slice) -}}
+              {{- $categoryCounts = merge $categoryCounts (dict . (add (index $categoryCounts . | default 0) 1)) -}}
+            {{- end -}}
+          {{- end -}}
+          {{- $allTags := slice -}}
+          {{- range $tag, $_ := $tagCounts -}}
+            {{- $allTags = $allTags | append $tag -}}
+          {{- end -}}
+          {{- $allTags = sort $allTags -}}
+          {{- $allCategories := slice -}}
+          {{- range $cat, $_ := $categoryCounts -}}
+            {{- $allCategories = $allCategories | append $cat -}}
+          {{- end -}}
+          {{- $allCategories = sort $allCategories -}}
+
+          <header class="notes-index-catalog__head mb-4">
+            <h2 class="h5 mb-1">All notes</h2>
+            <p class="text-ink-muted mb-0 text-sm">Browse, search, and filter the full garden.</p>
+          </header>
+
+          <div class="notes-list-controls border-divider mb-6 rounded border p-4 sm:p-5">
+            <div class="notes-list-controls__top flex flex-wrap items-center gap-2 sm:gap-3">
+              <label class="notes-list-search-wrap min-w-0 w-full sm:flex-1">
+                <span class="sr-only">Search notes</span>
+                <input
+                  type="search"
+                  class="notes-list-search form-input w-full"
+                  placeholder="Search title, tag, or description…"
+                  autocomplete="off"
+                  spellcheck="false"
+                  data-notes-search />
+              </label>
+
+              <button
+                type="button"
+                class="notes-list-clear btn btn-outline-primary btn-sm hidden shrink-0"
+                data-notes-clear
+                hidden>
+                Clear
+              </button>
+
+              {{- if or (gt (len $allTags) 0) (gt (len $allCategories) 0) -}}
+                <details class="notes-list-refine shrink-0">
+                  <summary class="notes-list-refine__summary btn btn-outline-primary btn-sm">Refine</summary>
+                  <div class="notes-list-refine__body border-divider mt-2 flex flex-col gap-3 rounded border bg-surface p-3 sm:absolute sm:right-0 sm:mt-2 sm:min-w-[16rem] sm:shadow-md">
+                    {{- if gt (len $allTags) 0 -}}
+                      <label class="notes-list-facet text-sm">
+                        <span class="text-ink-muted mb-1 block">Tag</span>
+                        <select class="notes-list-facet__select w-full" data-notes-tag>
+                          <option value="">All tags</option>
+                          {{- range $allTags -}}
+                            <option value="{{ . | urlize }}">{{ . }} ({{ index $tagCounts . }})</option>
+                          {{- end -}}
+                        </select>
+                      </label>
+                    {{- end -}}
+                    {{- if gt (len $allCategories) 0 -}}
+                      <label class="notes-list-facet text-sm">
+                        <span class="text-ink-muted mb-1 block">Category</span>
+                        <select class="notes-list-facet__select w-full" data-notes-category>
+                          <option value="">All categories</option>
+                          {{- range $allCategories -}}
+                            <option value="{{ . | urlize }}">{{ . }} ({{ index $categoryCounts . }})</option>
+                          {{- end -}}
+                        </select>
+                      </label>
+                    {{- end -}}
+                  </div>
+                </details>
+              {{- end -}}
+
+              <span
+                class="notes-list-count text-ink-muted ms-auto shrink-0 text-sm tabular-nums whitespace-nowrap"
+                data-notes-count
+                data-notes-total="{{ len $notes }}"
+                aria-live="polite">
+                {{ len $notes }} notes
+              </span>
+            </div>
+          </div>
+
+          <div class="row notes-grid" data-notes-grid>
+            {{ range $notes }}
+              {{- $rels := partial "notes/relationship-types.html" . -}}
+              {{- $searchBits := slice .Title (.Description | default "") -}}
+              {{- $blurb := partial "notes/note-blurb.html" (dict "Page" .) -}}
+              {{- with $blurb -}}
+                {{- $searchBits = $searchBits | append . -}}
+              {{- end -}}
+              {{- range (.Params.tags | default slice) -}}
+                {{- $searchBits = $searchBits | append . -}}
+              {{- end -}}
+              {{- range (.Params.aliases | default slice) -}}
+                {{- $searchBits = $searchBits | append . -}}
+              {{- end -}}
+              {{- $tagSlugs := slice -}}
+              {{- range (.Params.tags | default slice) -}}
+                {{- $tagSlugs = $tagSlugs | append (. | urlize) -}}
+              {{- end -}}
+              {{- $categorySlugs := slice -}}
+              {{- range (.Params.categories | default slice) -}}
+                {{- $categorySlugs = $categorySlugs | append (. | urlize) -}}
+              {{- end -}}
+              <div
+                class="md:col-6 lg:col-4 mb-8 flex notes-grid-item"
+                data-site-reveal-card
+                data-note-tags="{{ delimit $tagSlugs " " }}"
+                data-note-categories="{{ delimit $categorySlugs " " }}"
+                data-note-rel-extends="{{ $rels.extends }}"
+                data-note-rel-contradicts="{{ $rels.contradicts }}"
+                data-note-rel-implements="{{ $rels.implements }}"
+                data-note-rel-alternative="{{ $rels.alternative }}"
+                data-note-rel-index="{{ partial "notes/is-index-page.html" . }}"
+                data-note-search="{{ delimit $searchBits " " | lower }}">
+                {{ partial "notes/note-card.html" (dict
+                  "Page" .
+                  "Body" (partial "notes/note-blurb.html" (dict "Page" . "DescriptionOnly" true))
+                  "HeadingLevel" 2
+                  "HeadingClass" "h5"
+                  "ShowTags" true
+                  "TagLimit" 4
+                ) }}
+              </div>
+            {{ end }}
+          </div>
+
+          <p class="notes-filter-empty text-ink-muted hidden text-sm" data-notes-filter-empty>
+            No notes match this filter.
+          </p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  </div>
+
+  {{ partial "essentials/fingerprint-asset.html" (dict "src" "js/notes-list.js" "defer" true) }}
+  {{ partial "essentials/fingerprint-asset.html" (dict "src" "js/notes-random-core.js" "defer" true) }}
+  {{ partial "essentials/fingerprint-asset.html" (dict "src" "js/notes-random-featured.js" "defer" true) }}
+  {{ partial "essentials/site-motion-assets.html" . }}
+  {{ end }}

@@ -1,0 +1,58 @@
+{{- /*
+  Clickable note card with tag chips that link separately.
+  Dict: Page (required), Href, Title, Body, Shared, ShowDescription, ShowTags,
+        HeadingLevel (default 3), HeadingClass (default "h6"), HeadingExtraClass (default "font-semibold").
+*/ -}}
+{{- $card := . -}}
+{{- $page := $card.Page -}}
+{{- $href := $card.Href | default $page.RelPermalink -}}
+{{- $title := $card.Title | default $page.Title -}}
+{{- $body := $card.Body -}}
+{{- $shared := $card.Shared -}}
+{{- $showDescription := $card.ShowDescription | default false -}}
+{{- $showTags := $card.ShowTags | default false -}}
+{{- $tagLimit := $card.TagLimit | default 0 | int -}}
+{{- $headingLevel := $card.HeadingLevel | default 3 -}}
+{{- $headingClass := $card.HeadingClass | default "h6" -}}
+{{- $headingExtraClass := $card.HeadingExtraClass | default "font-semibold" -}}
+{{- $headingTag := printf "h%d" $headingLevel -}}
+{{- $headingOpen := printf "<%s class=\"%s notes-card__title relative z-[1] mb-2 %s pointer-events-none\">" $headingTag $headingClass $headingExtraClass | safeHTML -}}
+{{- $headingClose := printf "</%s>" $headingTag | safeHTML -}}
+<article
+  class="notes-card notes-card--interactive border-divider relative flex h-full w-full flex-col overflow-hidden rounded-xl border bg-elevated p-5 shadow-sm transition-[box-shadow,border-color] duration-200 ease-out motion-reduce:transition-none">
+  <a
+    class="notes-card__overlay"
+    href="{{ $href }}"
+    data-wikilink-preview="{{ $page.RelPermalink }}"
+    aria-label="{{ $title }}"></a>
+  {{ $headingOpen }}{{ partial "func/title-case" $title }}{{ $headingClose }}
+  {{- if $body -}}
+    <p class="notes-card__body text-ink-muted relative z-[1] mb-0 flex-1 text-sm leading-snug pointer-events-none">{{ $body }}</p>
+  {{- else if $showDescription -}}
+    {{- with partial "notes/note-blurb.html" (dict "Page" $page "DescriptionOnly" true) -}}
+      <p class="notes-card__body text-ink-muted relative z-[1] mb-0 flex-1 text-sm leading-snug pointer-events-none">{{ . }}</p>
+    {{- else -}}
+      <div class="notes-card__spacer relative z-[1] flex-1 pointer-events-none" aria-hidden="true"></div>
+    {{- end -}}
+  {{- end -}}
+  {{- with $shared -}}
+    <p class="notes-card__shared text-ink-muted relative z-[1] mt-3 text-xs pointer-events-none">
+      <span class="notes-card__shared-label font-semibold">Shared:</span>
+      {{ delimit (first 3 .) ", " }}
+    </p>
+  {{- end -}}
+  {{- if $showTags -}}
+    {{- with $page.Params.tags -}}
+      {{- $tags := . -}}
+      {{- if gt $tagLimit 0 -}}
+        {{- $tags = first $tagLimit . -}}
+      {{- end -}}
+      {{ partial "notes/tag-chips.html" (dict
+        "Tags" $tags
+        "ListClass" "notes-card__tags relative z-[2] mt-auto flex flex-wrap gap-2 pt-3"
+        "SizeClass" "text-xs"
+        "PadClass" "px-2 py-0.5"
+      ) }}
+    {{- end -}}
+  {{- end -}}
+</article>

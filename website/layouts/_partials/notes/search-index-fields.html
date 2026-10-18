@@ -1,0 +1,24 @@
+{{- /*
+  Flatten note frontmatter fields used by site search.
+*/ -}}
+{{- $page := . -}}
+{{- $shareable := slice -}}
+{{- with $page.Params.shareable_thought -}}
+  {{- range . -}}
+    {{- with strings.TrimSpace . -}}
+      {{- $shareable = $shareable | append . -}}
+    {{- end -}}
+  {{- end -}}
+{{- end -}}
+{{- $rels := slice -}}
+{{- with $page.Params.relationships -}}
+  {{- range . -}}
+    {{- $rels = $rels | append (printf "%s %s %s" .type .wikilink .reason) -}}
+  {{- end -}}
+{{- end -}}
+{{- $kcSearch := partial "notes/format-key-concept.html" $page -}}
+{{- return dict
+  "keyConcept" $kcSearch
+  "shareableThought" (delimit $shareable " ")
+  "relationships" (delimit $rels " ")
+-}}

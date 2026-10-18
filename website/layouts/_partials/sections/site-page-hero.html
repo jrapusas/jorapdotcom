@@ -1,0 +1,68 @@
+{{/*
+  Shared page hero for motion-led section layouts (about, blog, etc.).
+
+  Params:
+    - Page (required)
+    - Eyebrow
+    - Title
+    - Description
+    - Image
+    - Layout: "split" (default) or "center"
+    - HeadingId
+*/}}
+{{ $page := .Page }}
+{{ $layout := .Layout | default "split" }}
+{{ $title := .Title | default $page.Title }}
+{{ $description := .Description | default $page.Params.description }}
+{{ $image := .Image | default $page.Params.image }}
+{{ $headingId := .HeadingId | default "page-hero-heading" }}
+
+<section class="site-hero section {{ if eq $layout `center` }}site-hero--center{{ end }}" aria-labelledby="{{ $headingId }}">
+  <div class="container">
+    {{ if eq $layout "split" }}
+      <div class="site-hero__grid">
+        <div class="site-hero__copy">
+          {{ with .Eyebrow }}
+            <p class="site-hero__eyebrow" data-site-intro-item>{{ . }}</p>
+          {{ end }}
+          <h1 id="{{ $headingId }}" class="site-hero__heading" data-site-split>{{ $title | title }}</h1>
+          {{ with $description }}
+            <p class="site-hero__lede" data-site-intro-item>{{ . }}</p>
+          {{ end }}
+          <div class="site-hero__meta" data-site-intro-item>
+            {{ partial "components/breadcrumb" (dict "Context" $page "Class" "site-hero__breadcrumb") }}
+          </div>
+        </div>
+        {{ with $image }}
+          <figure class="site-hero__media">
+            <div class="site-hero__media-frame">
+              {{ partial "image" (dict
+                "Src" .
+                "Context" $page
+                "Alt" (printf "%s portrait" ($title | title))
+                "Class" "site-hero__photo"
+                "Size" "400x400"
+                "Loading" "eager"
+                "FetchPriority" "high"
+                "Decoding" "async"
+              ) }}
+            </div>
+          </figure>
+        {{ end }}
+      </div>
+    {{ else }}
+      <div class="site-hero__copy site-hero__copy--center">
+        {{ with .Eyebrow }}
+          <p class="site-hero__eyebrow" data-site-intro-item>{{ . }}</p>
+        {{ end }}
+        <h1 id="{{ $headingId }}" class="site-hero__heading" data-site-split>{{ $title | title }}</h1>
+        {{ with $description }}
+          <p class="site-hero__lede" data-site-intro-item>{{ . }}</p>
+        {{ end }}
+        <div class="site-hero__meta" data-site-intro-item>
+          {{ partial "components/breadcrumb" (dict "Context" $page "Class" "site-hero__breadcrumb") }}
+        </div>
+      </div>
+    {{ end }}
+  </div>
+</section>

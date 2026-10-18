@@ -1,0 +1,192 @@
+{{/*
+  components/image - Renders a responsive <img> or <picture> from any source.
+
+  Resolution order for `Src`:
+    1. Remote URL (http/https/protocol-relative) → <img src=…>
+    2. Page bundle resource (.Context.Resources.GetMatch)
+    3. Project asset (assets/<path>) via resources.Get
+    4. Static file (static/<path>) → <img src=…>
+
+  Parameters (all optional unless noted):
+    Src              (string, required)  Path or URL.
+    Context          (Page)               Page context for bundle resources. Default: dot.
+    Alt              (string)             alt text.
+    Class            (string)             extra classes.
+    Size             (string)             Hugo size spec like "413x208" or "413x". Triggers single-size pipeline.
+    Command          (string)             Resize|Fit|Fill|Crop. Default Resize.
+    Webp             (bool, default true) Generate WebP variant.
+    Loading          (string)             lazy|eager. Default lazy.
+    FetchPriority    (string)             auto|high|low. Default auto.
+    Decoding         (string)             async|sync|auto. Default async.
+    Placeholder      (bool)               Inline LQIP via Gaussian blur. Default false.
+    DisplayXL/LG/MD/SM (string)           Breakpoints for responsive <picture>. Defaults: 1110x/700x/600x/545x.
+    Resize           (bool, default true) If false + no Size, image is rendered at natural size.
+*/}}
+
+{{ $src           := .Src }}
+{{ $context       := .Context | default . }}
+{{ $alt           := .Alt }}
+{{ $class         := .Class }}
+{{ $size          := .Size }}
+{{ $command       := .Command       | default "Resize" }}
+{{ $webp          := .Webp          | default true }}
+{{ $loading       := .Loading       | default "lazy" }}
+{{ $fetchpriority := .FetchPriority | default "auto" }}
+{{ $decoding      := .Decoding      | default "async" }}
+{{ $placeholder   := .Placeholder   | default false }}
+{{ $resize        := .Resize        | default true }}
+{{ $displayXL := .DisplayXL | default "1110x" }}
+{{ $displayLG := .DisplayLG | default "700x" }}
+{{ $displayMD := .DisplayMD | default "600x" }}
+{{ $displaySM := .DisplaySM | default "545x" }}
+
+{{/* Bail if no src. */}}
+{{ with $src }}
+
+{{/* Normalize leading slash for local lookups. */}}
+{{ $path := . }}
+{{ if and (not (or (hasPrefix . "http://") (hasPrefix . "https://") (hasPrefix . "//"))) (hasPrefix . "/") }}
+  {{ $path = strings.TrimPrefix "/" . }}
+{{ end }}
+
+{{/* Parse size into width/height attrs ("413x208" → 413, 208). */}}
+{{ $sizeBase := index (split $size " ") 0 }}
+{{ $sizeParts := split $sizeBase "x" }}
+{{ $width  := index $sizeParts 0 }}
+{{ $height := "" }}
+{{ if gt (len $sizeParts) 1 }}{{ $height = index $sizeParts 1 }}{{ end }}
+
+{{/* Discover source. */}}
+{{ $isRemote := or (hasPrefix . "http://") (hasPrefix . "https://") (hasPrefix . "//") }}
+{{ $bundleRes := $context.Resources.GetMatch $path }}
+{{ $assetRes  := false }}
+{{ if and (ne $path "/") (path.Ext $path) (not $isRemote) (fileExists (add "assets/" $path)) }}
+  {{ $assetRes = resources.Get $path }}
+{{ end }}
+{{ $isStatic := and (not $isRemote) (not $bundleRes) (not $assetRes) (path.Ext $path) (fileExists (add "static/" $path)) }}
+
+{{/* Branch 1: remote URL or static file → plain <img>. */}}
+{{ if or $isRemote $isStatic }}
+  {{ $staticSrc := . }}
+  {{ if and (not $isRemote) (not (hasPrefix . "/")) }}
+    {{ $staticSrc = printf "/%s" $path }}
+  {{ end }}
+  <img
+    src="{{ $staticSrc }}"
+    alt="{{ $alt }}"
+    class="{{ $class }} img"
+    loading="{{ $loading }}"
+    decoding="{{ $decoding }}"
+    {{ with $fetchpriority }}fetchpriority="{{ . }}"{{ end }}
+    {{ with $width }}width="{{ . }}"{{ end }}
+    {{ with $height }}height="{{ . }}"{{ end }} />
+
+{{ else }}
+
+  {{/* Branch 2: resolved bundle or asset resource. */}}
+  {{ $img := or $bundleRes $assetRes }}
+  {{ with $img }}
+    {{ $ext := path.Ext . }}
+
+    {{/* GIF / SVG / WebP: pass through, do not transform. */}}
+    {{ if or (eq $ext ".gif") (eq $ext ".svg") (eq $ext ".webp") }}
+      <img
+        src="{{ .RelPermalink }}"
+        alt="{{ $alt }}"
+        class="{{ $class }} img"
+        loading="{{ $loading }}"
+        decoding="{{ $decoding }}"
+        {{ with $fetchpriority }}fetchpriority="{{ . }}"{{ end }}
+        {{ if ne $ext ".svg" }}
+          {{ with $width }}width="{{ . }}"{{ end }}
+          {{ with $height }}height="{{ . }}"{{ end }}
+        {{ end }} />
+
+    {{/* Single-size render when Size is given OR the source is small / resize disabled. */}}
+    {{ else if or $size (lt .Width 500) (not $resize) }}
+      {{ $effSize := $size }}
+      {{ if not $size }}
+        {{ $effSize = printf "%dx%d" .Width .Height }}
+      {{ end }}
+      {{ $webpSpec     := cond $webp (printf "%s webp" $effSize) $effSize }}
+      {{ $fallbackImg  := partial "components/image-process" (dict "Image" . "Spec" $effSize "Command" $command) }}
+      {{ $webpImg      := partial "components/image-process" (dict "Image" . "Spec" $webpSpec  "Command" $command) }}
+
+      {{- $lqip := "" -}}
+      {{- if $placeholder -}}
+        {{- $lqip = ($webpImg.Resize "40x q20") | images.Filter (images.GaussianBlur 5) -}}
+      {{- end -}}
+      <img
+        {{- if $placeholder }}
+          src="data:image/jpeg;base64,{{ $lqip.Content | base64Encode }}"
+          data-src="{{ $webpImg.RelPermalink }}"
+        {{- else }}
+          src="{{ $webpImg.RelPermalink }}"
+          loading="{{ $loading }}"
+          decoding="{{ $decoding }}"
+        {{- end }}
+        {{- with $fetchpriority }} fetchpriority="{{ . }}"{{ end }}
+        alt="{{ $alt }}"
+        class="{{ if $placeholder }}lazy {{ end }}{{ $class }} img"
+        width="{{ with $width }}{{ . }}{{ else }}{{ $webpImg.Width }}{{ end }}"
+        height="{{ with $height }}{{ . }}{{ else }}{{ $webpImg.Height }}{{ end }}"
+        data-fallback-src="{{ $fallbackImg.RelPermalink }}" />
+
+    {{/* Responsive <picture> for unconstrained large source images. */}}
+    {{ else }}
+      {{ $fallbackImg := .Resize $displayXL }}
+      {{ $xl := cond $webp (.Resize (add $displayXL " webp")) (.Resize $displayXL) }}
+      {{ $lg := cond $webp (.Resize (add $displayLG " webp")) (.Resize $displayLG) }}
+      {{ $md := cond $webp (.Resize (add $displayMD " webp")) (.Resize $displayMD) }}
+      {{ $sm := cond $webp (.Resize (add $displaySM " webp")) (.Resize $displaySM) }}
+
+      {{ $lqip := "" }}
+      {{ if $placeholder }}
+        {{ $lqip = ($fallbackImg.Resize "40x q20") | images.Filter (images.GaussianBlur 5) }}
+      {{ end }}
+
+      <picture>
+        <source media="(max-width: 575px)"
+          {{ if $placeholder }}
+            data-srcset="{{ $sm.RelPermalink }}"
+          {{ else }}
+            srcset="{{ $sm.RelPermalink }}"
+          {{ end }} />
+        <source media="(max-width: 767px)"
+          {{ if $placeholder }}
+            data-srcset="{{ $md.RelPermalink }}"
+          {{ else }}
+            srcset="{{ $md.RelPermalink }}"
+          {{ end }} />
+        <source media="(max-width: 991px)"
+          {{ if $placeholder }}
+            data-srcset="{{ $lg.RelPermalink }}"
+          {{ else }}
+            srcset="{{ $lg.RelPermalink }}"
+          {{ end }} />
+        <source
+          {{ if $placeholder }}
+            data-srcset="{{ $xl.RelPermalink }}"
+          {{ else }}
+            srcset="{{ $xl.RelPermalink }}"
+          {{ end }} />
+        <img
+          {{ if $placeholder }}
+            src="data:image/jpeg;base64,{{ $lqip.Content | base64Encode }}"
+            data-src="{{ $fallbackImg.RelPermalink }}"
+          {{ else }}
+            src="{{ $fallbackImg.RelPermalink }}"
+            loading="{{ $loading }}"
+            decoding="{{ $decoding }}"
+          {{ end }}
+          {{ with $fetchpriority }}fetchpriority="{{ . }}"{{ end }}
+          alt="{{ $alt }}"
+          class="{{ if $placeholder }}lazy {{ end }}{{ $class }} img"
+          width="{{ .Width }}"
+          height="{{ .Height }}" />
+      </picture>
+    {{ end }}
+  {{ end }}
+{{ end }}
+
+{{ end }}

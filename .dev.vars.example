@@ -1,0 +1,3 @@
+# Reserved for local Cloudflare Pages Functions (wrangler pages dev).
+# This repo does not ship Functions; file kept for future edge handlers only.
+# Copy to .dev.vars if you add functions/ — .dev.vars is gitignored.

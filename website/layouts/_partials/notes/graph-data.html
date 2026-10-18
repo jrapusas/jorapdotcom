@@ -1,0 +1,250 @@
+{{- $notes := partialCached "notes/pages.html" . "notes-pages-v1" -}}
+{{- $nodes := slice -}}
+{{- $edges := slice -}}
+{{- $bodyOutDeg := dict -}}
+{{- $nodeMeta := dict -}}
+{{- $byKey := dict -}}
+{{- $tailPct := site.Params.notes.graph_tail_percentile | default 20 | int -}}
+{{- $wikilinkRe := `\[\[([^\]|#]+)(?:#[^\]|]+)?\]\]` -}}
+
+{{- range $notes -}}
+  {{- $page := . -}}
+  {{- $keys := slice $page.Title -}}
+  {{- with $page.Params.slug -}}
+    {{- $keys = $keys | append . -}}
+  {{- end -}}
+  {{- with $page.File -}}
+    {{- $keys = $keys | append .ContentBaseName -}}
+  {{- end -}}
+  {{- with $page.Params.aliases -}}
+    {{- $keys = union $keys . -}}
+  {{- end -}}
+  {{- range $keys -}}
+    {{- $byKey = merge $byKey (dict (lower .) $page) -}}
+  {{- end -}}
+{{- end -}}
+
+{{- range $from := $notes -}}
+  {{- $fromId := $from.RelPermalink -}}
+  {{- $rels := partial "notes/relationship-types.html" $from -}}
+  {{- $primaryTag := "" -}}
+  {{- with $from.Params.tags -}}
+    {{- $primaryTag = index . 0 | default "" -}}
+  {{- end -}}
+  {{- $primaryCategory := "" -}}
+  {{- with $from.Params.categories -}}
+    {{- $primaryCategory = index . 0 | default "" -}}
+  {{- end -}}
+  {{- $isIndex := partial "notes/is-index-page.html" $from -}}
+  {{- $nodeMeta = merge $nodeMeta (dict $fromId (dict "rels" $rels "primaryTag" $primaryTag "primaryCategory" $primaryCategory "isIndex" $isIndex)) -}}
+  {{- $nodes = $nodes | append (dict "id" $fromId "title" $from.Title "url" $from.RelPermalink "inDegree" 0 "outDegree" 0 "totalDegree" 0 "top" false "middle" false "bottom" false "orphan" false "deadEnd" false) -}}
+  {{- $raw := partial "notes/assembled-content.html" $from -}}
+  {{- $bodyRaw := $raw -}}
+  {{- if strings.Contains $raw "## See also" -}}
+    {{- $bodyRaw = index (split $raw "## See also") 0 -}}
+  {{- end -}}
+  {{- $edgeSeen := dict -}}
+  {{- $bodyOutSeen := dict -}}
+  {{- range findRE $wikilinkRe $raw -}}
+    {{- $inner := replaceRE `^\[\[|\]\]$` "" . -}}
+    {{- $target := $inner -}}
+    {{- if strings.Contains $inner "#" -}}
+      {{- $target = index (split $inner "#") 0 | strings.TrimSpace -}}
+    {{- end -}}
+    {{- $target = replace $target "\u2019" "'" -}}
+    {{- $target = replace $target "\u2018" "'" -}}
+    {{- with index $byKey (lower $target) -}}
+      {{- $toId := .RelPermalink -}}
+      {{- if and (ne $toId $fromId) (not (index $edgeSeen $toId)) -}}
+        {{- $edgeSeen = merge $edgeSeen (dict $toId true) -}}
+        {{- $edges = $edges | append (dict "source" $fromId "target" $toId) -}}
+      {{- end -}}
+    {{- end -}}
+  {{- end -}}
+  {{- range findRE $wikilinkRe $bodyRaw -}}
+    {{- $inner := replaceRE `^\[\[|\]\]$` "" . -}}
+    {{- $target := $inner -}}
+    {{- if strings.Contains $inner "#" -}}
+      {{- $target = index (split $inner "#") 0 | strings.TrimSpace -}}
+    {{- end -}}
+    {{- $target = replace $target "\u2019" "'" -}}
+    {{- $target = replace $target "\u2018" "'" -}}
+    {{- with index $byKey (lower $target) -}}
+      {{- $toId := .RelPermalink -}}
+      {{- if and (ne $toId $fromId) (not (index $bodyOutSeen $toId)) -}}
+        {{- $bodyOutSeen = merge $bodyOutSeen (dict $toId true) -}}
+        {{- $bv := index $bodyOutDeg $fromId | default 0 -}}
+        {{- $bodyOutDeg = merge $bodyOutDeg (dict $fromId (add $bv 1)) -}}
+      {{- end -}}
+    {{- end -}}
+  {{- end -}}
+{{- end -}}
+
+{{- $inDeg := dict -}}
+{{- $outDeg := dict -}}
+{{- $totalDeg := dict -}}
+{{- range $nodes -}}
+  {{- $inDeg = merge $inDeg (dict .id 0) -}}
+  {{- $outDeg = merge $outDeg (dict .id 0) -}}
+  {{- $totalDeg = merge $totalDeg (dict .id 0) -}}
+{{- end -}}
+{{- range $edges -}}
+  {{- $ov := index $outDeg .source | default 0 -}}
+  {{- $iv := index $inDeg .target | default 0 -}}
+  {{- $outDeg = merge $outDeg (dict .source (add $ov 1)) -}}
+  {{- $inDeg = merge $inDeg (dict .target (add $iv 1)) -}}
+  {{- $ts := index $totalDeg .source | default 0 -}}
+  {{- $tt := index $totalDeg .target | default 0 -}}
+  {{- $totalDeg = merge $totalDeg (dict .source (add $ts 1)) -}}
+  {{- $totalDeg = merge $totalDeg (dict .target (add $tt 1)) -}}
+{{- end -}}
+
+{{- $ranked := slice -}}
+{{- range $nodes -}}
+  {{- $ranked = $ranked | append (dict "id" .id "totalDegree" (index $totalDeg .id | default 0)) -}}
+{{- end -}}
+{{- $ranked = sort $ranked "totalDegree" -}}
+{{- $nodeCount := len $ranked -}}
+{{- $tailN := 0 -}}
+{{- if gt $nodeCount 0 -}}
+  {{- $tailN = div (add (mul $nodeCount $tailPct) 99) 100 -}}
+  {{- if gt (mul $tailN 2) $nodeCount -}}
+    {{- $tailN = div $nodeCount 2 -}}
+  {{- end -}}
+{{- end -}}
+{{- $bottomIds := dict -}}
+{{- $topIds := dict -}}
+{{- range $i, $item := $ranked -}}
+  {{- if and (gt $tailN 0) (lt $i $tailN) -}}
+    {{- $bottomIds = merge $bottomIds (dict $item.id true) -}}
+  {{- else if and (gt $tailN 0) (ge $i (sub $nodeCount $tailN)) -}}
+    {{- $topIds = merge $topIds (dict $item.id true) -}}
+  {{- end -}}
+{{- end -}}
+
+{{- $inRanked := slice -}}
+{{- range $nodes -}}
+  {{- $inRanked = $inRanked | append (dict "id" .id "inDegree" (index $inDeg .id | default 0)) -}}
+{{- end -}}
+{{- $inRanked = sort $inRanked "inDegree" -}}
+{{- $hubInIds := dict -}}
+{{- range $i, $item := $inRanked -}}
+  {{- if and (gt $tailN 0) (ge $i (sub $nodeCount $tailN)) -}}
+    {{- $hubInIds = merge $hubInIds (dict $item.id true) -}}
+  {{- end -}}
+{{- end -}}
+
+{{- $enriched := slice -}}
+{{- range $nodes -}}
+  {{- $in := index $inDeg .id | default 0 -}}
+  {{- $out := index $outDeg .id | default 0 -}}
+  {{- $total := index $totalDeg .id | default 0 -}}
+  {{- $bodyOut := index $bodyOutDeg .id | default 0 -}}
+  {{- $isTop := index $topIds .id | default false -}}
+  {{- $isBottom := index $bottomIds .id | default false -}}
+  {{- $meta := index $nodeMeta .id | default dict -}}
+  {{- $rels := $meta.rels | default dict -}}
+  {{- $isIndex := $meta.isIndex | default false -}}
+  {{- $isHub := and (index $hubInIds .id | default false) (or (ge $out 3) $isIndex) -}}
+  {{- $enriched = $enriched | append (merge . (dict
+    "inDegree" $in
+    "outDegree" $out
+    "totalDegree" $total
+    "top" $isTop
+    "middle" (and (not $isTop) (not $isBottom))
+    "bottom" $isBottom
+    "orphan" (eq $in 0)
+    "deadEnd" (eq $bodyOut 0)
+    "hub" $isHub
+    "primaryTag" ($meta.primaryTag | default "")
+    "primaryCategory" ($meta.primaryCategory | default "")
+    "relExtends" ($rels.extends | default false)
+    "relContradicts" ($rels.contradicts | default false)
+    "relImplements" ($rels.implements | default false)
+    "relAlternative" ($rels.alternative | default false)
+    "relIndex" $isIndex
+  )) -}}
+{{- end -}}
+
+{{- $maxDeg := -1 -}}
+{{- range $totalDeg -}}
+  {{- if gt . $maxDeg -}}
+    {{- $maxDeg = . -}}
+  {{- end -}}
+{{- end -}}
+
+{{- $nearMax := slice -}}
+{{- range $id, $count := $totalDeg -}}
+  {{- if ge $count (sub $maxDeg 1) -}}
+    {{- $nearMax = $nearMax | append $id -}}
+  {{- end -}}
+{{- end -}}
+
+{{- $focusId := "" -}}
+{{- $bestOut := -1 -}}
+{{- range $nearMax -}}
+  {{- $oid := . -}}
+  {{- $out := index $outDeg $oid | default 0 -}}
+  {{- if gt $out $bestOut -}}
+    {{- $bestOut = $out -}}
+    {{- $focusId = $oid -}}
+  {{- end -}}
+{{- end -}}
+
+{{- $hubTitles := slice "Maps of Content" "PKM" "Getting Started" -}}
+{{- range $hubTitles -}}
+  {{- $hubTitle := . -}}
+  {{- range $enriched -}}
+    {{- if and (in $nearMax .id) (eq .title $hubTitle) -}}
+      {{- if eq (index $outDeg .id | default 0) $bestOut -}}
+        {{- $focusId = .id -}}
+      {{- end -}}
+    {{- end -}}
+  {{- end -}}
+{{- end -}}
+
+{{- if eq $focusId "" -}}
+  {{- $focusId = index $nearMax 0 -}}
+{{- end -}}
+
+{{- $adj := dict -}}
+{{- range $enriched -}}
+  {{- $adj = merge $adj (dict .id (slice .id)) -}}
+{{- end -}}
+{{- range $edges -}}
+  {{- $srcNeighbors := index $adj .source | default slice -}}
+  {{- if not (in $srcNeighbors .target) -}}
+    {{- $srcNeighbors = $srcNeighbors | append .target -}}
+    {{- $adj = merge $adj (dict .source $srcNeighbors) -}}
+  {{- end -}}
+  {{- $tgtNeighbors := index $adj .target | default slice -}}
+  {{- if not (in $tgtNeighbors .source) -}}
+    {{- $tgtNeighbors = $tgtNeighbors | append .source -}}
+    {{- $adj = merge $adj (dict .target $tgtNeighbors) -}}
+  {{- end -}}
+{{- end -}}
+
+{{- $localById := dict -}}
+{{- range $enriched -}}
+  {{- $nid := .id -}}
+  {{- $neighborIds := index $adj $nid | default (slice $nid) -}}
+  {{- $neighborSet := dict -}}
+  {{- range $neighborIds -}}
+    {{- $neighborSet = merge $neighborSet (dict . true) -}}
+  {{- end -}}
+  {{- $localNodes := slice -}}
+  {{- range $enriched -}}
+    {{- if index $neighborSet .id -}}
+      {{- $localNodes = $localNodes | append . -}}
+    {{- end -}}
+  {{- end -}}
+  {{- $localEdges := slice -}}
+  {{- range $edges -}}
+    {{- if and (index $neighborSet .source) (index $neighborSet .target) -}}
+      {{- $localEdges = $localEdges | append . -}}
+    {{- end -}}
+  {{- end -}}
+  {{- $localById = merge $localById (dict $nid (dict "nodes" $localNodes "edges" $localEdges "focus" $nid "mode" "local")) -}}
+{{- end -}}
+
+{{- return (dict "nodes" $enriched "edges" $edges "focus" $focusId "mode" "global" "localById" $localById) -}}

@@ -1,0 +1,65 @@
+{{ $homeBlog := site.Params.home_blog }}
+{{ $postLimit := 5 }}
+{{ $sectionTitle := "Selected Writing" }}
+{{ $viewAllLabel := "View all posts" }}
+{{ if $homeBlog }}
+  {{ with $homeBlog.post_limit }}{{ $postLimit = . }}{{ end }}
+  {{ with $homeBlog.section_title }}{{ $sectionTitle = . }}{{ end }}
+  {{ with $homeBlog.view_all_label }}{{ $viewAllLabel = . }}{{ end }}
+{{ end }}
+
+{{ $posts := slice }}
+{{ if and $homeBlog $homeBlog.post_slugs }}
+  {{ range $homeBlog.post_slugs }}
+    {{ $slug := . }}
+    {{ $page := site.GetPage (printf "/blog/%s" $slug) }}
+    {{ if not $page }}
+      {{ $page = index (where site.RegularPages "Params.slug" $slug) 0 }}
+    {{ end }}
+    {{ if not $page }}
+      {{ $page = site.GetPage (printf "blog/%s" $slug) }}
+    {{ end }}
+    {{ with $page }}
+      {{ $posts = $posts | append . }}
+    {{ end }}
+  {{ end }}
+{{ end }}
+{{ if eq (len $posts) 0 }}
+  {{ $blogPages := where site.RegularPages "Section" "blog" }}
+  {{ $posts = first $postLimit ($blogPages.ByDate.Reverse) }}
+{{ else }}
+  {{ $posts = first $postLimit $posts }}
+{{ end }}
+
+<section class="section section--home-writing !py-8 md:!py-12">
+  <div class="container">
+    <div class="row gx-5">
+      <div class="lg:col-12">
+        <div class="mb-6 flex flex-wrap items-end justify-between gap-4 border-t border-divider pt-6 md:pt-8">
+          <h2 class="text-balance text-h3-sm font-bold tracking-tight text-ink md:text-h3">
+            {{ $sectionTitle | title }}
+          </h2>
+          <a class="nav-link shrink-0 text-sm font-semibold" href="{{ `blog/` | relLangURL }}">
+            {{ $viewAllLabel }} &rarr;
+          </a>
+        </div>
+        <div class="row">
+          {{ range $i, $post := $posts }}
+            <div
+              class="{{ if eq $i 0 }}
+                mb-8 w-full lg:col-8 md:mb-10
+              {{ else }}
+                mb-8 md:col-6 md:mb-10 lg:col-4
+              {{ end }}">
+              {{ partial "components/blog-card" (dict
+                "Page" $post
+                "Eager" (eq $i 0)
+                "HeadingLevel" 3
+              ) }}
+            </div>
+          {{ end }}
+        </div>
+      </div>
+    </div>
+  </div>
+</section>

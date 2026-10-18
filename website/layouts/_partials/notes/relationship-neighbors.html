@@ -1,0 +1,33 @@
+{{- /*
+  Incoming typed relationship rows for the current note, grouped by type.
+  Returns dict: has (bool), groups (slice of {id, label, rows}).
+*/ -}}
+{{- $page := . -}}
+{{- $index := partialCached "notes/relationships-index.html" site "relationships-index-v1" -}}
+{{- $incoming := index $index $page.RelPermalink | default slice -}}
+{{- $typeOrder := slice "extends" "contradicts" "implements" "alternative" -}}
+{{- $typeLabels := dict
+  "extends" "Builds on this note"
+  "contradicts" "Pushes against this note"
+  "implements" "Operationalizes this note"
+  "alternative" "Different path to a similar goal"
+-}}
+{{- $groups := slice -}}
+
+{{- range $type := $typeOrder -}}
+  {{- $rows := slice -}}
+  {{- range $incoming -}}
+    {{- if eq .Type $type -}}
+      {{- $rows = $rows | append . -}}
+    {{- end -}}
+  {{- end -}}
+  {{- if $rows -}}
+    {{- $groups = $groups | append (dict
+      "id" (printf "rel-neighbors-%s" $type)
+      "label" (index $typeLabels $type)
+      "rows" $rows
+    ) -}}
+  {{- end -}}
+{{- end -}}
+
+{{- return (dict "has" (gt (len $groups) 0) "groups" $groups) -}}

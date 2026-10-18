@@ -1,0 +1,31 @@
+/**
+ * Semantic design tokens (light + dark)
+ * Pairs with `@custom-variant dark (&:where(.dark, .dark *))` in main.css.
+ *
+ * These names abstract intent (surface, elevated, ink, etc.) from the raw
+ * palette in `data/theme.json` so utilities like `bg-elevated` / `text-ink`
+ * automatically swap for dark mode without conditionals in markup.
+ */
+@theme {
+  --color-surface: var(--color-body);
+  --color-elevated: var(--color-light);
+  --color-ink: var(--color-text-dark);
+  --color-ink-muted: var(--color-text);
+  --color-ink-faint: var(--color-text-light);
+  --color-divider: var(--color-border);
+  --color-accent: var(--color-primary);
+  --color-on-accent: #ffffff;
+}
+
+@layer base {
+  .dark {
+    --color-surface: var(--color-darkmode-body);
+    --color-elevated: var(--color-darkmode-light);
+    --color-ink: var(--color-darkmode-text-dark);
+    --color-ink-muted: var(--color-darkmode-text);
+    --color-ink-faint: var(--color-darkmode-text-light);
+    --color-divider: var(--color-darkmode-border);
+    --color-accent: var(--color-darkmode-primary);
+    --color-on-accent: var(--color-surface);
+  }
+}

@@ -1,0 +1,93 @@
+############# English navigation ##############
+
+# main menu
+[[main]]
+name = "About"
+url = "/about"
+weight = 1
+
+[[main]]
+name = "Blog"
+url = "/blog"
+weight = 2
+
+[[main]]
+name = "Notes"
+url = "/notes"
+weight = 3
+
+# [[main]]
+# name = "Elements"
+# url = "/elements"
+# weight = 4
+
+# [[main]]
+# weight = 5
+# name = "Pages"
+# 
+# [[main]]
+# parent = "Pages"
+# name = "Contact"
+# url = "/contact"
+# 
+# [[main]]
+# parent = "Pages"
+# name = "Authors"
+# url = "/authors"
+# 
+# [[main]]
+# parent = "Pages"
+# name = "Categories"
+# url = "/categories"
+# 
+# [[main]]
+# parent = "Pages"
+# name = "404 Page"
+# url = "/404"
+
+
+# footer menu
+[[footer]]
+name = "How it's built"
+url = "/how-this-site-is-built"
+weight = 1
+
+[[footer]]
+name = "Source"
+url = "https://github.com/jrapusas/jorapdotcom"
+weight = 2
+
+[[footer]]
+name = "RSS"
+url = "/blog/index.xml"
+weight = 3
+
+[[footer]]
+name = "Privacy"
+url = "/privacy-policy"
+weight = 4
+
+[[footer]]
+name = "Categories"
+url = "/categories"
+weight = 5
+
+[[footer]]
+name = "Tags"
+url = "/tags"
+weight = 6
+
+[[footer]]
+name = "Randomizer"
+url = "/randomizer"
+weight = 7
+
+[[footer]]
+name = "Contact"
+url = "/contact"
+weight = 8
+
+[[footer]]
+name = "Sitemap"
+url = "/sitemap"
+weight = 9

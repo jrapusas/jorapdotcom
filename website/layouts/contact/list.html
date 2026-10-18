@@ -1,0 +1,74 @@
+{{ define "main" }}
+  <div class="site-canvas" data-site-motion>
+    {{ partial "sections/site-page-hero.html" (dict
+      "Page" .
+      "Eyebrow" "Remote only"
+      "Title" .Title
+      "Description" .Params.description
+      "Layout" "center"
+      "HeadingId" "contact-hero-heading"
+    ) }}
+
+    <section class="site-contact" data-site-reveal aria-labelledby="contact-form-title">
+      <div class="container">
+        <div class="site-contact__panel">
+          {{ with .Content }}
+            <div class="site-contact__intro content text-pretty text-ink-muted" data-site-reveal-body>
+              {{ . }}
+            </div>
+          {{ end }}
+
+          <form
+            class="site-contact__form"
+            action="{{ site.Params.contact_form_action }}"
+            method="POST"
+            data-site-reveal-body>
+            <h2 id="contact-form-title" class="sr-only">Contact form</h2>
+            <input type="hidden" name="_subject" value="New inquiry from jorap.com" />
+            <div class="mb-6">
+              <label for="name" class="form-label">
+                Full Name <span class="text-red-500">*</span>
+              </label>
+              <input
+                id="name"
+                name="name"
+                class="form-input"
+                placeholder="Your name"
+                type="text"
+                autocomplete="name"
+                required />
+            </div>
+            <div class="mb-6">
+              <label for="email" class="form-label">
+                Work email <span class="text-red-500">*</span>
+              </label>
+              <input
+                id="email"
+                name="email"
+                class="form-input"
+                placeholder="you@company.com"
+                type="email"
+                autocomplete="email"
+                required />
+            </div>
+            <div class="mb-6">
+              <label for="message" class="form-label">
+                Message <span class="text-red-500">*</span>
+              </label>
+              <textarea
+                id="message"
+                name="message"
+                class="form-input"
+                placeholder="What would be most helpful to cover?"
+                rows="8"
+                required></textarea>
+            </div>
+            <button type="submit" class="btn btn-primary">Send message</button>
+          </form>
+        </div>
+      </div>
+    </section>
+  </div>
+
+  {{ partial "essentials/site-motion-assets.html" . }}
+{{ end }}

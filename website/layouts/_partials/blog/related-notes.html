@@ -1,0 +1,26 @@
+{{- $page := . -}}
+{{- $limit := site.Params.blog.related_notes_limit | default 5 -}}
+{{- $minShared := 2 -}}
+{{- $related := partialCached "notes/related-notes.html" (dict "Context" $page "Limit" $limit "MinSharedTags" $minShared) (printf "%s-%d-%d" $page.RelPermalink $limit $minShared) -}}
+
+{{- with $related -}}
+  <div class="section pb-0">
+    <h2 id="related-notes" class="h3 mb-2">{{ T "related_notes" | title }}</h2>
+    <p class="text-ink-muted mb-6 text-sm">{{ T "related_notes_lede" }}</p>
+    <div class="row">
+      {{- range . -}}
+        {{- $note := .Page -}}
+        <div class="md:col-6 mb-8 flex lg:col-4">
+          {{ partial "notes/note-card.html" (dict
+            "Page" $note
+            "Body" (partial "notes/note-blurb.html" (dict "Page" $note "DescriptionOnly" true))
+            "HeadingLevel" 3
+            "HeadingClass" "h5"
+            "Shared" .Shared
+            "ShowTags" false
+          ) }}
+        </div>
+      {{- end -}}
+    </div>
+  </div>
+{{- end -}}

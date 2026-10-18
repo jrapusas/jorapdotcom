@@ -1,0 +1,45 @@
+{{- /*
+  Build a slice of card dicts: front, back, source (Page), kind.
+  Opt-in auto cards: review: true or review tag (site.Params.notes.review_tag).
+  Shortcode cards: {{< card front="..." back="..." >}} in any note body.
+*/ -}}
+{{- $cards := slice -}}
+{{- $reviewTag := site.Params.notes.review_tag | default "flashcard" -}}
+{{- $shortcodePattern := `\{\{[%<]\s*card\s+front="([^"]+)"\s+back="([^"]+)"\s*>\}\}` -}}
+
+{{- range partialCached "notes/pages.html" . "notes-pages-v1" -}}
+  {{- $page := . -}}
+  {{- $body := partial "notes/note-raw-body.html" $page | strings.TrimSpace -}}
+  {{- $isReview := or (eq ($page.Params.review | default false) true) (in ($page.Params.tags | default slice) $reviewTag) -}}
+
+  {{- if $isReview -}}
+    {{- range partialCached "notes/cards-for-page.html" $page $page.RelPermalink -}}
+      {{- if ne .kind "shortcode" -}}
+        {{- $cards = $cards | append (dict
+          "front" .front
+          "back" .back
+          "source" $page
+          "kind" .kind
+          "sets" .sets
+        ) -}}
+      {{- end -}}
+    {{- end -}}
+  {{- end -}}
+
+  {{- range findRESubmatch $shortcodePattern $body -}}
+    {{- $front := index . 1 -}}
+    {{- $back := index . 2 -}}
+    {{- if and $front $back -}}
+      {{- $sets := partial "notes/card-sets.html" (dict "Page" $page) -}}
+      {{- $cards = $cards | append (dict
+        "front" $front
+        "back" $back
+        "source" $page
+        "kind" "shortcode"
+        "sets" $sets
+      ) -}}
+    {{- end -}}
+  {{- end -}}
+{{- end -}}
+
+{{- return $cards -}}

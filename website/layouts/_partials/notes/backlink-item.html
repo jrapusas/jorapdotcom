@@ -1,0 +1,15 @@
+{{- /*
+  Backlink row: linking note title + sentence with the wikilink highlighted.
+  Dict: Page (required), SnippetHtml (optional).
+*/ -}}
+<li class="notes-backlink-item">
+  <a
+    class="notes-backlink-link"
+    href="{{ .Page.RelPermalink }}"
+    data-wikilink-preview="{{ .Page.RelPermalink }}">
+    <span class="notes-backlink-title">{{ .Page.Title }}</span>
+    {{- with .SnippetHtml -}}
+      <p class="notes-backlink-snippet">{{ . | safeHTML }}</p>
+    {{- end -}}
+  </a>
+</li>

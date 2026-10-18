@@ -1,0 +1,27 @@
+{{ $scope := site.Params.home_scope }}
+{{ if and $scope $scope.enable }}
+  <div class="mx-auto max-w-3xl">
+    {{ with $scope.title }}
+      <h2 class="text-balance text-center text-h3-sm font-bold tracking-tight text-ink md:text-h3">
+        {{ . | title }}
+      </h2>
+    {{ end }}
+    {{ with $scope.lede }}
+      <p class="mt-4 text-pretty text-center text-base leading-relaxed text-ink-muted md:text-lg">
+        {{ . }}
+      </p>
+    {{ end }}
+    {{ with $scope.items }}
+      <dl class="mt-6 space-y-6">
+        {{ range . }}
+          <div>
+            <dt class="text-lg font-semibold text-ink">{{ .title }}</dt>
+            <dd class="mt-2 text-pretty leading-relaxed text-ink-muted">
+              {{ .description }}
+            </dd>
+          </div>
+        {{ end }}
+      </dl>
+    {{ end }}
+  </div>
+{{ end }}

@@ -1,0 +1,17 @@
+{{- /*
+  True for garden utility surfaces (graph, issues, flashcards, review, random pickers).
+  Not evergreen notes - exclude from lists, graph nodes, random pool, card sources, etc.
+  Evergreen notes must not [[wikilink]] here; use /notes/<slug>/ URLs instead.
+  Enforced by scripts/lint-utility-wikilinks.py.
+*/ -}}
+{{- $page := . -}}
+{{- $utility := false -}}
+{{- if eq ($page.Params.note_kind | default "note") "meta" -}}
+  {{- $utility = true -}}
+{{- else -}}
+  {{- $utilityLayouts := slice "graph" "cards" "review" "issues" "backlinks" "random-duo" "create" -}}
+  {{- if in $utilityLayouts ($page.Params.layout | default "") -}}
+    {{- $utility = true -}}
+  {{- end -}}
+{{- end -}}
+{{- return $utility -}}

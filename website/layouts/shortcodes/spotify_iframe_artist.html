@@ -1,0 +1,8 @@
+{{- /*
+  Spotify Artist iframe embed
+  Usage: {{< spotify_iframe_artist ARTIST_ID >}}
+         {{< spotify_iframe_artist id="ARTIST_ID" height="352" >}}
+*/ -}}
+{{- $id := .Get "id" | default (.Get 0) -}}
+{{- $height := .Get "height" | default "352" -}}
+<iframe style="border-radius:12px" src="https://open.spotify.com/embed/artist/{{ $id }}?utm_source=generator" width="100%" height="{{ $height }}" frameBorder="0" allowfullscreen="" allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture" loading="lazy"></iframe>

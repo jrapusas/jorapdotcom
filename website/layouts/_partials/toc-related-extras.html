@@ -1,0 +1,26 @@
+{{- /*
+  Shared TOC section links used by notes and blog TOCs.
+  Params: Context, relatedPostsLimit, relatedNotesLimit (0 = skip), excludeSelfFromRandom
+*/ -}}
+{{- $page := .Context -}}
+{{- $extras := slice -}}
+{{- $relatedLimit := .relatedPostsLimit | default 3 -}}
+{{- $relatedPosts := partialCached "blog/related-posts-lookup.html" (dict "Context" $page "Limit" $relatedLimit) (printf "%s-%d" $page.RelPermalink $relatedLimit) | default slice -}}
+{{- if gt (len $relatedPosts) 0 -}}
+  {{- $extras = $extras | append (dict "level" 2 "title" (T "related_posts") "id" "related-posts") -}}
+{{- end -}}
+{{- $relatedNotesLimit := .relatedNotesLimit | default 0 -}}
+{{- if gt $relatedNotesLimit 0 -}}
+  {{- $relatedNotes := partialCached "notes/related-notes.html" (dict "Context" $page "Limit" $relatedNotesLimit) (printf "%s-%d-1" $page.RelPermalink $relatedNotesLimit) | default slice -}}
+  {{- if gt (len $relatedNotes) 0 -}}
+    {{- $extras = $extras | append (dict "level" 2 "title" (T "related_notes") "id" "related-notes") -}}
+  {{- end -}}
+{{- end -}}
+{{- $randomPool := partialCached "notes/random-pool.html" $page "notes-random-pool-v1" -}}
+{{- if .excludeSelfFromRandom -}}
+  {{- $randomPool = where $randomPool "url" "ne" $page.RelPermalink -}}
+{{- end -}}
+{{- if ge (len $randomPool) 1 -}}
+  {{- $extras = $extras | append (dict "level" 2 "title" (T "random_blog_note") "id" "random-note") -}}
+{{- end -}}
+{{- return $extras -}}

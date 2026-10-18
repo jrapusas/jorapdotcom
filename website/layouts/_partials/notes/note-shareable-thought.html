@@ -1,0 +1,19 @@
+{{- /*
+  Four self-contained thoughts from frontmatter shareable_thought (max 130 chars each).
+*/ -}}
+{{- with .Params.shareable_thought -}}
+  {{- if gt (len .) 0 -}}
+    <aside class="notes-shareable-thought border-divider mb-6 rounded border p-5" aria-labelledby="shareable-thought">
+      <h2 id="shareable-thought" class="h6 mt-0 mb-4">{{ partial "func/title-case" "Shareable thoughts" }}</h2>
+      <ul class="notes-shareable-thought__grid m-0 grid list-none gap-4 p-0 sm:grid-cols-2">
+        {{- range $i, $line := . -}}
+          <li class="notes-shareable-thought__item min-w-0">
+            <div class="notes-shareable-thought__card h-full">
+              <p class="notes-shareable-thought__text mx-0">{{ $line }}</p>
+            </div>
+          </li>
+        {{- end -}}
+      </ul>
+    </aside>
+  {{- end -}}
+{{- end -}}

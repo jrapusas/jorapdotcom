@@ -1,0 +1,5 @@
+# Local dev server: build drafts for /drafts/ preview only; they stay out of
+# blog/notes lists, RSS, search, related posts, and random note pickers.
+baseURL = "http://localhost:1313/"
+buildDrafts = true
+buildFuture = true

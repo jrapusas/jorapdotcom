@@ -1,0 +1,32 @@
+{{- /*
+  Table of contents for blog posts - body headings from Hugo's TOC, plus page sections
+  (related posts, related notes, random note) when present.
+*/ -}}
+{{- $page := . -}}
+{{- $startLevel := 2 -}}
+{{- $endLevel := 5 -}}
+{{- $bodyItems := partial "func/toc-fragment-items.html" (dict "headings" $page.Fragments.Headings "start" $startLevel "end" $endLevel) -}}
+{{- $emptyBody := eq $bodyItems "" -}}
+{{- $html := "" -}}
+
+{{- $relatedLimit := site.Params.blog.related_posts_limit | default 3 -}}
+{{- $relatedNotesLimit := site.Params.blog.related_notes_limit | default 5 -}}
+{{- $extras := partial "toc-related-extras.html" (dict
+  "Context" $page
+  "relatedPostsLimit" $relatedLimit
+  "relatedNotesLimit" $relatedNotesLimit
+  "excludeSelfFromRandom" false
+) -}}
+
+{{- $extraItems := "" -}}
+{{- range $extras -}}
+  {{- $extraItems = printf `%s<li class="toc-level-2"><a href="#%s">%s</a></li>` $extraItems .id (partial "func/title-case" .title) -}}
+{{- end -}}
+
+{{- if not $emptyBody -}}
+  {{- $html = printf `<nav id="TableOfContents"><ol>%s%s</ol></nav>` $bodyItems $extraItems -}}
+{{- else if $extraItems -}}
+  {{- $html = printf `<nav id="TableOfContents"><ol>%s</ol></nav>` $extraItems -}}
+{{- end -}}
+
+{{- return (dict "html" $html "has" (ne $html "")) -}}

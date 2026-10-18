@@ -1,0 +1,195 @@
+{{/*
+  Local basic-seo (replaces gethugothemes/hugo-modules/seo-tools/basic-seo import).
+  Upstream <base href> intentionally removed — breaks preview hosts when SRI CSS
+  resolves against canonical host. Root-relative /css and /js work without <base>.
+*/}}
+
+<!-- checking title -->
+{{ $title := partial "page-meta-title.html" . }}
+
+
+<!-- checking description (never default to .Summary - it panics on short note bodies in Hugo 0.163+) -->
+{{ $description := "" }}
+{{ if .Params.meta_description }}
+  {{ $description = .Params.meta_description }}
+{{ else if .Params.description }}
+  {{ $description = .Params.description }}
+{{ else if site.Params.metadata.description }}
+  {{ $description = site.Params.metadata.description }}
+{{ else }}
+  {{ $description = .Plain | plainify | truncate 160 }}
+{{ end }}
+
+
+<!-- checking og image -->
+{{ $imagePath := site.Params.metadata.image }}
+{{ if .Params.meta_image }}
+  {{ $imagePath = .Params.meta_image }}
+  <!-- checking multiple images -->
+{{ else if .Params.images }}
+  {{ range first 1 .Params.images }}
+    {{ $imagePath = . }}
+  {{ end }}
+  <!-- checking single images -->
+{{ else if .Params.image }}
+  {{ $imagePath = .Params.image }}
+{{ end }}
+{{ if and $imagePath (not (hasPrefix $imagePath "http")) (hasPrefix $imagePath "/") }}
+  {{ $imagePath = strings.TrimPrefix "/" $imagePath }}
+{{ end }}
+
+<!-- title -->
+<title>{{ $title }}</title>
+
+<!-- meta noindex -->
+{{ if .Param "noindex" }}
+  <meta name="robots" content="noindex,nofollow" />
+{{ end }}
+
+
+<!-- meta canonical (default: Permalink; override with frontmatter canonical) -->
+{{ $canonical := .Params.canonical | default .Permalink }}
+<link rel="canonical" href="{{ $canonical }}" itemprop="url" />
+
+{{ if .IsHome }}
+<link rel="alternate" type="text/plain" href="{{ "llms.txt" | absURL }}" title="LLM site index" />
+{{ end }}
+
+
+<!-- RSS autodiscovery (blog section only) -->
+{{ with site.GetPage "section" "blog" }}
+  {{ $blog := . }}
+  {{ with .OutputFormats.Get "rss" }}
+    <link
+      rel="alternate"
+      type="{{ .MediaType.Type }}"
+      title="{{ printf "%s — %s" site.Title $blog.Title }}"
+      href="{{ .Permalink | safeURL }}" />
+  {{ end }}
+{{ end }}
+
+
+<!-- multilingual SEO optimizations -->
+{{ if .IsTranslated }}
+  {{ range .AllTranslations }}
+    <link rel="alternate" hreflang="{{ .Lang }}" href="{{ .Permalink }}" />
+  {{ end }}
+  <link rel="alternate" hreflang="x-default" href="{{ .Permalink }}" />
+{{ end }}
+
+
+<!-- meta keywords -->
+{{ if .Params.keywords }}
+  <meta name="keywords" content="{{ delimit .Params.keywords `, ` }}" />
+{{ else if site.Params.metadata.keywords }}
+  <meta
+    name="keywords"
+    content="{{ delimit site.Params.metadata.keywords `, ` }}" />
+{{ end }}
+
+
+<!-- meta description -->
+<meta name="description" content="{{ $description }}" />
+
+<!-- meta author -->
+{{ with site.Params.metadata.author }}
+  <meta name="author" content="{{ . }}" />
+{{ end }}
+
+
+<!-- ######### OpenGraph and Twitter image meta ############## -->
+
+<!-- check cdn/static image -->
+{{ if or (hasPrefix $imagePath "http") (fileExists (add `static/` (string $imagePath))) }}
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:image" content="{{ $imagePath | absURL }}" />
+  <meta property="og:image" content="{{ $imagePath | absURL }}" />
+{{ else }}
+  <!-- check cdn/static image -->
+
+  <!-- content and assets image path variable -->
+  {{ $contentImage:= .Resources.GetMatch (printf "*%s*" $imagePath) }}
+  {{ $assetImage:= fileExists (add `assets/` (string $imagePath)) }}
+
+
+  <!-- check image existence -->
+  {{ if or $contentImage $assetImage }}
+    <!-- content or assets folder detection -->
+    {{ if $contentImage }}
+      {{ .Scratch.Set "image-exists" $contentImage }}
+    {{ else if $assetImage }}
+      {{ .Scratch.Set "image-exists" (resources.Get $imagePath) }}
+    {{ end }}
+
+    {{ $image:= .Scratch.Get "image-exists" }}
+
+
+    <!-- image extension -->
+    {{ $imageExt:= path.Ext $image }}
+
+
+    <!-- If not SVG  -->
+    {{ if ne $imageExt `.svg` }}
+      {{ $imageWidth := $image.Width }}
+      {{ $imageHeight := $image.Height }}
+      {{ if (and (gt $imageWidth 144) (gt $imageHeight 144)) }}
+        <meta property="og:image" content="{{ $image.Permalink }}" />
+        <meta name="twitter:image" content="{{ $image.Permalink }}" />
+        <meta
+          name="twitter:card"
+          content="{{- if (and (gt $imageWidth 300) (gt $imageHeight 157) (not (eq $imageWidth $imageHeight))) -}}summary_large_image{{- else -}}summary{{- end -}}" />
+      {{ end }}
+      <!-- /if image gt 144px -->
+      <meta property="og:image:width" content="{{ $imageWidth }}" />
+      <meta property="og:image:height" content="{{ $imageHeight }}" />
+    {{ end }}
+
+
+    <!-- /if not svg -->
+    <meta
+      property="og:image:type"
+      content="image/{{- if eq $imageExt `.svg` -}}
+        svg+xml
+      {{- else -}}
+        {{- replaceRE `^jpe?g$` `jpeg` (strings.TrimPrefix "." $imageExt) -}}
+      {{- end -}}" />
+  {{ end }}
+
+
+  <!-- /if image exist -->
+{{ end }}
+<!-- /check cdn/static image -->
+<!-- ######### /OpenGraph and Twitter image meta ############## -->
+
+<!-- ######### OpenGraph others meta ############## -->
+{{ $ogType := "website" }}
+{{ if and .IsPage (in (slice "blog" "notes") .Section) }}
+  {{ $ogType = "article" }}
+{{ end }}
+<meta property="og:title" content="{{ $title }}" />
+<meta property="og:description" content="{{ $description }}" />
+<meta property="og:type" content="{{ $ogType }}" />
+<meta property="og:url" content="{{ .Permalink }}" />
+{{ if eq $ogType "article" }}
+<meta property="article:published_time" content="{{ .PublishDate.Format `2006-01-02T15:04:05Z07:00` }}" />
+{{ with .Lastmod }}
+<meta property="article:modified_time" content="{{ .Format `2006-01-02T15:04:05Z07:00` }}" />
+{{ end }}
+{{ with .Params.author | default site.Params.metadata.author }}
+<meta property="article:author" content="{{ . }}" />
+{{ end }}
+{{ with index .Params.categories 0 }}
+<meta property="article:section" content="{{ . }}" />
+{{ end }}
+{{ end }}
+
+<!-- ########## twitter others meta ############### -->
+<meta name="twitter:title" content="{{ $title }}" />
+<meta name="twitter:description" content="{{ $description }}" />
+
+{{ with site.Params.metadata.twitter }}
+  <meta name="twitter:site" content="@{{ . }}" />
+  <meta name="twitter:creator" content="@{{ . }}" />
+{{ end }}
+
+{{ partial "structured-data.html" . }}

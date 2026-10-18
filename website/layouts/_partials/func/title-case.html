@@ -1,0 +1,2 @@
+{{- /* AP-style title case (hugo.toml titleCaseStyle). Use for headings + TOC labels. */ -}}
+{{- strings.Title (. | plainify | htmlUnescape) -}}

@@ -1,0 +1,243 @@
+######################## default configuration ####################
+# The base URL of your site (required). This will be prepended to all relative URLs.
+# Override per-environment via the HUGO_BASEURL env var (Vercel/Netlify/Amplify build settings).
+baseURL = "https://www.jorap.com/"
+# Title of your website (required).
+title = "JoRap.com"
+# Your theme name
+theme = "jorap"
+# Default time zone for time stamps; use any valid tz database name: https://en.wikipedia.org/wiki/List_of_tz_database_time_zones#List
+timeZone = "Asia/Manila"
+# post excerpt
+summaryLength = 10 # see https://gohugo.io/content-management/excerpts/
+# disable language
+disableLanguages = [
+] # example: ["fr"] for disable french language. see https://gohugo.io/content-management/multilingual/
+hasCJKLanguage = false #  If hasCJKLanguage true, auto-detect Chinese/Japanese/Korean Languages in the content. see: https://gohugo.io/getting-started/configuration/#hascjklanguage
+# default language
+defaultContentLanguage = 'en'
+# defaultContentLanguageInSubdir need to be true if you want to use the language code as a subdirectory and language specific 404 page
+defaultContentLanguageInSubdir = false
+disableHugoGeneratorInject = true
+# AP-style title case for | title / strings.Title (section labels, not authored post titles).
+titleCaseStyle = "ap"
+
+########################### Security #############################
+# resources.GetRemote may inspect Content-Type against Hugo's allowlist.
+# Webfonts are vendored under assets/fonts/ (pnpm vendor:fonts) — builds do
+# not fetch Google Fonts. Keep font mediaTypes if other GetRemote callers appear.
+[security]
+[security.http]
+mediaTypes = ['^font/woff2?$', '^application/font-woff2?$']
+
+########################### Services #############################
+[services]
+[services.googleAnalytics]
+# GA4 Measurement ID (Admin → Data streams → Web). Override in CI with
+# HUGO_SERVICES_GOOGLEANALYTICS_ID if you prefer env-only.
+ID = 'G-FVFR4SNYP2'
+
+[services.disqus]
+shortname = 'jorap' # we use disqus to show comments in blog posts . To install disqus please follow this tutorial https://portfolio.peter-baumgartner.net/2017/09/10/how-to-install-disqus-on-hugo/
+
+########################## Privacy ##############################
+[privacy]
+[privacy.youtube]
+disable = false
+privacyEnhanced = true
+
+########################## Permalinks ############################
+[permalinks.page]
+"pages" = "/:slugorcontentbasename/"
+"projects" = "/projects/:slugorcontentbasename/"
+"notes" = "/notes/:slugorcontentbasename/"
+
+
+########################## Pagination ############################
+[pagination]
+disableAliases = false
+pagerSize = 24
+path = 'page'
+
+# Related posts (blog single). Defaults only index keywords, date, and tags - not
+# categories - so posts with empty tags never scored above threshold.
+[related]
+includeNewer = true
+threshold = 80
+toLower = false
+
+[[related.indices]]
+applyFilter = false
+cardinalityThreshold = 0
+name = 'keywords'
+pattern = ''
+toLower = false
+type = 'basic'
+weight = 100
+
+[[related.indices]]
+applyFilter = false
+cardinalityThreshold = 0
+name = 'date'
+pattern = '2006'
+toLower = false
+type = 'basic'
+weight = 10
+
+[[related.indices]]
+applyFilter = false
+cardinalityThreshold = 0
+name = 'tags'
+pattern = ''
+toLower = false
+type = 'basic'
+weight = 80
+
+[[related.indices]]
+applyFilter = false
+cardinalityThreshold = 0
+name = 'categories'
+pattern = ''
+toLower = false
+type = 'basic'
+weight = 80
+
+
+############################# Build ##############################
+[build]
+[build.buildStats]
+enable = true
+[[build.cachebusters]]
+source = 'assets/notwatching/hugo_stats\.json'
+target = 'css'
+# Tailwind v4 is compiled via css.TailwindCSS with inlineImports=true, so Hugo
+# can't see the @import'd partials as resource dependencies. This cachebuster
+# forces a CSS rebuild whenever any CSS file in assets changes (root or theme).
+[[build.cachebusters]]
+source = '(themes/[^/]+/)?assets/css/.+\.css$'
+target = 'css'
+[[build.cachebusters]]
+source = '(themes/[^/]+/)?assets/js/.+\.js$'
+target = 'js'
+
+############################# Front matter #########################
+# Notes updated timestamps use filesystem mtime (:fileModTime), not Git or manual lastmod fields.
+[frontmatter]
+lastmod = [":fileModTime"]
+
+############################# Modules ############################
+[module]
+[[module.mounts]]
+source = 'assets'
+target = 'assets'
+[[module.mounts]]
+disableWatch = true
+source = 'hugo_stats.json'
+target = 'assets/notwatching/hugo_stats.json'
+
+
+############################# Outputs ############################
+[outputs]
+home     = ["HTML", "WebAppManifest", "SearchIndex", "llms", "llmsfull", "md"]
+# Per-page RSS/md had no consumers (feeds are section/home; OKF/copy-md use static/exports).
+# Dropping them cuts ~800+ Hugo page renders per build.
+page     = ["HTML"]
+# RSS only on blog section (outputs in content/english/blog/_index.md).
+section  = ["HTML"]
+taxonomy = ["HTML"]
+term     = ["HTML"]
+
+############################# Imaging ############################
+[imaging]
+# See https://github.com/disintegration/imaging
+resampleFilter = "Lanczos"
+
+[imaging.jpeg]
+quality = 80
+
+[imaging.webp]
+quality = 80
+
+[imaging.avif]
+quality = 80
+
+############################ Caches ##############################
+# Hugo defaults these to resources/_gen, which Cloudflare Pages wipes on every
+# clone. Only .cache survives between builds (deployBuild.mjs passes --cacheDir),
+# so park the image and asset variants there instead.
+# https://gohugo.io/host-and-deploy/host-on-cloudflare/
+[caches]
+[caches.images]
+dir = ":cacheDir/images"
+
+[caches.assets]
+dir = ":cacheDir/assets"
+
+
+############################ Markup ##############################
+[markup]
+[markup.goldmark.renderer]
+unsafe = true
+
+# Keep the typographer extension on (curly quotes, ellipses, angle quotes) but
+# render `--` and `---` as literal ASCII hyphens instead of en/em dashes.
+[markup.goldmark.extensions.typographer]
+emDash = "--"
+enDash = "-"
+
+[markup.highlight]
+style = 'monokai' # see https://xyproto.github.io/splash/docs/all.html
+lineNumbersInTable = false
+
+[markup.tableOfContents]
+startLevel = 2
+endLevel = 5
+ordered = true
+
+
+########################### Media types ###########################
+[mediaTypes]
+[mediaTypes."application/manifest+json"]
+suffixes = ["webmanifest"]
+
+
+########################### Output Format ##########################
+[outputFormats]
+[outputFormats.WebAppManifest]
+mediaType = "application/manifest+json"
+rel = "manifest"
+
+[outputFormats.SearchIndex]
+mediaType = "application/json"
+baseName = "searchindex"
+isPlainText = true
+notAlternative = true
+
+[outputFormats.ISSUES]
+mediaType = "text/plain"
+baseName = "index"
+isPlainText = true
+notAlternative = true
+
+
+############################# Plugins ##############################
+
+# CSS Plugins
+# Font Awesome was removed in favor of inline SVGs (see data/icons.json +
+# partials/components/icon.html). The referenced plugin/font-awesome/v6
+# CSS files never shipped with the site, so the prior <i class="fa-…">
+# tags were rendering as empty boxes anyway.
+# Swiper / GLightbox CSS load on demand via conditional-plugins.html.
+
+# JS Plugins (site-wide only). Shortcode/partial-only scripts load from
+# layouts/_partials/essentials/conditional-plugins.html or the partial
+# that renders the UI (back-to-top, social-share).
+[[params.plugins.js]]
+link = "js/touch-controls.js"
+lazy = false
+[[params.plugins.js]]
+link = "js/toc.js"
+lazy = false
+[[params.plugins.js]]
+link = "js/scroll-progress.js"
+lazy = false

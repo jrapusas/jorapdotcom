@@ -1,0 +1,7 @@
+{{- $graph := partialCached "notes/graph-data.html" site "graph-data-v4" -}}
+{{- $currentId := .RelPermalink -}}
+{{- $local := index $graph.localById $currentId -}}
+{{- if not $local -}}
+  {{- $local = dict "nodes" slice "edges" slice "focus" $currentId "mode" "local" -}}
+{{- end -}}
+{{- return $local -}}

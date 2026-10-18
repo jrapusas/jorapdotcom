@@ -1,0 +1,20 @@
+{{/* Back-to-top button with internal scroll fill. Styles in themes/jorap/assets/css/components.css. */}}
+<div id="back-to-top" class="fixed bottom-8 right-8 z-50 hidden">
+  <button
+    type="button"
+    aria-label="Back to top"
+    data-back-to-top
+    class="relative flex h-11 w-11 items-center justify-center overflow-hidden bg-accent text-on-accent shadow-lg transition-colors duration-200 hover:opacity-90 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent focus-visible:ring-offset-2 motion-reduce:transition-none touch-manipulation">
+    <span class="back-to-top__fill bg-sky-500" aria-hidden="true"></span>
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      class="relative z-10 h-6 w-6"
+      fill="none"
+      viewBox="0 0 24 24"
+      stroke="currentColor"
+      aria-hidden="true">
+      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 15l7-7 7 7"></path>
+    </svg>
+  </button>
+</div>
+{{ partial "essentials/fingerprint-asset.html" (dict "src" "js/back-to-top.js" "defer" true) }}

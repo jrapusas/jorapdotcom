@@ -1,0 +1,41 @@
+{{/*
+  theme-init: Synchronous dark-mode bootstrap.
+
+  Must run BEFORE any visible body content paints, otherwise the page
+  flashes its light styles and snaps to dark on slow networks (a clear
+  FOUC). Lives in <head>, before the stylesheet link, so the `dark`
+  class is on <html> by the time CSS evaluates `:where(.dark, .dark *)`.
+
+  Reads the persisted choice from localStorage (set by theme-switcher.html
+  when the user toggles); falls back to `theme_default` from
+  config/_default/params.toml. When `theme_default = "system"` we honor
+  prefers-color-scheme. Wrapped in try/catch so a hardened/sandboxed
+  context that throws on localStorage access can't black-hole the page.
+
+  Inline by design: any external script would block paint via a network
+  round-trip. The body is auto-hashed by scripts/cspHashes.mjs at build
+  time, so this works under our `script-src` CSP without 'unsafe-inline'.
+*/}}
+<script>
+  (function () {
+    try {
+      var stored = null;
+      try { stored = localStorage.getItem("theme"); } catch (_) {}
+      var dark;
+      if (stored === "dark") {
+        dark = true;
+      } else if (stored === "light") {
+        dark = false;
+      } else {
+        {{ if eq site.Params.theme_default "dark" -}}
+        dark = true;
+        {{- else if eq site.Params.theme_default "system" -}}
+        dark = !!(window.matchMedia && window.matchMedia("(prefers-color-scheme: dark)").matches);
+        {{- else -}}
+        dark = false;
+        {{- end }}
+      }
+      document.documentElement.classList[dark ? "add" : "remove"]("dark");
+    } catch (_) {}
+  })();
+</script>

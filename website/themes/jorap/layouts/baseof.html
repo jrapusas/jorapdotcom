@@ -1,0 +1,57 @@
+<!doctype html>
+<html
+  itemscope
+  class="{{- if and (not site.Params.theme_switcher) (eq site.Params.theme_default `dark`) -}}
+    dark
+  {{- end -}} h-full"
+  lang="{{ site.Language.Lang }}"
+  itemtype="http://schema.org/WebPage">
+  <head>
+    <!-- head (don't cache it) -->
+    {{ partial "essentials/head.html" . }}
+
+
+    <!-- style: defer until hugo_stats.json exists for Tailwind @source (see https://gohugo.io/functions/css/tailwindcss/) -->
+    {{ with (templates.Defer (dict "key" "global")) }}
+      {{ partial "essentials/style.html" . }}
+    {{ end }}
+
+  </head>
+
+  <body class="min-h-full flex flex-col">
+    <!-- cache partial only in production -->
+    {{ if hugo.IsProduction }}
+      {{ partialCached "preloader.html" . }}
+      {{ partialCached "gtm-noscript.html" . }}
+    {{ else }}
+      {{ partial "preloader.html" . }}
+
+
+      <!-- tailwind size indicator -->
+      {{ partial "components/tw-size-indicator.html" . }}
+    {{ end }}
+
+
+    <!-- announcement -->
+    {{ partialCached "announcement.html" . }}
+
+
+    <!-- header (don't cache it) -->
+    {{ partial "essentials/header.html" . }}
+    {{ partial "search-modal.html" (dict "Context" . ) }}
+
+
+    <main class="flex-1">
+      {{ block "main" . }}{{ end }}
+    </main>
+
+    <!-- footer -->
+    {{ partial "essentials/footer.html" . }}
+
+    <!-- back to top -->
+    {{ partial "components/back-to-top.html" . }}
+
+    <!-- script (always cache it) -->
+    {{ partialCached "essentials/script.html" . }}
+  </body>
+</html>

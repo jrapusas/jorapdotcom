@@ -1,0 +1,97 @@
+{{/*
+  components/blog-card - Renders a single blog card.
+
+  Accepts either:
+    - A Page directly: {{ partial "components/blog-card" . }}
+    - A dict for explicit control:
+        {{ partial "components/blog-card" (dict "Page" . "Eager" true "Featured" true "HeadingLevel" 3) }}
+
+  Only set Eager=true for the LCP candidate (typically the first card on
+  the home page). Every other card MUST stay lazy/auto so the browser can
+  prioritize the hero image without bandwidth contention. Marking all
+  cards eager/high-priority was actively hurting LCP.
+
+  HeadingLevel defaults to 2 so cards sit beneath a page-level h1. Pass
+  3 when the card is rendered inside a section that already has its own
+  h2 (e.g. "Related posts" on blog/single.html) to preserve a sequential
+  heading order for accessibility.
+*/}}
+{{- $page := . -}}
+{{- $eager := false -}}
+{{- $featured := false -}}
+{{- $headingLevel := 2 -}}
+{{- if reflect.IsMap . -}}
+  {{- $page = .Page -}}
+  {{- $eager = .Eager | default false -}}
+  {{- $featured = .Featured | default false -}}
+  {{- with .HeadingLevel -}}{{- $headingLevel = . -}}{{- end -}}
+{{- end -}}
+{{- $headingTag := printf "h%d" $headingLevel -}}
+{{/*
+  Go's html/template (which Hugo uses) auto-escapes dynamic HTML tag
+  names - writing `<{{ $headingTag }}>` literally renders as `&lt;h2&gt;`
+  text on the page. Build the open/close tags as strings and pipe them
+  through `safeHTML` so they render as real elements.
+*/}}
+{{- $headingClass := "mb-3 text-2xl text-balance font-secondary" -}}
+{{- $headingOpen := printf "<%s class=\"%s\">" $headingTag $headingClass | safeHTML -}}
+{{- $headingClose := printf "</%s>" $headingTag | safeHTML -}}
+{{- with $page -}}
+<div
+  class="component--blog-card flex h-full flex-col overflow-hidden rounded-xl border border-divider bg-elevated shadow-sm transition-[box-shadow,border-color] duration-300 ease-out motion-reduce:transition-none motion-reduce:hover:shadow-sm hover:shadow-md">
+  {{ $image:= .Params.image }}
+  {{ if $image }}
+  <a href="{{ .RelPermalink }}" class="relative block aspect-[475/239] overflow-hidden">{{- partial "components/image" (dict
+      "Src" $image
+      "Context" .Page
+      "Alt" .Title
+      "Class" "image--partial blog-card__media"
+      "Size" "850x"
+      "Loading" (cond $eager "eager" "lazy")
+      "FetchPriority" (cond $eager "high" "auto")
+      "Decoding" "async"
+    ) -}}</a>
+  {{ end }}
+  <div class="flex flex-1 flex-col px-6 pb-6 pt-5">
+  {{ $headingOpen }}
+    <a class="text-ink transition-colors duration-200 ease-out hover:text-accent" href="{{ .RelPermalink }}">
+      {{ partial "func/title-case" .Title }}
+    </a>
+  {{ $headingClose }}
+  <ul class="mb-4">
+    <li class="mb-2 block">
+      {{ partial "components/icon" (dict "Name" "clock" "Class" "inline-block h-4 w-4 mr-1 align-[-2px]") }}
+      {{ time.Format ":date_long" .PublishDate }}
+    </li>
+    {{ $categories:= .Params.categories }}
+    {{ if $categories }}
+    {{/*
+    <li class="mr-4 inline-block">
+      <a href="{{ `authors/` | relLangURL }}{{ .Params.Author | urlize }}/">
+        {{ partial "components/icon" (dict "Name" "circle-user" "Class" "inline-block h-4 w-4 mr-2 align-[-2px]") }}{{ .Params.author }}
+      </a>
+    </li>
+    */}}
+    <li class="mr-4 inline-block">
+      {{ partial "components/icon" (dict "Name" "folder" "Class" "inline-block h-4 w-4 mr-1 align-[-2px]") }}
+      {{ range $i,$p:= $categories }}
+      <a href="{{ `categories/` | relLangURL }}{{ . | urlize | lower }}/" class="ms-0">{{/* . | humanize */}}
+        {{ . | title }}{{ if ne $i
+        (sub (len $categories) 1) }},{{ end }}
+      </a>
+      {{ end }}
+    </li>
+    {{ end }}
+  </ul>
+  <p class="mb-6 flex-1 text-ink-muted">{{ if .Description }}{{ .Description | plainify }}{{ else }}{{ .Summary | plainify }}{{ end }}</p>
+  <div class="mt-auto">
+    <a
+      class="btn btn-outline-primary btn-sm"
+      href="{{ .RelPermalink }}"
+      aria-label="{{ T "read_more" }}: {{ .Title | plainify }}">
+      <span aria-hidden="true">{{ T "read_more" }} &rarr;</span>
+    </a>
+  </div>
+  </div>
+</div>
+{{- end -}}

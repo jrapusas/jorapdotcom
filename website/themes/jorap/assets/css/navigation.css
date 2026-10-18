@@ -1,0 +1,134 @@
+.header {
+  @apply border-divider bg-surface border-b py-5;
+}
+
+/* navbar items */
+.navbar {
+  @apply relative flex flex-wrap items-center justify-between;
+}
+
+.navbar-brand {
+  @apply text-ink text-xl font-bold;
+
+  img {
+    @apply max-h-full max-w-full;
+  }
+}
+
+input#nav-toggle:focus-visible + label {
+  @apply rounded-md outline-none ring-2 ring-accent ring-offset-2 ring-offset-surface;
+}
+
+.navbar-nav {
+  @apply text-center lg:items-center lg:text-left;
+}
+
+.nav-link {
+  @apply text-ink hover:text-accent block cursor-pointer font-semibold transition-colors duration-200 ease-out;
+  padding-top: var(--nav-link-py);
+  padding-bottom: var(--nav-link-py);
+  padding-left: 0.75rem;
+  padding-right: 0.75rem;
+  @apply lg:px-2;
+}
+
+.navbar-nav .nav-link {
+  min-height: var(--touch-target-min);
+  touch-action: manipulation;
+  -webkit-tap-highlight-color: color-mix(in srgb, var(--color-accent) 20%, transparent);
+}
+
+button.nav-link.nav-dropdown-trigger {
+  font: inherit;
+  @apply border-0 bg-transparent text-left;
+  @apply focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent focus-visible:ring-offset-2 focus-visible:ring-offset-surface;
+}
+
+.nav-dropdown {
+  @apply mr-0;
+}
+
+.nav-dropdown-trigger svg {
+  @apply pointer-events-none shrink-0;
+}
+
+.nav-dropdown-trigger {
+  @apply max-lg:w-full lg:w-auto;
+}
+
+.nav-dropdown.active .nav-dropdown-list {
+  @apply block lg:visible lg:opacity-100;
+}
+
+.nav-dropdown-list {
+  @apply bg-elevated border-divider z-10 hidden min-w-[180px] rounded-lg border p-4 shadow-lg lg:invisible lg:absolute lg:block lg:opacity-0 lg:transition-all lg:duration-300 lg:ease-out;
+}
+
+.nav-dropdown-item {
+  @apply [&:not(:last-child)]:mb-2;
+}
+
+.nav-dropdown-link {
+  @apply text-ink hover:text-accent flex items-center font-semibold transition-colors duration-200 ease-out;
+  padding-top: var(--btn-py);
+  padding-bottom: var(--btn-py);
+  min-height: var(--touch-target-min);
+  touch-action: manipulation;
+}
+
+.nav-item--cta {
+  @apply mt-4 flex items-center justify-center lg:mt-0 lg:ml-1 lg:justify-start xl:ml-2;
+}
+
+.nav-item--cta .btn {
+  @apply text-base normal-case lg:leading-none px-4 lg:px-3;
+}
+
+/* Header icon controls (search, theme toggle) */
+.header-utilities {
+  @apply flex shrink-0 items-center gap-0.5 sm:gap-1;
+}
+
+.header-utility-control {
+  @apply inline-flex min-h-11 min-w-11 shrink-0 items-center justify-center rounded-md;
+  touch-action: manipulation;
+  -webkit-tap-highlight-color: color-mix(in srgb, var(--color-accent) 20%, transparent);
+}
+
+.header-search-btn {
+  @apply gap-1.5 px-2 md:min-w-0 md:px-3;
+}
+
+.header-nav-toggle {
+  @apply lg:hidden;
+}
+
+.header-lang-select {
+  min-height: var(--touch-target-min);
+  padding-top: var(--btn-py);
+  padding-bottom: var(--btn-py);
+  touch-action: manipulation;
+}
+
+/* theme-switcher */
+.theme-switcher {
+  @apply inline-flex min-h-11 items-center;
+
+  label {
+    @apply bg-border relative inline-block h-4 w-6 cursor-pointer rounded-2xl lg:w-10;
+  }
+
+  input {
+    @apply absolute opacity-0;
+  }
+
+  span {
+    @apply bg-dark absolute -top-1 left-0 flex h-6 w-6 items-center justify-center rounded-full transition-all duration-300 dark:bg-white;
+  }
+
+  input:checked + label {
+    span {
+      @apply lg:left-4;
+    }
+  }
+}

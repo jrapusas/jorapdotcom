@@ -1,0 +1,133 @@
+{{- /*
+  Related garden notes for a page (blog → notes garden; notes → see-also).
+  Priority: related_notes frontmatter (first, in order) → tag overlap → title mentions (blog) → Hugo .Related.
+  Returns a slice of dicts: Page, Score, Shared.
+*/ -}}
+{{- $page := .Context -}}
+{{- $limit := .Limit | default 5 -}}
+{{- $minShared := .MinSharedTags | default 1 | int -}}
+{{- $notes := partialCached "notes/pages.html" (dict "ExcludeKinds" (slice "index")) "notes-pages-no-index-v1" -}}
+{{- $items := slice -}}
+{{- $seen := dict -}}
+
+{{- with $page.Params.related_notes -}}
+  {{- range $i, $slug := . -}}
+    {{- range $notes -}}
+      {{- if or (eq (.Params.slug | default "") $slug) (eq .File.ContentBaseName $slug) -}}
+        {{- $key := .RelPermalink -}}
+        {{- if not (index $seen $key) -}}
+          {{- $seen = merge $seen (dict $key true) -}}
+          {{- $score := sub 10.0 (float $i) -}}
+          {{- $items = $items | append (dict "Page" . "Score" $score "Shared" slice) -}}
+        {{- end -}}
+      {{- end -}}
+    {{- end -}}
+  {{- end -}}
+{{- end -}}
+
+{{- if lt (len $items) $limit -}}
+{{- $labels := $page.Params.tags | default slice -}}
+{{- $labels = $labels | append ($page.Params.categories | default slice) -}}
+
+{{- if gt (len $labels) 0 -}}
+  {{- range $notes -}}
+    {{- if eq .RelPermalink $page.RelPermalink -}}
+      {{- continue -}}
+    {{- end -}}
+    {{- if index $seen .RelPermalink -}}
+      {{- continue -}}
+    {{- end -}}
+    {{- $noteLabels := .Params.tags | default slice -}}
+    {{- $noteLabels = $noteLabels | append (.Params.categories | default slice) -}}
+    {{- if eq (len $noteLabels) 0 -}}
+      {{- continue -}}
+    {{- end -}}
+    {{- $shared := slice -}}
+    {{- range $labels -}}
+      {{- if in $noteLabels . -}}
+        {{- $shared = $shared | append . -}}
+      {{- end -}}
+    {{- end -}}
+    {{- $overlap := len $shared -}}
+    {{- if lt $overlap $minShared -}}
+      {{- continue -}}
+    {{- end -}}
+    {{- $score := div (float $overlap) (math.Sqrt (mul (float (len $labels)) (float (len $noteLabels)))) -}}
+    {{- $key := .RelPermalink -}}
+    {{- $seen = merge $seen (dict $key true) -}}
+    {{- $items = $items | append (dict "Page" . "Score" $score "Shared" $shared) -}}
+  {{- end -}}
+{{- end -}}
+{{- end -}}
+
+{{- if and (eq $page.Section "blog") (lt (len $items) $limit) -}}
+  {{- $minLen := site.Params.notes.unlinked_min_length | default 6 | int -}}
+  {{- $raw := partial "notes/note-raw-body.html" $page -}}
+  {{- $fence := "```" -}}
+  {{- $tick := "`" -}}
+  {{- $raw = replaceRE (printf "(?s)%s[\\s\\S]*?%s" $fence $fence) "" $raw -}}
+  {{- $raw = replaceRE (printf "%s[^%s\\n]+%s" $tick $tick $tick) "" $raw -}}
+  {{- $mentionRaw := replaceRE `(?m)^#{1,6}\s+[^\n]*\n?` "" $raw -}}
+  {{- $mentionRaw = replaceRE `\[\[[^\]]+\]\]` " " $mentionRaw -}}
+  {{- range $notes -}}
+    {{- if index $seen .RelPermalink -}}
+      {{- continue -}}
+    {{- end -}}
+    {{- $needles := slice .Title -}}
+    {{- with .Params.aliases -}}
+      {{- $needles = union $needles . -}}
+    {{- end -}}
+    {{- $matched := false -}}
+    {{- range $needles -}}
+      {{- if $matched -}}
+        {{- continue -}}
+      {{- end -}}
+      {{- if lt (len .) $minLen -}}
+        {{- continue -}}
+      {{- end -}}
+      {{- $words := split . " " -}}
+      {{- $multiWord := gt (len $words) 1 -}}
+      {{- $escaped := replaceRE `([.*+?^${}()|[\]\\])` `\\$1` . -}}
+      {{- if $multiWord -}}
+        {{- if not (findRE (printf `(?i)%s` $escaped) $mentionRaw) -}}
+          {{- continue -}}
+        {{- end -}}
+        {{- $wordPattern := printf `(?i)(?:^|[^[\w])%s(?:[^]\w]|$)` $escaped -}}
+        {{- if not (findRE $wordPattern $mentionRaw) -}}
+          {{- continue -}}
+        {{- end -}}
+      {{- else -}}
+        {{- $wordPattern := printf `(?i)(?:^|[^[\wA-Z])%s(?:[^]\w]|$)` $escaped -}}
+        {{- if not (findRE $wordPattern $mentionRaw) -}}
+          {{- continue -}}
+        {{- end -}}
+      {{- end -}}
+      {{- $matched = true -}}
+    {{- end -}}
+    {{- if $matched -}}
+      {{- $seen = merge $seen (dict .RelPermalink true) -}}
+      {{- $items = $items | append (dict "Page" . "Score" 0.65 "Shared" slice) -}}
+    {{- end -}}
+  {{- end -}}
+{{- end -}}
+
+{{- if lt (len $items) $limit -}}
+  {{- range site.RegularPages.Related $page -}}
+    {{- if ne .Section "notes" -}}
+      {{- continue -}}
+    {{- end -}}
+    {{- if index $seen .RelPermalink -}}
+      {{- continue -}}
+    {{- end -}}
+    {{- if partial "notes/is-utility-page.html" . -}}
+      {{- continue -}}
+    {{- end -}}
+    {{- if eq (.Params.note_kind | default "note") "index" -}}
+      {{- continue -}}
+    {{- end -}}
+    {{- $seen = merge $seen (dict .RelPermalink true) -}}
+    {{- $items = $items | append (dict "Page" . "Score" 0.1 "Shared" slice) -}}
+  {{- end -}}
+{{- end -}}
+
+{{- return (first $limit (sort $items "Score" "desc")) -}}

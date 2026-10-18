@@ -1,0 +1,97 @@
+{{- /*
+  Per-note link issue panel. Pass the note Page.
+*/ -}}
+{{- $page := . -}}
+{{- if or (ne ($page.Params.note_kind | default "note") "note") $page.Draft -}}
+  {{- return -}}
+{{- end -}}
+{{- with $page.File -}}
+  {{- $data := partialCached "notes/collect-note-issues.html" site "note-issues-v12" -}}
+  {{- $issues := index $data.byPath .Path -}}
+  {{- if $issues -}}
+    <aside class="notes-issues border-divider mb-6 rounded border p-5" aria-label="Link issues on this note">
+      <h2 class="h6 notes-issues__title mb-2">Link issues</h2>
+      <p class="notes-issues__lede text-ink-muted mb-3 text-sm">
+        {{ $issues.total }} {{ if eq $issues.total 1 }}issue{{ else }}issues{{ end }} on this note.
+        <a class="text-accent no-underline hover:underline" href="{{ `/notes/issues/` | relLangURL }}">All garden issues</a>
+      </p>
+      <ul class="notes-issues__list mb-0 list-none space-y-2 p-0 text-sm">
+        {{- range $issues.broken -}}
+          <li class="notes-issues__item notes-issues__item--broken">
+            <strong>Missing note:</strong>
+            wikilink <code>[[{{ .target }}]]</code> - no page matches this title, slug, or alias.
+          </li>
+        {{- end -}}
+        {{- range $issues.pipe -}}
+          <li class="notes-issues__item notes-issues__item--pipe">
+            <strong>Pipe wikilink:</strong>
+            <code>[[{{ .raw }}]]</code> - use <code>[[{{ .target }}]]</code> only (no <code>|label</code>).
+          </li>
+        {{- end -}}
+        {{- range $issues.unlinked -}}
+          <li class="notes-issues__item notes-issues__item--unlinked">
+            <strong>Unlinked mention:</strong>
+            "{{ .mention }}" in prose - link
+            <a class="text-accent no-underline hover:underline" href="{{ .suggestPage.RelPermalink }}"><code>[[{{ .suggestTitle }}]]</code></a>.
+          </li>
+        {{- end -}}
+        {{- range $issues.structure -}}
+          {{- if eq .type "missingTable" -}}
+            <li class="notes-issues__item notes-issues__item--structure">
+              <strong>Missing table:</strong>
+              add a <code>## Note Relationships</code> table with <code>extends</code> and <code>contradicts</code> rows.
+            </li>
+          {{- else if eq .type "missingExtends" -}}
+            <li class="notes-issues__item notes-issues__item--structure">
+              <strong>Missing extends:</strong>
+              add <code>| extends | [[Note Title]] | reason |</code> to <strong>Note Relationships</strong>.
+            </li>
+          {{- else if eq .type "missingContradicts" -}}
+            <li class="notes-issues__item notes-issues__item--structure">
+              <strong>Missing contradicts:</strong>
+              add <code>| contradicts | [[Note Title]] | when … |</code> to <strong>Note Relationships</strong>.
+            </li>
+          {{- else if eq .type "extraSection" -}}
+            <li class="notes-issues__item notes-issues__item--structure">
+              <strong>Extra section:</strong>
+              <code>## {{ .heading }}</code> - atomic notes allow only <code>## Examples</code>, <code>## Note Relationships</code>, and optional <code>## See also</code>. Split the note or move content to prose.
+            </li>
+          {{- end -}}
+        {{- end -}}
+        {{- range $issues.orphan -}}
+          <li class="notes-issues__item notes-issues__item--orphan">
+            <strong>Orphan:</strong>
+            no inbound wikilinks - link here from a parent note or hub.
+          </li>
+        {{- end -}}
+        {{- range $issues.deadEnd -}}
+          <li class="notes-issues__item notes-issues__item--dead-end">
+            <strong>Dead end:</strong>
+            no wikilinks in the note body - link out in prose.
+          </li>
+        {{- end -}}
+        {{- range $issues.utility -}}
+          <li class="notes-issues__item notes-issues__item--utility">
+            <strong>Utility wikilink:</strong>
+            <code>[[{{ .target }}]]</code> - use <code>/notes/{{ .slug }}/</code> instead.
+          </li>
+        {{- end -}}
+        {{- range $issues.relBroken -}}
+          <li class="notes-issues__item notes-issues__item--rel-broken">
+            <strong>Broken relationship:</strong>
+            {{- with .relType -}}
+              <code>{{ . }}</code>
+            {{- end -}}
+            <code>[[{{ .target }}]]</code> in <code>relationships:</code> - no matching page.
+          </li>
+        {{- end -}}
+        {{- range $issues.bodySection -}}
+          <li class="notes-issues__item notes-issues__item--body-section">
+            <strong>Body section:</strong>
+            <code>## {{ .heading }}</code> still in markdown body - move to frontmatter.
+          </li>
+        {{- end -}}
+      </ul>
+    </aside>
+  {{- end -}}
+{{- end -}}

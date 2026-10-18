@@ -1,0 +1,20 @@
+{{- /*
+  Build <li> TOC nodes from Page.Fragments.Headings with title-case labels.
+  Params: headings (slice), start (default 2), end (default 5)
+*/ -}}
+{{- $start := .start | default 2 -}}
+{{- $end := .end | default 5 -}}
+{{- $items := "" -}}
+{{- range .headings -}}
+  {{- if and (ge .Level $start) (le .Level $end) -}}
+    {{- $child := "" -}}
+    {{- with .Headings -}}
+      {{- $child = partial "func/toc-fragment-items.html" (dict "headings" . "start" $start "end" $end) -}}
+    {{- end -}}
+    {{- $label := partial "func/title-case" .Title -}}
+    {{- $items = printf `%s<li class="toc-level-%d"><a href="#%s">%s</a>%s</li>` $items .Level .ID $label (cond $child (printf "<ol>%s</ol>" $child) "") -}}
+  {{- else if .Headings -}}
+    {{- $items = printf "%s%s" $items (partial "func/toc-fragment-items.html" (dict "headings" .Headings "start" $start "end" $end)) -}}
+  {{- end -}}
+{{- end -}}
+{{- return $items -}}

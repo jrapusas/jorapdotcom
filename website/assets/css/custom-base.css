@@ -1,0 +1,214 @@
+/* Add margin below Hugo YouTube shortcode embeds (robust selector) */
+
+@layer base {
+  :root {
+    --color-graph-center: #eab308;
+    --color-graph-hub: #15803d;
+    --color-graph-tail: #dc2626;
+    --color-jesus-words: #b91c1c;
+  }
+
+  html.dark {
+    --color-warning: var(--color-darkmode-warning);
+    --color-warning-ink: var(--color-darkmode-warning-ink);
+    --color-warning-surface: var(--color-darkmode-warning-surface);
+    --color-warning-border: var(--color-darkmode-warning-border);
+    --color-warning-code: var(--color-darkmode-warning-code);
+    --color-error-ink: var(--color-darkmode-error-ink);
+    --color-error-surface: var(--color-darkmode-error-surface);
+    --color-error-border: var(--color-darkmode-error-border);
+    --color-error-code: var(--color-darkmode-error-code);
+    --color-success: var(--color-darkmode-success);
+    --color-graph-weak: var(--color-darkmode-graph-weak);
+    --color-graph-center: #facc15;
+    --color-graph-hub: var(--color-darkmode-success);
+    --color-graph-tail: #f87171;
+    --color-jesus-words: #f87171;
+  }
+}
+
+/* Header-bottom scroll progress bar. Paired with assets/js/scroll-progress.js. */
+.scroll-progress {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  z-index: 1;
+  width: 100%;
+  height: 3px;
+  pointer-events: none;
+  background: color-mix(in srgb, var(--color-divider) 35%, transparent);
+}
+
+.scroll-progress__bar {
+  height: 100%;
+  width: 0;
+  transform-origin: left center;
+  transition: width 0.1s ease-out;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .scroll-progress__bar {
+    transition: none;
+  }
+}
+
+/* Skip link (WCAG 2.4.1 bypass blocks) */
+.skip-link {
+  position: absolute;
+  top: 0.75rem;
+  left: 0.75rem;
+  z-index: 100;
+  padding: 0.625rem 1rem;
+  border-radius: 0.25rem;
+  background: var(--color-accent);
+  color: var(--color-on-accent);
+  font-size: 0.875rem;
+  font-weight: 600;
+  text-decoration: none;
+  transform: translateY(-200%);
+  transition: transform 0.15s ease-out;
+}
+
+.skip-link:focus {
+  transform: translateY(0);
+  outline: none;
+  box-shadow:
+    0 0 0 2px var(--color-surface),
+    0 0 0 4px var(--color-accent);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .skip-link {
+    transition: none;
+  }
+}
+
+/* Theme switcher button: match header utility focus ring */
+.theme-switcher-btn:focus-visible,
+.header-nav-toggle:focus-visible,
+.header-search-btn:focus-visible {
+  outline: none;
+  box-shadow:
+    0 0 0 2px var(--color-surface),
+    0 0 0 4px var(--color-accent);
+}
+
+.header-utility-control:hover {
+  background: color-mix(in srgb, var(--color-accent) 8%, transparent);
+}
+
+@media (max-width: 767.98px) {
+  .navbar-brand span {
+    max-width: 9.5rem;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+}
+
+/* Footer social icons: 44px touch targets */
+.social-icons li a {
+  min-height: var(--touch-target-min, 2.75rem);
+  min-width: var(--touch-target-min, 2.75rem);
+  height: auto;
+  width: auto;
+}
+
+/* Filter pills: keyboard focus ring */
+.notes-filter:focus-visible,
+.notes-graph-filter:focus-visible,
+.notes-toolbar-tools__summary:focus-visible,
+.notes-graph-relationships__summary:focus-visible {
+  outline: none;
+  box-shadow:
+    0 0 0 2px var(--color-surface),
+    0 0 0 4px var(--color-accent);
+}
+
+/* Buttons: touch minimum at all breakpoints */
+.btn-sm {
+  min-height: var(--touch-target-min, 2.75rem);
+}
+
+/* Mobile/tablet nav CTA: vertically center label in touch-height button */
+@media (max-width: 1023.98px) {
+  .nav-item--cta {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+  }
+
+  .nav-item--cta .btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    min-height: var(--touch-target-min, 2.75rem);
+    line-height: 1.25;
+  }
+}
+
+/* Target divs with inline style matching the YouTube embed container */
+
+/* Robust selectors for YouTube embed containers (handles spacing variations) */
+div[style*="position: relative"][style*="padding-bottom:56.25%"],
+div[style*="position:relative"][style*="padding-bottom:56.25%"],
+div[style*="position: relative"][style*="padding-bottom: 56.25%"],
+div[style*="position:relative"][style*="padding-bottom: 56.25%"] {
+  margin-bottom: 1.5rem;
+}
+
+/* If a class is used for YouTube embeds, add a rule here as well (uncomment and adjust as needed) */
+/*
+.youtube-embed {
+  margin-bottom: 1.5rem;
+}
+*/
+
+/* Dark mode prose: align with theme tokens instead of flat pure white.
+ * Excludes `.btn` anchors so button variants keep their own text colors
+ * (otherwise btn-primary text was forced to a near-white token, going
+ * invisible against the cream accent fill in dark mode). */
+html.dark .content p,
+html.dark .content li,
+html.dark .content ul,
+html.dark .content ol,
+html.dark .content td,
+html.dark .content blockquote {
+  color: var(--color-ink-muted) !important;
+}
+
+html.dark .content h1,
+html.dark .content h2,
+html.dark .content h3,
+html.dark .content h4,
+html.dark .content h5,
+html.dark .content h6 {
+  color: var(--color-ink) !important;
+}
+
+html.dark .content a:not(.btn) {
+  color: var(--color-ink) !important;
+}
+
+html.dark .content a:not(.btn):hover {
+  color: var(--color-accent) !important;
+}
+
+/* Tag chips inside `.content` opt out of the prose link colors above so
+ * their own hover (light text on accent fill) stays readable. */
+html.dark .content .tags_section a {
+  color: var(--color-ink) !important;
+}
+
+html.dark .content .tags_section a:hover {
+  color: var(--color-surface) !important;
+}
+
+html.dark .content strong,
+html.dark .content b {
+  color: var(--color-ink) !important;
+}
+
+/* Local dev banner (localhost only) */

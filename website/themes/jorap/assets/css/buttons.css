@@ -1,0 +1,30 @@
+.btn {
+  @apply inline-flex items-center justify-center rounded border border-transparent px-5 font-semibold capitalize transition motion-reduce:transition-none;
+  padding-top: var(--btn-py);
+  padding-bottom: var(--btn-py);
+  touch-action: manipulation;
+  -webkit-tap-highlight-color: color-mix(in srgb, var(--color-accent) 20%, transparent);
+}
+
+.btn-sm {
+  @apply rounded-sm px-4 text-sm;
+  padding-top: var(--btn-py);
+  padding-bottom: var(--btn-py);
+}
+
+@media (max-width: 1279.98px) {
+  .btn,
+  .btn-sm {
+    min-height: var(--touch-target-min);
+  }
+}
+
+.btn-primary {
+  @apply border-accent bg-accent text-on-accent;
+  @apply focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent focus-visible:ring-offset-2 focus-visible:ring-offset-surface;
+}
+
+.btn-outline-primary {
+  @apply border-accent text-ink bg-transparent hover:bg-accent hover:text-on-accent;
+  @apply focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent focus-visible:ring-offset-2 focus-visible:ring-offset-surface;
+}

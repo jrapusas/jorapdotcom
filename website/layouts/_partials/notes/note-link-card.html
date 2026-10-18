@@ -1,0 +1,11 @@
+{{- /*
+  Shared card for note link lists (outgoing, see also, backlinks).
+  Dict: Page (required), Body (optional subtitle), Href (optional), Title (optional).
+*/ -}}
+{{- $card := . -}}
+{{- if not $card.Body -}}
+  {{- $card = merge $card (dict "Body" (partial "notes/note-blurb.html" (dict "Page" $card.Page "DescriptionOnly" true))) -}}
+{{- end -}}
+<li class="notes-link-card flex">
+  {{ partial "notes/note-card.html" $card }}
+</li>

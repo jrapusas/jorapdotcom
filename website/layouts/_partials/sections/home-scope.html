@@ -1,0 +1,42 @@
+{{ $scope := site.Params.home_scope }}
+{{ if and $scope $scope.enable }}
+  <section class="home-scope" data-site-reveal aria-labelledby="home-scope-title">
+    <div class="container">
+      <header class="home-scope__header">
+        <p class="home-scope__label" data-site-reveal-label>Capabilities</p>
+        {{ with $scope.title }}
+          <h2 id="home-scope-title" class="home-scope__title" data-site-split-section>{{ . | title }}</h2>
+        {{ end }}
+        {{ with $scope.lede }}
+          <p class="home-scope__lede" data-site-reveal-body>{{ . }}</p>
+        {{ end }}
+      </header>
+
+      {{ with $scope.items }}
+        <ul class="home-scope__grid">
+          {{ range . }}
+            {{ $itemImage := .image | default "/images/note.jpg" }}
+            <li class="home-scope-card" data-site-reveal-card>
+              <div class="home-scope-card__media-wrap">
+                {{ partial "image" (dict
+                  "Src" $itemImage
+                  "Context" $
+                  "Alt" (printf "%s - %s" $scope.title .title)
+                  "Class" "home-scope-card__media"
+                  "Size" "640x400"
+                  "Command" "Fit"
+                  "Loading" "lazy"
+                  "Decoding" "async"
+                ) }}
+              </div>
+              <div class="home-scope-card__body">
+                <h3 class="home-scope-card__title">{{ .title }}</h3>
+                <p class="home-scope-card__description">{{ .description }}</p>
+              </div>
+            </li>
+          {{ end }}
+        </ul>
+      {{ end }}
+    </div>
+  </section>
+{{ end }}

@@ -1,0 +1,11 @@
+{{- /*
+  Resolve flashcard set names for grouping (Review / Cards filters).
+  Per-card sets override note card_sets; falls back to note tags when unset.
+*/ -}}
+{{- $page := .Page -}}
+{{- $card := .Card | default dict -}}
+{{- $sets := $card.sets | default ($page.Params.card_sets | default slice) -}}
+{{- if eq (len $sets) 0 -}}
+  {{- $sets = $page.Params.tags | default slice -}}
+{{- end -}}
+{{- return $sets -}}

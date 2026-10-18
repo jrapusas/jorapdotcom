@@ -1,0 +1,51 @@
+home: Home
+read_more: Read More
+related_posts: Related Posts
+related_notes: Related Notes
+related_notes_lede: Garden notes that share topics with this post.
+random_blog_note: Random Note
+random_blog_note_lede: One garden note picked at random - shuffle for a new pairing with this post.
+random_note_lede: One garden note picked at random - shuffle for a new pairing with this note.
+note_creator_lede: Enter a topic. The AI prompt researches improvement principles, outputs one lint-ready atomic note, and lists sibling notes to create next.
+note_creator_topic_label: Topic
+note_creator_topic_placeholder: e.g. saying no without burning the relationship
+note_creator_hint: Type a topic to generate the prompt. Relevant garden notes are included as wikilink hints.
+note_creator_prompt_loading: Enter a topic above to generate the prompt.
+random_duo_lede: Two notes from the garden, side by side. Shuffle both, or lock one side and shuffle the other.
+random_duo_shortest_path: A shortest path
+random_duo_no_path: No path found through wikilinks.
+shuffle: Shuffle
+select_note: Select note
+select_note_left: Select left note
+select_note_right: Select right note
+choose_note: Choose a note…
+shuffle_all: Shuffle both
+shuffle_left: Shuffle left
+shuffle_right: Shuffle right
+ai_prompt: AI prompt
+ai_prompt_label: Prompt to paste into an AI chat
+copy_prompt: Copy prompt
+copy_md: Copy MD
+copy_hub_cluster: Copy hub cluster
+copy_okf_catalog: Copy catalog
+copy_issues: Copy issues
+agent_copy: Agent copy
+open_in_chatgpt: Open in ChatGPT
+open_in_claude: Open in Claude
+open_in_gemini: Open in Gemini
+prompt_opened_in_ai: Opened
+prompt_copied_for_ai: Copied - paste in chat
+loading: Loading…
+random_notes_prompt_loading: Loading notes…
+random_blog_note_prompt_loading: Loading note…
+no_random_blog_note: No notes in the garden yet.
+categories: Categories
+tags: Tags
+toc: Table of Contents
+share: Share
+search_input_placeholder: Search Post...
+search_no_results: No results for
+search_initial_message: Type something to search..
+search_navigate: to navigate
+search_select: to select
+search_close: to close

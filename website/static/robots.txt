@@ -1,0 +1,8 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://www.jorap.com/sitemap.xml
+
+# LLM-oriented site index (llmstxt.org)
+# https://www.jorap.com/llms.txt
+# https://www.jorap.com/llms-full.txt

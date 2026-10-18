@@ -1,0 +1,119 @@
+/* Flashcards */
+.notes-flashcard {
+  perspective: 1000px;
+}
+
+.notes-flashcard__flip {
+  display: block;
+  width: 100%;
+  min-height: 10rem;
+  padding: 0;
+  border: 1px solid var(--color-divider);
+  border-radius: 0.5rem;
+  background: var(--color-surface);
+  cursor: pointer;
+  text-align: left;
+  transition: border-color 0.15s ease;
+}
+
+.notes-flashcard__flip:hover,
+.notes-flashcard__flip:focus-visible {
+  border-color: var(--color-accent);
+  outline: none;
+}
+
+.notes-flashcard__inner {
+  position: relative;
+  display: block;
+  width: 100%;
+  min-height: 10rem;
+  transform-style: preserve-3d;
+  transition: transform 0.35s ease;
+}
+
+.notes-flashcard.is-flipped .notes-flashcard__inner {
+  transform: rotateY(180deg);
+}
+
+.notes-flashcard__face {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 1.25rem;
+  backface-visibility: hidden;
+  border-radius: 0.5rem;
+  line-height: 1.5;
+  pointer-events: none;
+}
+
+.notes-flashcard__face--front {
+  background: var(--color-surface);
+  color: var(--color-ink);
+  font-weight: 600;
+  text-wrap: balance;
+  text-align: center;
+}
+
+.notes-flashcard__face--back {
+  background: var(--color-elevated);
+  color: var(--color-ink);
+  transform: rotateY(180deg);
+  font-size: 0.9375rem;
+  text-wrap: balance;
+  text-align: center;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .notes-flashcard {
+    perspective: none;
+  }
+
+  .notes-flashcard__inner {
+    transition: none;
+    transform: none !important;
+  }
+
+  .notes-flashcard__face {
+    backface-visibility: visible;
+    position: relative;
+    inset: auto;
+    min-height: 10rem;
+  }
+
+  .notes-flashcard__face--back {
+    display: none;
+    transform: none;
+  }
+
+  .notes-flashcard.is-flipped .notes-flashcard__face--front {
+    display: none;
+  }
+
+  .notes-flashcard.is-flipped .notes-flashcard__face--back {
+    display: flex;
+  }
+}
+
+.notes-flashcard__source {
+  margin-bottom: 0;
+}
+
+.notes-cards-grid .notes-flashcard {
+  height: 100%;
+}
+
+.notes-cards-grid .notes-flashcard__flip {
+  min-height: 12rem;
+}
+
+.notes-cards-grid .notes-flashcard__inner {
+  min-height: 12rem;
+}
+
+.notes-cards__export {
+  background: var(--color-elevated);
+}
+
+/* Review session */

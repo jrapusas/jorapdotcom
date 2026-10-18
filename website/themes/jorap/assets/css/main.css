@@ -1,0 +1,49 @@
+@import "tailwindcss";
+@plugin "@tailwindcss/forms";
+@plugin "@tailwindcss/typography";
+@plugin 'tailwind-bootstrap-grid';
+@source "hugo_stats.json";
+
+/* Auto-generated theme tokens from "data/theme.json" via scripts/themeGenerator.js */
+@import "./generated-theme.css";
+
+/* Semantic design tokens (surface/elevated/ink/...) with light + dark swaps. */
+@import "./semantic-tokens.css";
+
+/* Inter body/UI; Source Sans 3 headings; JetBrains Mono code (see data/theme.json). */
+@theme {
+  --font-sans: "Inter", sans-serif;
+  --font-serif: "Source Sans 3", sans-serif;
+  --font-mono: "JetBrains Mono", monospace;
+}
+
+/* Class-based dark mode (see theme-switcher); pairs with semantic-tokens.css overrides under .dark */
+@custom-variant dark (&:where(.dark, .dark *));
+
+@custom-variant motion-reduce (@media (prefers-reduced-motion: reduce));
+
+@import "./safe.css";
+@import "./utilities.css";
+
+@layer base {
+  @import "./base.css";
+}
+
+@layer components {
+  @import "./components.css";
+  @import "./navigation.css";
+  @import "./buttons.css";
+}
+
+@import "search.css";
+@import "social-share.css";
+@import "gallery-slider.css";
+@import "images.css";
+@import "toc.css";
+@import "tab.css";
+@import "accordion.css";
+@import "modal.css";
+@import "notice.css";
+
+@import "module-overrides.css";
+@import "custom.css";

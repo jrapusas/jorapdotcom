@@ -1,0 +1,24 @@
+{{ define "main" }}
+  {{ partial "page-header" . }}
+
+
+  <section class="section">
+    <div class="container">
+      <ul class="text-center">
+        {{/* List terms for the current taxonomy (e.g. categories or tags) */}}
+        {{ range .Data.Terms.ByCount }}
+          <li class="m-3 inline-block">
+            <a
+              href="{{ .Page.Permalink }}"
+              class="bg-elevated text-ink inline-flex min-h-11 items-center rounded px-4 py-2 text-xl">
+              {{ .Page.Title }}
+              <span class="bg-surface border-divider ml-2 rounded border px-2 text-ink-muted">
+                {{ .Count }}
+              </span>
+            </a>
+          </li>
+        {{ end }}
+      </ul>
+    </div>
+  </section>
+{{ end }}

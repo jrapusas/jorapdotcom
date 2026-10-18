@@ -1,0 +1,93 @@
+# JoRap voice - words and phrases to flag in site prose.
+# Edit this file, then run: pnpm voice:scan (review) or pnpm lint:voice (CI gate).
+#
+# words: fail lint:voice - words JoRap does not use in prose
+# phrases: regex patterns, same strictness
+# review: shown in voice:scan only - garden swaps that may be OK in context
+# gloss: theology/PKM terms that need a plain-English gloss nearby
+#
+# JoRap uses on purpose (not linted): landscape, leverage, utilize, facilitate,
+# robust, seamless, realm, elevate, implement, prioritize, repository,
+# functionality, optimization, crucial, vital, essential
+
+words:
+  delve: cut or be specific
+  tapestry: cut
+  harness: use
+  boasts: has / includes
+  empower: help / let you
+  streamline: simplify / cut steps
+  revolutionize: change / fix
+  utilize: use
+  optimal: best / good enough
+  Furthermore: delete - start the sentence
+  Moreover: delete
+  Additionally: delete
+  handoff: pass off / pass to client
+  postmortem: after-action review
+  summarization: layers / boil down in layers
+  associative: link by meaning
+  interstitial: between tasks / buffer flush
+  rumination: stewing / replaying without change
+  white-knuckle: willpower alone
+  white-knuckling: forcing by will
+  commence: start
+  demonstrate: show
+  demonstrates: shows
+
+phrases:
+  - altar talk
+  - In today'?s fast-paced world
+  - Let'?s dive in
+  - Whether you'?re a beginner
+  - game-?changer
+  - It'?s worth noting
+  - In conclusion
+  - Unlock the full potential
+  - Without further ado
+  - When it comes to
+  - In the realm of
+  - delve into
+  - navigate the (world|landscape)
+  - comprehensive guide
+  - plays a key role
+  - it'?s important to (remember|note)
+  - In today'?s world
+  - Let'?s explore
+  - ultimate guide
+  - hope this helps
+  - happy reading
+  - one of the best .{0,40}(prompts|guides|tools)
+  - comprehensive details
+  - At its core
+  - In this (post|article|section), we
+  - Here'?s everything you need to know
+  - a testament to
+  - it'?s no secret that
+  - the good news is
+  - Expanded from
+  - Idea captured from
+  - prior to
+  - subsequent to
+  - in order to
+
+review:
+  navigate: cut or be specific
+  metadata: tags and fields
+  contradicts: goes against
+  distill: boil down / shorten
+  deploy: push live
+  unmerited favor: gift you didn't earn
+  hygiene: OK for passwords; cut elsewhere
+  leverage: OK in dev context; cut in essays
+  comprehensive: usually cut
+  framework: OK when naming CRAFT/JTBD; cut if every section says framework
+  seamless: smooth / invisible
+  robust: solid / holds up
+  ensure: make sure / check (OK in PKM "ensure backups")
+  begins: starts (OK in "the game begins")
+  initiate: start (OK in "initiate contact")
+  initiates: starts
+
+gloss:
+  unmerited favor: gift you didn't earn

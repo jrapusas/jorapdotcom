@@ -1,0 +1,138 @@
+.notes-dev-banner-wrap {
+  padding-top: 1rem;
+}
+
+.notes-dev-banner {
+  margin-bottom: 1.25rem;
+  border: 1px solid var(--color-error-border);
+  border-radius: 0.5rem;
+  background: var(--color-error-surface);
+  color: var(--color-error-ink);
+  padding: 0.75rem 1rem;
+  font-size: 0.875rem;
+}
+
+.notes-dev-banner p {
+  margin: 0;
+}
+
+.notes-dev-banner code {
+  font-size: 0.8125rem;
+  color: var(--color-error-code);
+}
+
+.notes-content .wikilink {
+  color: var(--color-accent);
+  text-decoration: underline;
+  text-underline-offset: 2px;
+}
+
+/* Meta/utility intros often render as bare text (no <p>); inherit prose gray otherwise. */
+.content.notes-content {
+  color: var(--color-ink-muted);
+  font-size: 1rem;
+  line-height: 1.625;
+}
+
+/* NASB verse paragraphs - text left, reference right on its own line (see render-content.html). */
+.content.notes-content p.scripture-verse {
+  margin-block: 1.25rem;
+  padding: 0.875rem 1rem;
+  border: 1px solid var(--color-divider);
+  border-radius: 0.5rem;
+  background: var(--color-elevated);
+  text-align: left;
+}
+
+.content.notes-content p.scripture-verse .scripture-ref {
+  display: block;
+  margin-top: 0.5rem;
+  text-align: right;
+  font-size: 0.875rem;
+  color: var(--color-ink-faint);
+}
+
+/* Gospel NASB text - Jesus' words in red. */
+.content.notes-content .jesus-words {
+  color: var(--color-jesus-words);
+}
+
+/* Optional verse emphasis inside a scripture block (bible shortcode emphasize=). */
+.content.notes-content .scripture-emphasis {
+  text-decoration: underline dotted;
+  text-decoration-color: color-mix(in srgb, currentColor 40%, transparent);
+  text-underline-offset: 0.25em;
+  text-decoration-thickness: 1.5px;
+  box-decoration-break: clone;
+  -webkit-box-decoration-break: clone;
+}
+
+.content.notes-content :is(strong, b) {
+  color: var(--color-ink);
+}
+
+.content.notes-content code {
+  color: var(--color-ink);
+  background: var(--color-elevated);
+  border-radius: 0.25rem;
+  padding: 0.125em 0.35em;
+  font-size: 0.875em;
+  overflow-wrap: anywhere;
+  word-break: break-word;
+}
+
+.content.notes-content pre {
+  max-width: 100%;
+  overflow-x: auto;
+}
+
+.content.notes-content pre code {
+  word-break: normal;
+  overflow-wrap: normal;
+}
+
+.notes-issues__item {
+  overflow-wrap: anywhere;
+}
+
+.notes-issues__item code {
+  word-break: break-word;
+}
+
+/* Notes tables only: flat rows - blog `.content` keeps theme prose-table styling. */
+.notes-content table :is(thead, tbody tr) {
+  background-color: transparent;
+}
+
+/* Blog prose tables: shrink to content; wide tables still scroll via overflow-x-auto. */
+.content table {
+  width: fit-content;
+  max-width: 100%;
+}
+
+.notes-content .wikilink-broken {
+  color: var(--color-ink-muted);
+  text-decoration: underline dotted;
+  cursor: help;
+}
+
+.notes-issues,
+.notes-issues-summary {
+  border-color: var(--color-warning-border);
+  background: var(--color-warning-surface);
+}
+
+.notes-issues__title,
+.notes-issues-summary .h6 {
+  color: var(--color-warning-ink);
+}
+
+.notes-issues__item--broken code,
+.notes-issues__item--unlinked code {
+  font-size: 0.8125rem;
+}
+
+html.dark .notes-issues__item code {
+  color: var(--color-warning-code);
+}
+

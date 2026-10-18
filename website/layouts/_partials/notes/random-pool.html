@@ -1,0 +1,15 @@
+{{- /*
+  Garden note pages as url/title dicts for random pickers (excludes utility surfaces).
+  Page-independent, so callers share one partialCached key: notes-random-pool-v1.
+  Callers shuffle or filter the returned slice; the pool itself never varies.
+*/ -}}
+{{- $notes := partialCached "notes/pages.html" . "notes-pages-v1" -}}
+{{- $pool := slice -}}
+{{- range $notes -}}
+  {{- $pool = $pool | append (dict
+    "url" .RelPermalink
+    "title" .Title
+    "description" (partial "notes/note-blurb.html" (dict "Page" . "DescriptionOnly" true))
+  ) -}}
+{{- end -}}
+{{- return $pool -}}

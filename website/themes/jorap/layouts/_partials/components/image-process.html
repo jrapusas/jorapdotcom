@@ -1,0 +1,23 @@
+{{/*
+  components/image-process - Dispatch a Hugo image transform by command name.
+  Used by components/image.html to avoid an if/elseif ladder per transform.
+
+  Params:
+    Image    (resource, required)
+    Spec     (string, required)  Hugo size spec, e.g. "413x208 webp".
+    Command  (string)            Resize|Fit|Fill|Crop. Default Resize.
+*/}}
+{{ $img := .Image }}
+{{ $spec := .Spec }}
+{{ $cmd := .Command | default "Resize" }}
+{{ $out := "" }}
+{{ if eq $cmd "Fit" }}
+  {{ $out = $img.Fit $spec }}
+{{ else if eq $cmd "Fill" }}
+  {{ $out = $img.Fill $spec }}
+{{ else if eq $cmd "Crop" }}
+  {{ $out = $img.Crop $spec }}
+{{ else }}
+  {{ $out = $img.Resize $spec }}
+{{ end }}
+{{ return $out }}

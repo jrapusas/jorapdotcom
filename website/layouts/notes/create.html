@@ -1,0 +1,40 @@
+{{ define "main" }}
+  {{- $notes := partialCached "notes/pages.html" . "notes-pages-v1" -}}
+  {{- $garden := slice -}}
+  {{- range $notes -}}
+    {{- $garden = $garden | append (dict "title" .Title "tags" (.Params.tags | default slice)) -}}
+  {{- end -}}
+  {{ partial "page-header" . }}
+
+  <section class="section">
+    <div class="container">
+      <div class="row justify-center">
+        <div class="lg:col-12">
+          {{ partial "notes/toolbar.html" (dict "Context" . "active" "create") }}
+
+          <p class="text-ink-muted mb-6">{{ T "note_creator_lede" }}</p>
+
+          <div class="notes-creator-form mb-6 space-y-4">
+            <label class="block">
+              <span class="text-ink-muted mb-2 block text-sm">{{ T "note_creator_topic_label" }}</span>
+              <input
+                type="text"
+                class="notes-creator-topic form-input w-full"
+                placeholder="{{ T "note_creator_topic_placeholder" }}"
+                autocomplete="off"
+                spellcheck="true"
+                data-note-creator-topic />
+            </label>
+            <p class="text-ink-muted text-sm" data-note-creator-hint>{{ T "note_creator_hint" }}</p>
+          </div>
+
+          {{ partial "notes/random-prompt-panel.html" (dict "Prefix" "note-creator" "Loading" (T "note_creator_prompt_loading") "Rows" 18) }}
+
+          <script type="application/json" class="notes-creator-garden-data">{{ $garden | jsonify | safeJS }}</script>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  {{ partial "essentials/fingerprint-asset.html" (dict "src" "js/notes-creator.js" "defer" true) }}
+{{ end }}

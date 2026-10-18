@@ -1,0 +1,39 @@
+{{- /*
+  Filter chips for card sets with per-set counts.
+  Params: cards (JSON-ready card dicts), dataAttr ("data-notes-review-set" | "data-notes-cards-filter").
+*/ -}}
+{{- $cards := .cards -}}
+{{- $attr := .dataAttr | default "data-notes-review-set" -}}
+{{- $setNames := slice -}}
+{{- $setCounts := dict -}}
+{{- range $cards -}}
+  {{- range .sets -}}
+    {{- if not (in $setNames .) -}}
+      {{- $setNames = $setNames | append . -}}
+    {{- end -}}
+    {{- $prev := index $setCounts . | default 0 -}}
+    {{- $setCounts = merge $setCounts (dict . (add $prev 1)) -}}
+  {{- end -}}
+{{- end -}}
+{{- $setNames = sort $setNames -}}
+{{- if eq $attr "data-notes-cards-filter" -}}
+<button type="button" class="notes-filter is-active" data-notes-cards-filter="all" aria-pressed="true" aria-label="All sets - {{ len $cards }} cards">
+  All sets<span class="notes-filter__count"> | {{ len $cards }}</span>
+</button>
+{{- range $setNames -}}
+  {{- $count := index $setCounts . | default 0 -}}
+  <button type="button" class="notes-filter" data-notes-cards-filter="{{ . }}" aria-pressed="false" aria-label="{{ . }} - {{ $count }} cards">
+    {{ . }}<span class="notes-filter__count"> | {{ $count }}</span>
+  </button>
+{{- end -}}
+{{- else -}}
+<button type="button" class="notes-filter is-active" data-notes-review-set="all" aria-pressed="true" aria-label="All sets - {{ len $cards }} cards">
+  All sets<span class="notes-filter__count"> | {{ len $cards }}</span>
+</button>
+{{- range $setNames -}}
+  {{- $count := index $setCounts . | default 0 -}}
+  <button type="button" class="notes-filter" data-notes-review-set="{{ . }}" aria-pressed="false" aria-label="{{ . }} - {{ $count }} cards">
+    {{ . }}<span class="notes-filter__count"> | {{ $count }}</span>
+  </button>
+{{- end -}}
+{{- end -}}

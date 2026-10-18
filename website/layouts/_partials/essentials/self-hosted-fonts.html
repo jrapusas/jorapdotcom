@@ -1,0 +1,64 @@
+{{/*
+  essentials/self-hosted-fonts - Same-origin webfonts from vendored assets.
+
+  Font binaries live in assets/fonts/; @font-face rules in assets/css/fonts.css.
+  Regenerate when data/theme.json font families change: pnpm vendor:fonts
+
+  At build time Hugo fingerprints each woff2 and rewrites the CSS to local
+  /fonts/<file>.<hash>.woff2 paths. Browsers never contact Google Fonts.
+*/}}
+{{- $cssFile := resources.Get "css/fonts.css" -}}
+{{- if not $cssFile -}}
+  {{ errorf "self-hosted-fonts: assets/css/fonts.css missing — run: pnpm vendor:fonts" }}
+{{- end -}}
+
+{{- $css := $cssFile.Content -}}
+{{- $seen := dict -}}
+{{- $fontFingerprints := dict -}}
+{{- range resources.Match "fonts/*.woff2" -}}
+  {{- $basename := .Name -}}
+  {{- if not (index $seen $basename) -}}
+    {{- $seen = merge $seen (dict $basename true) -}}
+    {{- $local := resources.Copy (printf "fonts/%s" .Name) . | fingerprint "sha256" -}}
+    {{- $fontFingerprints = merge $fontFingerprints (dict $basename $local) -}}
+    {{- $css = replace $css (printf "../fonts/%s" $basename) $local.RelPermalink -}}
+  {{- end -}}
+{{- end -}}
+
+{{- with hugo.Data.critical_fonts.preload -}}
+  {{- range . -}}
+    {{- with index $fontFingerprints . -}}
+<link
+  rel="preload"
+  as="font"
+  type="font/woff2"
+  href="{{ .RelPermalink }}"
+  crossorigin="anonymous"
+  {{ with .Data.Integrity }}integrity="{{ . }}"{{ end }} />
+    {{- end -}}
+  {{- end -}}
+{{- end -}}
+
+{{- $bundle := resources.FromString "css/fonts.css" $css -}}
+{{- $bundle = partial "essentials/publish-asset.html" (dict "resource" $bundle) -}}
+
+<link
+  rel="preload"
+  as="style"
+  href="{{ $bundle.RelPermalink }}"
+  crossorigin="anonymous"
+  {{ with $bundle.Data.Integrity }}integrity="{{ . }}"{{ end }} />
+<link
+  rel="stylesheet"
+  href="{{ $bundle.RelPermalink }}"
+  crossorigin="anonymous"
+  {{ with $bundle.Data.Integrity }}integrity="{{ . }}"{{ end }}
+  media="print"
+  data-swap-media="all" />
+<noscript>
+  <link
+    rel="stylesheet"
+    href="{{ $bundle.RelPermalink }}"
+    crossorigin="anonymous"
+    {{ with $bundle.Data.Integrity }}integrity="{{ . }}"{{ end }} />
+</noscript>

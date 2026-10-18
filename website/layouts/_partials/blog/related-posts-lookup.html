@@ -1,0 +1,60 @@
+{{- /*
+  Tag/category related blog posts for any page (notes → blog).
+  Falls back to Hugo .Related (blog only), then recent blog posts.
+  Returns a slice of pages.
+*/ -}}
+{{- $page := .Context -}}
+{{- $limit := .Limit | default 3 -}}
+{{- $labels := $page.Params.tags | default slice -}}
+{{- $labels = $labels | append ($page.Params.categories | default slice) -}}
+{{- $results := slice -}}
+
+{{- $blogPages := where (where site.RegularPages "Section" "blog") "Draft" false -}}
+
+{{- if gt (len $labels) 0 -}}
+  {{- $scored := slice -}}
+  {{- range $blogPages -}}
+    {{- if eq .RelPermalink $page.RelPermalink -}}
+      {{- continue -}}
+    {{- end -}}
+    {{- $postLabels := .Params.tags | default slice -}}
+    {{- $postLabels = $postLabels | append (.Params.categories | default slice) -}}
+    {{- if eq (len $postLabels) 0 -}}
+      {{- continue -}}
+    {{- end -}}
+    {{- $overlap := 0 -}}
+    {{- range $labels -}}
+      {{- if in $postLabels . -}}
+        {{- $overlap = add $overlap 1 -}}
+      {{- end -}}
+    {{- end -}}
+    {{- if gt $overlap 0 -}}
+      {{- $minLen := len $labels -}}
+      {{- if lt (len $postLabels) $minLen -}}
+        {{- $minLen = len $postLabels -}}
+      {{- end -}}
+      {{- $score := div (float $overlap) (float $minLen) -}}
+      {{- $scored = $scored | append (dict "Page" . "Score" $score) -}}
+    {{- end -}}
+  {{- end -}}
+  {{- $scored = sort $scored "Score" "desc" -}}
+  {{- range first $limit $scored -}}
+    {{- $results = $results | append .Page -}}
+  {{- end -}}
+{{- end -}}
+
+{{- if eq (len $results) 0 -}}
+  {{- range site.RegularPages.Related $page -}}
+    {{- if and (eq .Section "blog") (not .Draft) -}}
+      {{- $results = $results | append . -}}
+    {{- end -}}
+  {{- end -}}
+  {{- $results = first $limit $results -}}
+{{- end -}}
+
+{{- if eq (len $results) 0 -}}
+  {{- $blogOthers := complement (slice $page) $blogPages -}}
+  {{- $results = first $limit ($blogOthers.ByDate.Reverse) -}}
+{{- end -}}
+
+{{- return $results -}}

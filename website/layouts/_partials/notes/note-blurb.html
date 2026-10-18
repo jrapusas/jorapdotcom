@@ -1,0 +1,78 @@
+{{- /*
+  Card blurb text for note cards.
+  Dict: Page (required), DescriptionOnly (optional, default false).
+  DescriptionOnly: frontmatter description only (for cards in blocks).
+  Default: best one-liner from key_concept or description (search / non-card use).
+*/ -}}
+{{- $page := .Page -}}
+{{- $descriptionOnly := .DescriptionOnly | default false -}}
+{{- $result := "" -}}
+
+{{- if $descriptionOnly -}}
+  {{- with $page.Description -}}
+    {{- $clean := . -}}
+    {{- $clean = replaceRE `\[\[([^\]|#]+)(?:#[^\]|]+)?\]\]` "$1" $clean -}}
+    {{- $clean = replaceRE `\[([^\]]+)\]\([^)]+\)` "$1" $clean -}}
+    {{- $clean = replaceRE `\*\*([^*]+)\*\*` "$1" $clean -}}
+    {{- $clean = replaceRE `__([^_]+)__` "$1" $clean -}}
+    {{- $clean = replaceRE "`([^`]+)`" "$1" $clean -}}
+    {{- $clean = $clean | strings.TrimSpace -}}
+    {{- $result = $clean -}}
+  {{- end -}}
+{{- else -}}
+  {{- $candidates := slice -}}
+  {{- with $page.Params.key_concept -}}
+    {{- range split . "\n" -}}
+      {{- $line := . | strings.TrimSpace -}}
+      {{- if $line -}}
+        {{- $candidates = $candidates | append $line -}}
+      {{- end -}}
+      {{- if ge (len $candidates) 4 -}}{{- break -}}{{- end -}}
+    {{- end -}}
+  {{- end -}}
+  {{- with $page.Description -}}
+    {{- $candidates = $candidates | append . -}}
+  {{- end -}}
+
+  {{- $best := "" -}}
+  {{- $bestScore := 9999 -}}
+  {{- range $candidates -}}
+    {{- $clean := . -}}
+    {{- $clean = replaceRE `\[\[([^\]|#]+)(?:#[^\]|]+)?\]\]` "$1" $clean -}}
+    {{- $clean = replaceRE `\[([^\]]+)\]\([^)]+\)` "$1" $clean -}}
+    {{- $clean = replaceRE `\*\*([^*]+)\*\*` "$1" $clean -}}
+    {{- $clean = replaceRE `__([^_]+)__` "$1" $clean -}}
+    {{- $clean = replaceRE "`([^`]+)`" "$1" $clean -}}
+    {{- $clean = $clean | strings.TrimSpace -}}
+    {{- if lt (len $clean) 12 -}}{{- continue -}}{{- end -}}
+    {{- if hasPrefix $clean "|" -}}{{- continue -}}{{- end -}}
+    {{- if hasPrefix $clean "#" -}}{{- continue -}}{{- end -}}
+    {{- $score := len $clean -}}
+    {{- if gt $score 120 -}}{{- $score = add $score 200 -}}{{- end -}}
+    {{- if gt $score 160 -}}{{- $score = add $score 500 -}}{{- end -}}
+    {{- if findRE `(?i)^(?:the |a |an )?\w+ is ` $clean -}}{{- $score = add $score 40 -}}{{- end -}}
+    {{- if and (lt $score $bestScore) (le (len $clean) 160) -}}
+      {{- $best = $clean -}}
+      {{- $bestScore = $score -}}
+    {{- end -}}
+  {{- end -}}
+
+  {{- if not $best -}}
+    {{- with index $candidates 0 -}}
+      {{- $fallback := . -}}
+      {{- $fallback = replaceRE `\[\[([^\]|#]+)(?:#[^\]|]+)?\]\]` "$1" $fallback -}}
+      {{- $fallback = replaceRE `\[([^\]]+)\]\([^)]+\)` "$1" $fallback -}}
+      {{- $fallback = replaceRE `\*\*([^*]+)\*\*` "$1" $fallback -}}
+      {{- $fallback = replaceRE `__([^_]+)__` "$1" $fallback -}}
+      {{- $fallback = replaceRE "`([^`]+)`" "$1" $fallback -}}
+      {{- $best = $fallback | strings.TrimSpace | truncate 120 -}}
+    {{- end -}}
+  {{- end -}}
+
+  {{- if gt (len $best) 120 -}}
+    {{- $best = $best | truncate 117 -}}
+  {{- end -}}
+  {{- $result = $best -}}
+{{- end -}}
+
+{{- return $result -}}

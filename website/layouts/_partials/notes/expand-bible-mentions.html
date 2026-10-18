@@ -1,0 +1,63 @@
+{{- /*
+  Append {{< bible >}} lines after prose that cites scripture refs.
+  ponytail: line scan; chapter-only cites (John 13) skipped - DB keys need chapter:verse.
+  Repeats allowed; markdown table rows skipped.
+  Self-check: hugo build && rg -c 'Matthew 25:23 NASB1995' public/notes/eternal-principles/index.html
+*/ -}}
+{{- $raw := .Raw -}}
+{{- $bookRe := index hugo.Data "bible-books" "pattern" -}}
+{{- $fullRefRe := printf `%s\s+\d+:\d+(?:-\d+)?` $bookRe -}}
+
+{{- $out := slice -}}
+{{- range $line := split $raw "\n" -}}
+  {{- $out = $out | append $line -}}
+  {{- if findRE `(?i)^\s*\{\{<\s*bible` $line -}}
+    {{- continue -}}
+  {{- end -}}
+  {{- if findRE `(?i)^\s*\|` $line -}}
+    {{- continue -}}
+  {{- end -}}
+  {{- if findRE `NASB1995` $line -}}
+    {{- continue -}}
+  {{- end -}}
+
+  {{- $refs := slice -}}
+  {{- range findRESubmatch `\(([^)]+)\)` $line -}}
+    {{- $inner := index . 1 | strings.TrimSpace -}}
+    {{- if or (eq $inner "") (findRE `(?i)NASB` $inner) -}}
+      {{- continue -}}
+    {{- end -}}
+    {{- $book := "" -}}
+    {{- $chapter := "" -}}
+    {{- range $semi := split $inner ";" -}}
+      {{- range $seg := split $semi "," -}}
+        {{- $seg = $seg | strings.TrimSpace -}}
+        {{- if not $seg -}}{{- continue -}}{{- end -}}
+        {{- if findRE (printf `^%s\s+\d+:` $bookRe) $seg -}}
+          {{- $refs = $refs | append $seg -}}
+          {{- $bm := findRE (printf `^(%s)` $bookRe) $seg -}}
+          {{- $book = index $bm 0 -}}
+          {{- $loc := index (split $seg " ") (sub (len (split $seg " ")) 1) -}}
+          {{- $chapter = index (split $loc ":") 0 -}}
+        {{- else if and $book (findRE `^\d+:\d` $seg) -}}
+          {{- $refs = $refs | append (printf "%s %s" $book $seg) -}}
+          {{- $chapter = index (split $seg ":") 0 -}}
+        {{- else if and $book $chapter (findRE `^\d+$` $seg) -}}
+          {{- $refs = $refs | append (printf "%s %s:%s" $book $chapter $seg) -}}
+        {{- end -}}
+      {{- end -}}
+    {{- end -}}
+  {{- end -}}
+
+  {{- $bareLine := replaceRE `\([^)]+\)` "" $line -}}
+  {{- range findRE $fullRefRe $bareLine -}}
+    {{- $refs = $refs | append . -}}
+  {{- end -}}
+
+  {{- range $ref := $refs -}}
+    {{- $ref = $ref | strings.TrimSpace -}}
+    {{- $out = $out | append (printf `{{< bible ref="%s" >}}` $ref) -}}
+  {{- end -}}
+{{- end -}}
+
+{{- return (delimit $out "\n") -}}

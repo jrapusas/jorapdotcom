@@ -1,0 +1,29 @@
+{{- /*
+  AI prompt panel for random note / duo UIs.
+  Params: Prefix, AiChatUrl (optional), Loading (optional), Rows (optional, default 12).
+*/ -}}
+{{- $prefix := .Prefix -}}
+{{- $aiChatUrl := .AiChatUrl | default (site.Params.blog.random_notes_ai_chat_url | default "https://chatgpt.com/?q=") -}}
+{{- $loading := .Loading | default (T "random_blog_note_prompt_loading") -}}
+{{- $rows := .Rows | default 12 -}}
+<details class="notes-random-prompt border-divider mb-8 rounded border">
+  <summary class="notes-random-prompt-summary p-5">
+    <span class="notes-random-prompt-label h6 mb-0">{{ T "ai_prompt" }}</span>
+    <div class="notes-random-prompt-actions flex flex-wrap items-center gap-2">
+      <button type="button" class="btn btn-outline-primary btn-sm" {{ printf "data-%s-copy-prompt" $prefix | safeHTMLAttr }}>{{ T "copy_prompt" }}</button>
+      <button type="button" class="btn btn-outline-primary btn-sm" {{ printf "data-%s-send-prompt" $prefix | safeHTMLAttr }} data-ai-chat-url="{{ $aiChatUrl }}" data-ai-prefill="true">{{ T "open_in_chatgpt" }}</button>
+      <button type="button" class="btn btn-outline-primary btn-sm" {{ printf "data-%s-send-prompt" $prefix | safeHTMLAttr }} data-ai-chat-url="https://claude.ai/new" data-ai-prefill="false">{{ T "open_in_claude" }}</button>
+      <button type="button" class="btn btn-outline-primary btn-sm" {{ printf "data-%s-send-prompt" $prefix | safeHTMLAttr }} data-ai-chat-url="https://gemini.google.com/app" data-ai-prefill="false">{{ T "open_in_gemini" }}</button>
+    </div>
+  </summary>
+  <div class="notes-random-prompt-body px-5 pb-5">
+    <label class="sr-only" for="{{ $prefix }}-prompt">{{ T "ai_prompt_label" }}</label>
+    <textarea
+      id="{{ $prefix }}-prompt"
+      class="notes-random-prompt-text"
+      rows="{{ $rows }}"
+      readonly
+      {{ printf "data-%s-prompt" $prefix | safeHTMLAttr }}
+      spellcheck="false">{{ $loading }}</textarea>
+  </div>
+</details>

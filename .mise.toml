@@ -1,0 +1,9 @@
+# Local dev toolchain (Hugo min matches config/_default/module.toml)
+[tools]
+node = "22.22.2"
+go = "1.24.2"
+pnpm = "latest"
+hugo-extended = "0.164.0"
+
+[env]
+_.path = ["./node_modules/.bin"]

@@ -1,0 +1,79 @@
+{{ define "main" }}
+  {{- $cards := partialCached "notes/collect-cards.html" . "notes-collect-cards-v1" -}}
+  {{- $exportPath := site.Params.notes.anki_export_path | default "exports/jorap-notes-anki.txt" -}}
+  {{- $exportRel := printf "/%s" $exportPath -}}
+  {{- $setNames := slice -}}
+  {{- range $cards -}}
+    {{- range .sets -}}
+      {{- if not (in $setNames .) -}}
+        {{- $setNames = $setNames | append . -}}
+      {{- end -}}
+    {{- end -}}
+  {{- end -}}
+  {{- $setNames = sort $setNames -}}
+
+  {{ partial "page-header" . }}
+
+  <section class="section">
+    <div class="container">
+      <div class="row justify-center">
+        <div class="lg:col-12">
+          {{ partial "notes/toolbar.html" (dict "Context" . "active" "flashcards") }}
+
+          <details class="notes-cards__about border-divider mb-6 rounded border">
+            <summary class="notes-cards__about-summary p-5">
+              <span class="notes-cards__about-label h6 mb-0">About flashcards</span>
+            </summary>
+            <div class="notes-cards__about-body content notes-content px-5 pb-5">
+              {{ partial "notes/render-content.html" . }}
+            </div>
+          </details>
+
+          <div class="notes-cards__export border-divider mb-8 rounded border p-5">
+            <h2 class="h6 mb-2">Anki export</h2>
+            <p class="text-ink-muted mb-3 text-sm">
+              Notes with <code>review: true</code> export their <code>cards:</code> list (and any
+              <code>{{ "{{< card >}}" }}</code> shortcodes). Group cards with
+              <code>card_sets:</code> for filtered review. Regenerate after edits:
+              <code>npm run export:anki</code>.
+            </p>
+            <a class="btn btn-outline-primary btn-sm" href="{{ $exportRel | relURL }}" download>Download Anki deck (.txt)</a>
+          </div>
+
+          <div data-notes-cards>
+            <div class="mb-4 flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
+              <p class="text-ink-muted mb-0 text-sm">{{ len $cards }} cards</p>
+              {{- if gt (len $setNames) 0 -}}
+                <div class="notes-filters" role="group" aria-label="Filter cards by set">
+                  {{ partial "notes/card-set-filter-buttons.html" (dict "cards" $cards "dataAttr" "data-notes-cards-filter") }}
+                </div>
+              {{- end -}}
+            </div>
+
+            {{- if gt (len $cards) 0 -}}
+              <div class="row notes-cards-grid">
+                {{- range $cards -}}
+                  {{- $sets := delimit (.sets | default slice) "," -}}
+                  <div class="md:col-6 lg:col-4 mb-8" data-notes-cards-item data-notes-cards-sets="{{ $sets }}">
+                    {{ partial "notes/flashcard.html" (dict "Front" .front "Back" .back "Source" .source "Class" "h-full") }}
+                  </div>
+                {{- end -}}
+              </div>
+            {{- end -}}
+
+            <p class="text-ink-muted hidden text-sm" data-notes-cards-empty>No cards match this filter.</p>
+            {{- if eq (len $cards) 0 -}}
+              <p class="text-ink-muted text-sm">
+                No cards yet. Add <code>review: true</code> to a note frontmatter, or use
+                <code>{{ "{{< card front=\"Question\" back=\"Answer\" >}}" }}</code> in a note body.
+              </p>
+            {{- end -}}
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  {{ partial "essentials/fingerprint-asset.html" (dict "src" "js/notes-flashcard.js" "defer" true) }}
+  {{ partial "essentials/fingerprint-asset.html" (dict "src" "js/notes-cards.js" "defer" true) }}
+{{ end }}

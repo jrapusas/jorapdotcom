@@ -1,0 +1,17 @@
+{{- /*
+  Note picker for random note / duo UIs.
+  Params: Prefix, Pool (url/title dicts), Label, Placeholder, Slot (optional index string).
+*/ -}}
+{{- $prefix := .Prefix -}}
+{{- $pool := sort .Pool "title" -}}
+{{- $label := .Label -}}
+{{- $placeholder := .Placeholder -}}
+{{- $slot := .Slot | default "" -}}
+<select
+  class="notes-random-select"{{ if $slot }}{{ printf " data-%s-select=%q" $prefix $slot | safeHTMLAttr }}{{ else }}{{ printf " data-%s-select" $prefix | safeHTMLAttr }}{{ end }}
+  aria-label="{{ $label }}">
+  <option value="">{{ $placeholder }}</option>
+  {{- range $pool -}}
+    <option value="{{ .url }}">{{ .title }}</option>
+  {{- end -}}
+</select>

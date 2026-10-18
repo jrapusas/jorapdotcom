@@ -1,0 +1,46 @@
+{{- /*
+  Reverse index: target RelPermalink → slice of {Page, Type, Reason}.
+  Built from frontmatter relationships: rows only.
+*/ -}}
+{{- $index := dict -}}
+{{- $notes := partialCached "notes/pages.html" (dict) "notes-pages-v1" -}}
+
+{{- range $source := $notes -}}
+  {{- with $source.Params.relationships -}}
+    {{- range . -}}
+      {{- $relType := lower (.type | default "") -}}
+      {{- $relReason := strings.TrimSpace (.reason | default "") -}}
+      {{- $wikilink := strings.TrimSpace (.wikilink | default "") -}}
+      {{- if $wikilink -}}
+        {{- $inner := replaceRE `^\[\[|\]\]$` "" $wikilink -}}
+        {{- $targetStr := $inner -}}
+        {{- if strings.Contains $inner "#" -}}
+          {{- $targetStr = index (split $inner "#") 0 | strings.TrimSpace -}}
+        {{- end -}}
+        {{- $resolved := partialCached "notes/resolve-target.html" (dict "Target" $targetStr) $targetStr -}}
+        {{- with $resolved.Page -}}
+          {{- if ne .RelPermalink $source.RelPermalink -}}
+            {{- $key := .RelPermalink -}}
+            {{- $existing := index $index $key | default slice -}}
+            {{- $seen := false -}}
+            {{- range $existing -}}
+              {{- if and (eq .Page.RelPermalink $source.RelPermalink) (eq .Type $relType) -}}
+                {{- $seen = true -}}
+              {{- end -}}
+            {{- end -}}
+            {{- if not $seen -}}
+              {{- $row := dict
+                "Page" $source
+                "Type" $relType
+                "Reason" $relReason
+              -}}
+              {{- $index = merge $index (dict $key ($existing | append $row)) -}}
+            {{- end -}}
+          {{- end -}}
+        {{- end -}}
+      {{- end -}}
+    {{- end -}}
+  {{- end -}}
+{{- end -}}
+
+{{- return $index -}}

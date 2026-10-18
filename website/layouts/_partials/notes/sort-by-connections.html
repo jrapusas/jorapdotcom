@@ -1,0 +1,22 @@
+{{- /* Featured notes first; each group sorted by wikilink degree (desc), then title (asc). */ -}}
+{{- $pages := .Pages -}}
+{{- $graph := partialCached "notes/graph-data.html" site "graph-data-v4" -}}
+{{- $scratch := newScratch -}}
+{{- range $graph.edges -}}
+  {{- $scratch.Add .source 1 -}}
+  {{- $scratch.Add .target 1 -}}
+{{- end -}}
+{{- $sortByConnections := slice -}}
+{{- range $pages -}}
+  {{- $count := $scratch.Get .RelPermalink | default 0 -}}
+  {{- $key := printf "%05d_%s" (sub 99999 $count) .Title -}}
+  {{- $sortByConnections = $sortByConnections | append (dict "page" . "key" $key) -}}
+{{- end -}}
+{{- $sortByConnections = sort $sortByConnections "key" -}}
+{{- $sorted := slice -}}
+{{- range $sortByConnections -}}
+  {{- $sorted = $sorted | append .page -}}
+{{- end -}}
+{{- $featured := where $sorted "Params.featured" true -}}
+{{- $rest := complement $featured $sorted -}}
+{{- return ($featured | append $rest) -}}

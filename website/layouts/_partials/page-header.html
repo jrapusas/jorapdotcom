@@ -1,0 +1,11 @@
+<section class="page-header">
+  <div class="container text-center">
+    <div
+      class="from-surface to-elevated rounded-2xl bg-gradient-to-b px-8 py-14">
+      <h1 data-site-split>{{ T (printf "%s" (lower .Title)) | default .Title | title }}</h1>
+      <div data-site-intro-item>
+        {{ partial "components/breadcrumb" (dict "Context" . "Class" "mt-6") }}
+      </div>
+    </div>
+  </div>
+</section>

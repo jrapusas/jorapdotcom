@@ -1,0 +1,23 @@
+{{- /*
+  Cached lookup of all published notes by title, slug, filename, and aliases.
+  Returns dict: byKey (lowercase key → Page), notes (slice of Pages).
+*/ -}}
+{{- $notes := partialCached "notes/pages.html" (dict "IncludeUtility" true) "notes-pages-utility-v1" -}}
+{{- $byKey := dict -}}
+{{- range $notes -}}
+  {{- $page := . -}}
+  {{- $keys := slice $page.Title -}}
+  {{- with $page.Params.slug -}}
+    {{- $keys = $keys | append . -}}
+  {{- end -}}
+  {{- with $page.File -}}
+    {{- $keys = $keys | append .ContentBaseName -}}
+  {{- end -}}
+  {{- with $page.Params.aliases -}}
+    {{- $keys = union $keys . -}}
+  {{- end -}}
+  {{- range $keys -}}
+    {{- $byKey = merge $byKey (dict (lower .) $page) -}}
+  {{- end -}}
+{{- end -}}
+{{- return (dict "byKey" $byKey "notes" $notes) -}}

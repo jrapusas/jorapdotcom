@@ -1,0 +1,223 @@
+#################### default parameters ############################
+# favicon module: https://github.com/gethugothemes/hugo-modules/tree/master/images#favicon-implementation
+favicon = "images/jorap.png"
+# logo module: https://github.com/gethugothemes/hugo-modules/tree/master/images#logo-implementation
+logo = "images/jorap.png"
+logo_darkmode = "images/jorap.png"
+# use `px` or `x` with logo_width, example: "100px".
+# Note: logo_width is not work with .svg file
+logo_width = "60px"
+logo_height = "60px"
+# if logo_webp set false, will not generate WEBP version of logo | default is true
+logo_webp = true
+# logo text will only show when logo is missing.
+logo_text = "JoRap.com"
+# navbar fixed to top
+navbar_fixed = true
+# theme-mode
+theme_switcher = true
+theme_default = "system" # available options [light/dark/system]
+# Main Sections
+mainSections = ["blog", "notes"]
+
+# contact form action
+contact_form_action = "https://formspree.io/f/mbdevkyd"
+# google tag manager, see https://developers.google.com/tag-manager/
+google_tag_manager = "" # example: G-XXXXXXXXXX
+google_adsense = ""     # example: ca-pub-xxxxxxxxxxxxxxxx
+# custom script on header, example: custom_script= "<script>console.log(\"Hello World\")</script>"
+custom_script = ""
+# copyright holder name (year is output automatically in the footer)
+copyright = "Jonathan Rapusas"
+
+# Public notes garden (wikilinks, backlinks, graph)
+[notes]
+enable_graph = true
+enable_cards = true
+review_tag = "flashcard"
+anki_export_path = "exports/jorap-notes-anki.txt"
+wikilink_class = "wikilink"
+related_posts_limit = 6
+see_also_limit = 6
+strict_wikilinks = false
+strict_unlinked = false
+unlinked_min_length = 6
+recent_updates_limit = 12
+recent_new_limit = 12
+graph_tail_percentile = 20
+
+# Blog single: automated related content sections
+[blog]
+related_posts_limit = 6
+related_notes_limit = 6
+# ChatGPT prefill URL for random-notes AI prompt (?q= is appended with the prompt text)
+random_notes_ai_chat_url = "https://chatgpt.com/?q="
+
+# Homepage framing above the blog grid (set enable = false to hide)
+[home_intro]
+enable = true
+heading = "Jonathan Rapusas"
+role = "Front-end Developer · Metro Manila · Remote Only"
+subheading = "Ideas, execution, and good sense, without the noise."
+lede = "Freelancing since 2013, with years of in-house web systems work before that. Web development and technical support - usually on the same project."
+availability = "Only open to remote work."
+# Placeholder until you generate a hero photo (see image_prompt).
+image = "/images/home-me.jpg"
+image_prompt = "Photorealistic portrait of a Filipino man in his 40s at a home desk, warm window light, laptop and notebook nearby, casual button-down shirt, friendly but professional, shallow depth of field, no text, no logos, no watermark"
+
+[home_intro.cta]
+enable = true
+label = "Get in touch"
+link = "contact"
+
+[home_intro.cta.secondary]
+label = "How it's built"
+link = "how-this-site-is-built"
+
+[home_intro.cta.tertiary]
+label = "Source on GitHub"
+link = "https://github.com/jrapusas/jorapdotcom"
+
+[home_scope]
+enable = true
+title = "IT Skills"
+lede = "Three skills clients usually hire me for on the same project."
+
+[[home_scope.items]]
+title = "WordPress"
+description = "Theme work, custom builds, plugin updates, migrations, and the fixes that show up after go-live."
+image = "/images/home-wp.jpg"
+image_prompt = "Photorealistic freelance desk at night: laptop with a blurred CMS dashboard and theme customizer side by side, second monitor off, coffee mug, cheap USB hub, warm desk lamp, Metro Manila high-rise glow through blinds, calm focused mood, shallow depth of field, no readable screen text, no WordPress logo, no watermark"
+
+[[home_scope.items]]
+title = "Static Sites"
+description = "Hugo in production on jorap.com — semantic HTML, Tailwind tokens, Git deploys, technical SEO, and Core Web Vitals. Public code: github.com/jrapusas/jorapdotcom."
+image = "/images/home-static.jpg"
+image_prompt = "Photorealistic terminal and browser on one laptop: green build success line, simple blog page preview with lots of whitespace, markdown notes on paper beside keyboard, daylight from a home office window, fast and minimal mood, no readable code or URLs, no Hugo logo, no watermark"
+
+[[home_scope.items]]
+title = "Hosting"
+description = "Linux hosting, websites, business email, moves between hosts, and the problems that appear once the site is live."
+image = "/images/home-hosting.jpg"
+image_prompt = "Photorealistic home desk freelancer scene: laptop open to a blurred web hosting control panel with domain and email icons, sticky note with client site names, phone on silent, cheap router in background, warm desk lamp, calm after-hours support mood, reseller hosting not a data center, no readable UI text, no cPanel or brand logos, no watermark"
+
+[home_blog]
+post_limit = 5
+section_title = "Writing for site owners"
+view_all_label = "View all posts"
+post_slugs = [
+  "sustainable-online-publishing",
+  "static-site-vs-cms",
+  "why-run-your-own-website",
+  "why-i-focused-on-open-source",
+  "consistent-ai-output-wordpress-builds",
+]
+
+[home_proof]
+enable = false
+title = "What You Actually Get"
+lede = "Three skills that usually land on the same project."
+
+[[home_proof.items]]
+title = "Web development"
+description = "WordPress, static site generators like Hugo, PHP systems, theming, migrations, and deployments I've been doing since the mid-2000s."
+
+[[home_proof.items]]
+title = "Technical support"
+description = "Hosting issues, bug triage, and reporting - the work that keeps systems running after launch."
+
+[[home_proof.items]]
+title = "I.T. training"
+description = "Classroom, video conference, and hands-on sessions on the tools your team actually uses."
+
+# Preloader
+# preloader module: https://github.com/gethugothemes/hugo-modules/tree/master/components/preloader
+[preloader]
+enable = false
+preloader = "" # use jpg, png, svg or gif format.
+
+# Navigation button
+[navigation_button]
+enable = true
+label = "Get in touch"
+link = "contact"
+
+# search
+# search module: https://github.com/gethugothemes/hugo-modules/tree/master/search
+[search]
+enable = true
+primary_color = "#121212"
+include_sections = ["blog", "notes"]
+show_image = true
+show_description = true
+show_tags = true
+show_categories = true
+
+# announcement
+# announcement module: https://github.com/gethugothemes/hugo-modules/tree/master/components/announcement
+[announcement]
+enable = false
+expire_days = 7
+content = "You must replace the **baseURL** in **hugo.toml** file when deploying, you can manage this announcement from the **params.toml** file."
+
+# llms.txt / llms-full.txt (llmstxt.org) - AI-oriented site index
+[llms]
+exclude = ["/tags/**", "/categories/**"]
+
+# seo meta data for OpenGraph / Twitter Card
+# seo module: https://github.com/gethugothemes/hugo-modules/tree/master/seo-tools/basic-seo
+[metadata]
+# Appended to every page title (except homepage meta_title). Do not add manually in frontmatter.
+title_suffix = "JoRap.com"
+# Stripped from meta_title before the suffix above is appended (legacy manual entries).
+legacy_title_suffixes = ["JoRap Notes", "JoRap", "Notes Garden", "Jonathan Rapusas"]
+keywords = ["JoRap Notes", "JoRap", "JoRap.com", "Jonathan Rapusas", "front-end developer", "WordPress", "Hugo", "static sites", "Metro Manila", "remote"]
+description = "Front-end developer in Metro Manila. Freelance since 2013. WordPress, Hugo, web development, technical support, and training - remote only."
+author = "JoRap"
+twitter = "jorap"
+image = "images/jw.jpg"
+image_width = "851"
+image_height = "428"
+
+
+# site verifications
+# verification module: https://github.com/gethugothemes/hugo-modules/tree/master/seo-tools/site-verifications
+[site_verification]
+google = ""   # Your verification code
+bing = ""     # Your verification code
+baidu = ""    # Your verification code
+facebook = "" # Your verification code
+mastodon = "" # Your verification code
+
+# cookies
+# cookies module: https://github.com/gethugothemes/hugo-modules/tree/master/components/cookie-consent
+[cookies]
+enable = true
+expire_days = 60
+content = "We use cookies for preferences and Google Analytics. See our [Privacy Policy](/privacy-policy/)."
+button = "I Accept"
+
+# diagrams
+[mermaid]
+js_url = 'https://cdn.jsdelivr.net/npm/mermaid@latest/dist/mermaid.esm.min.mjs'
+
+######################## sidebar widgets #########################
+[widgets]
+sidebar = ["categories", "tags"]
+
+
+# google map
+[google_map]
+enable = false
+map_api_key = "AIzaSyCcABaamniA6OL5YvYSpB3pFMNrXwXnLwU"
+map_latitude = "51.5223477"
+map_longitude = "-0.1622023"
+map_marker = "images/marker.png"
+
+
+# Subscription
+[subscription]
+enable = false
+# mailchimp subsciption
+mailchimp_form_action = "https://gmail.us4.list-manage.com/subscribe/post?u=463ee871f45d2d93748e77cad&amp;id=a0a2c6d074" # replace this url with yours
+mailchimp_form_name = "b_463ee871f45d2d93748e77cad_a0a2c6d074"

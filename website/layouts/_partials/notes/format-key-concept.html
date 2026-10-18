@@ -1,0 +1,41 @@
+{{- /*
+  Build Key Concept markdown from key_concept + level_1..level_5.
+  Level fields (if present) append as H3 sections at the end of Key Concept.
+  Values should omit the "Level N:" prefix; headings are added on render.
+*/ -}}
+{{- $page := . -}}
+{{- $kc := strings.TrimSpace ($page.Params.key_concept | default "") -}}
+{{- $labels := slice "Recognize" "Explain" "Use" "Connect" "Create" -}}
+{{- $levelBlocks := slice -}}
+{{- range $i := seq 1 5 -}}
+  {{- $key := printf "level_%d" $i -}}
+  {{- with index $page.Params $key -}}
+    {{- $text := strings.TrimSpace . -}}
+    {{- if $text -}}
+      {{- $text = replaceRE (printf `(?i)^Level\s+%d:\s*` $i) "" $text -}}
+      {{- $label := index $labels (sub $i 1) -}}
+      {{- $levelBlocks = $levelBlocks | append (printf "### Level %d - %s\n\n%s" $i $label (strings.TrimSpace $text)) -}}
+    {{- end -}}
+  {{- end -}}
+{{- end -}}
+
+{{- /* Hugo allows one return per template, so the result is built into $kc. */ -}}
+{{- if $levelBlocks -}}
+  {{- /* Drop any leftover Level N: bullets from key_concept when fields exist. */ -}}
+  {{- $kept := slice -}}
+  {{- range split $kc "\n" -}}
+    {{- if findRE `(?i)^\s*-\s*Level\s+[1-5]:` . -}}
+    {{- else -}}
+      {{- $kept = $kept | append . -}}
+    {{- end -}}
+  {{- end -}}
+  {{- $kc = delimit $kept "\n" | strings.TrimSpace -}}
+
+  {{- $levelsMd := delimit $levelBlocks "\n\n" -}}
+  {{- if $kc -}}
+    {{- $kc = printf "%s\n\n%s" $kc $levelsMd -}}
+  {{- else -}}
+    {{- $kc = $levelsMd -}}
+  {{- end -}}
+{{- end -}}
+{{- return $kc -}}

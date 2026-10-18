@@ -1,0 +1,35 @@
+{{- /*
+  Resolve the document <title> / og:title value.
+  Non-home pages: page-specific meta_title (or fallbacks) + suffix from metadata.title_suffix.
+  Homepage: meta_title verbatim when set.
+*/ -}}
+{{- $titleSuffix := site.Params.metadata.title_suffix | default site.Title -}}
+{{- $suffix := printf " | %s" $titleSuffix -}}
+{{- $title := site.Title -}}
+{{- if .IsHome -}}
+  {{- with .Params.meta_title -}}
+    {{- $title = . -}}
+  {{- end -}}
+{{- else -}}
+  {{- $base := "" -}}
+  {{- if .Params.meta_title -}}
+    {{- $base = .Params.meta_title -}}
+  {{- else if .Params.title -}}
+    {{- $base = .Params.title -}}
+  {{- else if or (eq .Kind "term") (eq .Kind "taxonomy") -}}
+    {{- $base = .Title | title -}}
+  {{- else if .Title -}}
+    {{- $base = .Title -}}
+  {{- end -}}
+  {{- if $base -}}
+    {{- $legacy := site.Params.metadata.legacy_title_suffixes | default (slice "JoRap Notes" "JoRap" "Notes Garden") -}}
+    {{- $legacy = $legacy | append $titleSuffix site.Title | uniq -}}
+    {{- range seq 5 -}}
+      {{- range $legacy -}}
+        {{- $base = strings.TrimSuffix (printf " | %s" .) $base | strings.TrimSpace -}}
+      {{- end -}}
+    {{- end -}}
+    {{- $title = printf "%s%s" $base $suffix -}}
+  {{- end -}}
+{{- end -}}
+{{- return $title -}}
